@@ -1,4 +1,4 @@
-<!DOCTYPE html><!-- deploy trigger -->
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -25,7 +25,6 @@
   }
   a:hover { color: #666666; }
 
-  /* ---------- Background video ---------- */
   .video-bg {
     position: fixed;
     inset: 0;
@@ -45,7 +44,6 @@
     background: rgba(4, 6, 11, 0.35);
   }
 
-  /* ---------- Preloader ---------- */
   .preloader {
     position: fixed;
     inset: 0;
@@ -68,7 +66,6 @@
     pointer-events: none;
   }
 
-  /* ---------- Page / content layer ---------- */
   .page {
     position: relative;
     z-index: 1;
@@ -77,7 +74,6 @@
     flex-direction: column;
   }
 
-  /* ---------- Header ---------- */
   .site-header {
     display: flex;
     justify-content: space-between;
@@ -142,7 +138,6 @@
     fill: currentColor;
   }
 
-  /* ---------- Language switcher ---------- */
   .lang-switch {
     display: flex;
     align-items: center;
@@ -176,7 +171,6 @@
   }
   .lang-btn.active:hover { color: #111111; }
 
-  /* ---------- Hero bottom content ---------- */
   .hero-bottom {
     position: relative;
     z-index: 2;
@@ -288,7 +282,6 @@
     to   { opacity: 1; }
   }
 
-  /* ---------- Responsive ---------- */
   @media (max-width: 899px) {
     .site-nav { display: none; }
   }
@@ -345,7 +338,7 @@
     margin: 0 auto;
     padding: 0 clamp(20px, 2.8vw, 42px);
   }
-  .fleet-heading { text-align: center; margin-bottom: clamp(26px, 4vh, 40px); }
+  .fleet-heading { text-align: center; margin-bottom: clamp(22px, 3.4vh, 34px); }
   .fleet-title {
     color: #ffffff;
     font-size: clamp(26px, 3.4vw, 42px);
@@ -362,23 +355,18 @@
   .fleet-filters {
     display: flex;
     justify-content: center;
-    flex-wrap: nowrap;
-    overflow-x: auto;
     gap: 8px;
-    padding: 4px 4px 22px;
-    scrollbar-width: none;
+    padding: 4px 4px 26px;
   }
-  .fleet-filters::-webkit-scrollbar { display: none; }
   .fleet-pill {
     appearance: none;
-    flex-shrink: 0;
     border: 1px solid rgba(255,255,255,0.16);
     background: rgba(255,255,255,0.04);
     color: rgba(255,255,255,0.72);
     font-family: inherit;
     font-size: 13.5px;
     font-weight: 500;
-    padding: 9px 18px;
+    padding: 9px 20px;
     border-radius: 999px;
     cursor: pointer;
     transition: background .2s ease, color .2s ease, border-color .2s ease;
@@ -391,11 +379,11 @@
   }
 
   .carousel-viewport {
-    --card-w: min(360px, 78vw);
-    --card-h: calc(var(--card-w) * 0.625);
+    --card-w: min(300px, 74vw);
+    --card-h: calc(var(--card-w) * 1.34);
     position: relative;
-    perspective: 1600px;
-    height: calc(var(--card-h) + 40px);
+    perspective: 1700px;
+    height: calc(var(--card-h) + 44px);
     display: flex;
     align-items: center;
     touch-action: pan-y;
@@ -438,16 +426,6 @@
   }
   .car-flip.is-flipped { transform: rotateY(180deg); }
 
-  .car-face-layer {
-    position: absolute;
-    inset: 0;
-    border-radius: 18px;
-    background: #0c0d10;
-    border: 1px solid rgba(255,255,255,0.05);
-  }
-  .car-face-layer.l1 { transform: translateZ(-5px) translateY(3px); opacity: .75; }
-  .car-face-layer.l2 { transform: translateZ(-10px) translateY(6px); opacity: .5; }
-
   .car-face {
     position: absolute;
     inset: 0;
@@ -460,67 +438,49 @@
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 18px;
+    border-radius: 22px;
     overflow: hidden;
-    -webkit-clip-path: inset(0 round 18px);
-    clip-path: inset(0 round 18px);
+    -webkit-clip-path: inset(0 round 22px);
+    clip-path: inset(0 round 22px);
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     isolation: isolate;
-    background: linear-gradient(155deg, #14161a 0%, #0a0b0d 65%);
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 22px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
+    background: linear-gradient(165deg, #171a1f 0%, #0a0b0d 68%);
+    border: 1px solid rgba(255,255,255,0.09);
+    box-shadow: 0 26px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07);
   }
   .car-face-front .car-face-inner { display: flex; flex-direction: column; }
 
   .car-visual {
     position: relative;
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(120% 100% at 50% 20%, rgba(255,255,255,0.10), transparent 60%), var(--accent-bg, #14161a);
-    overflow: hidden;
-    -webkit-clip-path: inset(0);
-    clip-path: inset(0);
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    isolation: isolate;
+    padding: 38px 16px 16px;
+    background: radial-gradient(125% 95% at 50% 12%, rgba(255,255,255,0.12), transparent 62%), var(--accent-bg, #14161a);
   }
-  .car-visual::after {
-    content: '';
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 45%;
-    background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
-  }
-  .car-silhouette { width: 78%; max-width: 230px; color: var(--accent, #9ca3af); position: relative; z-index: 1; }
-  .car-silhouette .car-body { fill: currentColor; opacity: .92; }
-  .car-silhouette .car-wheel { fill: #05050600; stroke: #050607; stroke-width: 5; }
-  .car-silhouette .car-glass { fill: rgba(255,255,255,0.35); }
-  .car-silhouette .car-shadow { fill: rgba(0,0,0,0.4); filter: blur(3px); }
-  .car-photo {
-    position: absolute;
-    inset: 0;
+  .car-silhouette {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center 62%;
-    z-index: 1;
+    color: var(--accent, #9ca3af);
   }
-  .car-face-front .car-visual .car-photo { z-index: 1; }
-  .car-face-front .car-visual::after { z-index: 2; }
-  .car-face-front .car-visual .car-badge,
-  .car-face-front .car-visual .car-logo { z-index: 3; }
+  .car-silhouette .car-body { fill: currentColor; opacity: .95; }
+  .car-silhouette .car-wheel { fill: none; stroke: #050607; stroke-width: 5; }
+  .car-silhouette .car-glass { fill: rgba(255,255,255,0.34); }
+  .car-silhouette .car-shadow { fill: rgba(0,0,0,0.38); }
 
   .car-badge {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 14px;
+    left: 14px;
     z-index: 2;
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 600;
-    letter-spacing: .03em;
+    letter-spacing: .04em;
+    text-transform: uppercase;
     color: #0a0a0a;
     background: var(--accent, #ffffff);
     padding: 5px 10px;
@@ -528,66 +488,65 @@
   }
   .car-logo {
     position: absolute;
-    top: 12px;
-    right: 14px;
+    top: 14px;
+    right: 15px;
     z-index: 2;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.8);
     letter-spacing: -0.01em;
   }
 
-  .car-info { padding: 12px 16px 14px; }
-  .car-name { color: #ffffff; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
-  .car-cat { color: rgba(255,255,255,0.5); font-size: 12.5px; margin: 2px 0 10px; }
+  .car-info {
+    flex: 0 0 auto;
+    padding: 16px 18px 18px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    background: rgba(6,7,9,0.55);
+  }
+  .car-name { color: #ffffff; font-size: 17.5px; font-weight: 600; letter-spacing: -0.015em; margin: 0; }
+  .car-cat { color: rgba(255,255,255,0.5); font-size: 12.5px; margin: 3px 0 12px; }
+  .car-specs { display: flex; gap: 6px; margin-bottom: 14px; }
+  .spec-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10.5px; color: rgba(255,255,255,0.66);
+    background: rgba(255,255,255,0.06); border-radius: 8px; padding: 5px 8px;
+    white-space: nowrap;
+  }
+  .spec-chip svg { width: 12px; height: 12px; flex-shrink: 0; }
   .car-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  .car-price { color: #ffffff; font-size: 15px; font-weight: 600; }
+  .car-price { color: #ffffff; font-size: 17px; font-weight: 600; }
   .car-price small { color: rgba(255,255,255,0.5); font-weight: 400; font-size: 11.5px; }
   .car-cta {
     appearance: none; border: none; background: #ffffff; color: #0a0a0a;
-    font-family: inherit; font-size: 12px; font-weight: 600;
-    padding: 8px 13px; border-radius: 9px; cursor: pointer;
+    font-family: inherit; font-size: 12.5px; font-weight: 600;
+    padding: 9px 15px; border-radius: 10px; cursor: pointer;
   }
-  .car-specs { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-  .spec-chip {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10.5px; color: rgba(255,255,255,0.62);
-    background: rgba(255,255,255,0.05); border-radius: 7px; padding: 4px 7px;
-  }
-  .spec-chip svg { width: 12px; height: 12px; flex-shrink: 0; }
 
   .car-face-back .car-face-inner {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 18px;
+    padding: 20px;
     color: #ffffff;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
   .car-back-bg {
     position: absolute; inset: 0; z-index: 0;
-    display: flex; align-items: center; justify-content: center;
     background: var(--accent-bg, #14161a);
-    filter: blur(6px) brightness(.6);
-    transform: scale(1.15) translateZ(0);
-    -webkit-clip-path: inset(0);
-    clip-path: inset(0);
-    isolation: isolate;
   }
-  .car-back-bg .car-silhouette { width: 90%; max-width: 260px; }
-  .car-back-overlay { position: absolute; inset: 0; z-index: 1; background: rgba(4,5,6,0.72); }
+  .car-back-overlay { position: absolute; inset: 0; z-index: 1; background: rgba(4,5,6,0.78); }
   .car-back-content { position: relative; z-index: 2; }
-  .car-back-name { font-size: 17px; font-weight: 600; margin: 0 0 3px; }
-  .car-back-prices { font-size: 13px; color: rgba(255,255,255,0.75); margin: 0 0 12px; }
+  .car-back-name { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+  .car-back-prices { font-size: 13px; color: rgba(255,255,255,0.75); margin: 0 0 16px; }
   .car-back-prices b { color: #ffffff; font-weight: 600; }
-  .car-spec-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 11.5px; }
-  .car-spec-list li { display: flex; justify-content: space-between; color: rgba(255,255,255,0.6); border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 4px; }
+  .car-spec-list { list-style: none; margin: 0 0 16px; padding: 0; font-size: 12.5px; }
+  .car-spec-list li { display: flex; justify-content: space-between; color: rgba(255,255,255,0.6); border-bottom: 1px solid rgba(255,255,255,0.09); padding: 7px 0; }
   .car-spec-list li span:last-child { color: #ffffff; font-weight: 500; }
-  .car-back-location { font-size: 11px; color: rgba(255,255,255,0.5); margin: 0 0 12px; }
+  .car-back-location { font-size: 11.5px; color: rgba(255,255,255,0.5); margin: 0 0 14px; }
   .car-reserve {
     display: block; text-align: center; background: #ffffff; color: #0a0a0a;
-    font-size: 13px; font-weight: 600; text-decoration: none;
-    padding: 11px; border-radius: 10px;
+    font-size: 13.5px; font-weight: 600; text-decoration: none;
+    padding: 13px; border-radius: 12px;
   }
 
   .carousel-nav {
@@ -716,20 +675,18 @@
       </div>
     </div>
   </div>
+
   <section id="fleet" class="fleet-section">
     <div class="fleet-inner">
       <div class="fleet-heading">
         <h2 class="fleet-title" data-fr="Notre flotte" data-en="Our Fleet">Notre flotte</h2>
-        <p class="fleet-subtitle" data-fr="Choisissez votre catégorie de véhicule" data-en="Choose your vehicle category">Choisissez votre catégorie de véhicule</p>
+        <p class="fleet-subtitle" data-fr="Citadines et berlines, disponibles en Bretagne" data-en="City cars and sedans, available in Brittany">Citadines et berlines, disponibles en Bretagne</p>
       </div>
 
       <div class="fleet-filters" id="fleet-filters">
         <button type="button" class="fleet-pill active" data-cat="all" data-fr="Tous" data-en="All">Tous</button>
-        <button type="button" class="fleet-pill" data-cat="suv" data-fr="SUV" data-en="SUV">SUV</button>
-        <button type="button" class="fleet-pill" data-cat="berline" data-fr="Berline" data-en="Sedan">Berline</button>
         <button type="button" class="fleet-pill" data-cat="citadine" data-fr="Citadine" data-en="City car">Citadine</button>
-        <button type="button" class="fleet-pill" data-cat="break" data-fr="Break" data-en="Wagon">Break</button>
-        <button type="button" class="fleet-pill" data-cat="sport" data-fr="Sport" data-en="Sport">Sport</button>
+        <button type="button" class="fleet-pill" data-cat="berline" data-fr="Berline" data-en="Sedan">Berline</button>
       </div>
 
       <div class="carousel-viewport" id="fleet-viewport">
@@ -743,7 +700,6 @@
       </div>
     </div>
   </section>
-
   <script>
     (function () {
       var video = document.getElementById('hero-video');
@@ -791,8 +747,7 @@
         seat: '<svg viewBox="0 0 24 24"><path d="M7 13V7a2 2 0 012-2h6a2 2 0 012 2v6M5 13h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>',
         gear: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7M18.4 18.4l-1.7-1.7M7.3 7.3L5.6 5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
         drop: '<svg viewBox="0 0 24 24"><path d="M12 3s6 6.6 6 11a6 6 0 11-12 0c0-4.4 6-11 6-11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
-        bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>',
-        bag: '<svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 8V6a3 3 0 013-3v0a3 3 0 013 3v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
+        bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>'
       };
 
       var TRANSMISSION = { auto: ['Automatique', 'Automatic'], manual: ['Manuelle', 'Manual'] };
@@ -805,26 +760,30 @@
       };
 
       var FLEET = [
-        { id: 'c1', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Peugeot', model: '208', badge: 'available', price: 48, seats: 4, transmission: 'manual', fuel: 'essence', luggage: 2, minAge: 21, accent: '#22c1c3', scale: [0.82, 0.9], img: 'https://images.unsplash.com/photo-1775500819263-03fccefe169a?auto=format&fit=crop&w=800&q=80' },
-        { id: 'c2', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Zoé', badge: 'electric', price: 52, seats: 4, transmission: 'auto', fuel: 'electrique', luggage: 2, minAge: 21, accent: '#22c1c3', scale: [0.82, 0.9], img: 'https://images.unsplash.com/photo-1777226807153-f73e2b74506c?auto=format&fit=crop&w=800&q=80' },
-        { id: 'b1', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'BMW', model: 'Série 3', badge: 'popular', price: 95, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23, accent: '#3b82f6', scale: [1, 1], img: 'https://images.unsplash.com/photo-1441148489547-da3f133be9ae?auto=format&fit=crop&w=800&q=80' },
-        { id: 'b2', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Mercedes', model: 'Classe C', badge: 'premium', price: 110, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 3, minAge: 23, accent: '#3b82f6', scale: [1, 1], img: 'https://images.unsplash.com/photo-1610587144035-4ce2cefe4051?auto=format&fit=crop&w=800&q=80' },
-        { id: 's1', category: 'suv', catFr: 'SUV', catEn: 'SUV', brand: 'Peugeot', model: '3008', badge: 'available', price: 98, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 4, minAge: 23, accent: '#22c55e', scale: [0.95, 1.18], img: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=800&q=80' },
-        { id: 's2', category: 'suv', catFr: 'SUV', catEn: 'SUV', brand: 'Range Rover', model: 'Evoque', badge: 'premium', price: 145, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 4, minAge: 25, accent: '#22c55e', scale: [0.95, 1.18], img: 'https://images.unsplash.com/photo-1612563893490-d86ed296e5e6?auto=format&fit=crop&w=800&q=80' },
-        { id: 'w1', category: 'break', catFr: 'Break', catEn: 'Wagon', brand: 'Audi', model: 'A4 Avant', badge: 'available', price: 92, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 5, minAge: 23, accent: '#f59e0b', scale: [1.18, 1], img: 'https://images.unsplash.com/photo-1766918070462-20206f5610f6?auto=format&fit=crop&w=800&q=80' },
-        { id: 'w2', category: 'break', catFr: 'Break', catEn: 'Wagon', brand: 'Volkswagen', model: 'Passat SW', badge: 'popular', price: 88, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 5, minAge: 23, accent: '#f59e0b', scale: [1.18, 1], img: 'https://images.unsplash.com/photo-1761432788023-fbf6dc5dc5ea?auto=format&fit=crop&w=800&q=80' },
-        { id: 'sp1', category: 'sport', catFr: 'Sport', catEn: 'Sport', brand: 'Audi', model: 'RS6 Avant', badge: 'premium', price: 390, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 27, accent: '#ef4444', scale: [1.05, 0.82], img: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80' },
-        { id: 'sp2', category: 'sport', catFr: 'Sport', catEn: 'Sport', brand: 'Porsche', model: '911 Carrera', badge: 'popular', price: 450, seats: 2, transmission: 'auto', fuel: 'essence', luggage: 1, minAge: 28, accent: '#ef4444', scale: [1.05, 0.82], img: 'https://images.unsplash.com/photo-1628519592419-bf288f08cef5?auto=format&fit=crop&w=800&q=80' }
+        { id: 'c1', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Peugeot', model: '208', badge: 'available', price: 48, seats: 4, transmission: 'manual', fuel: 'essence', luggage: 2, minAge: 21, accent: '#22c1c3' },
+        { id: 'c2', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Zoé', badge: 'electric', price: 52, seats: 4, transmission: 'auto', fuel: 'electrique', luggage: 2, minAge: 21, accent: '#22c1c3' },
+        { id: 'b1', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'BMW', model: 'Série 3', badge: 'popular', price: 95, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23, accent: '#3b82f6' },
+        { id: 'b2', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Mercedes', model: 'Classe C', badge: 'premium', price: 110, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 3, minAge: 23, accent: '#3b82f6' }
       ];
 
       var WHATSAPP_NUMBER = '971501234567';
-      function silhouette(scale) {
-        return '<svg class="car-silhouette" viewBox="0 0 300 120" style="transform:scale(' + scale[0] + ',' + scale[1] + ')" aria-hidden="true">' +
-          '<ellipse class="car-shadow" cx="150" cy="102" rx="118" ry="9"></ellipse>' +
-          '<path class="car-body" d="M25,80 Q28,55 55,50 L85,32 Q105,20 150,20 L205,20 Q235,22 250,40 L268,52 Q288,55 288,80 L288,86 L262,86 Q262,66 240,66 Q218,66 218,86 L98,86 Q98,66 76,66 Q54,66 54,86 L25,86 Z"></path>' +
-          '<path class="car-glass" d="M92,50 L112,34 Q122,28 148,28 L188,28 Q198,30 206,42 L214,50 Z"></path>' +
-          '<circle class="car-wheel" cx="76" cy="88" r="15"></circle>' +
-          '<circle class="car-wheel" cx="240" cy="88" r="15"></circle>' +
+
+      function silhouette(category) {
+        if (category === 'berline') {
+          return '<svg class="car-silhouette" viewBox="0 0 300 132" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
+            '<ellipse class="car-shadow" cx="154" cy="118" rx="126" ry="7"></ellipse>' +
+            '<path class="car-body" d="M16,92 Q18,68 44,62 L86,38 Q104,28 146,28 L206,28 Q238,30 254,48 L274,64 Q292,68 292,92 L292,98 L266,98 Q266,78 246,78 Q226,78 226,98 L92,98 Q92,78 72,78 Q52,78 52,98 L16,98 Z"></path>' +
+            '<path class="car-glass" d="M92,62 L114,42 Q126,36 152,36 L198,36 Q212,38 222,52 L232,62 Z"></path>' +
+            '<circle class="car-wheel" cx="72" cy="100" r="16"></circle>' +
+            '<circle class="car-wheel" cx="246" cy="100" r="16"></circle>' +
+            '</svg>';
+        }
+        return '<svg class="car-silhouette" viewBox="0 0 300 132" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
+          '<ellipse class="car-shadow" cx="152" cy="118" rx="104" ry="7"></ellipse>' +
+          '<path class="car-body" d="M48,92 Q50,66 76,60 L102,34 Q116,24 148,24 L188,24 Q212,26 224,42 L240,60 Q258,64 258,92 L258,98 L236,98 Q236,78 216,78 Q196,78 196,98 L114,98 Q114,78 94,78 Q74,78 74,98 L48,98 Z"></path>' +
+          '<path class="car-glass" d="M108,60 L126,38 Q134,32 154,32 L180,32 Q192,34 200,46 L208,60 Z"></path>' +
+          '<circle class="car-wheel" cx="94" cy="100" r="15"></circle>' +
+          '<circle class="car-wheel" cx="216" cy="100" r="15"></circle>' +
           '</svg>';
       }
 
@@ -835,26 +794,23 @@
       function specRow(labelFr, labelEn, valueFr, valueEn) {
         return '<li><span data-fr="' + labelFr + '" data-en="' + labelEn + '">' + labelFr + '</span><span data-fr="' + valueFr + '" data-en="' + valueEn + '">' + valueFr + '</span></li>';
       }
-
       function buildCard(car) {
         var badge = BADGES[car.badge];
         var trans = TRANSMISSION[car.transmission];
         var fuel = FUEL[car.fuel];
         var fuelIcon = car.fuel === 'electrique' ? 'bolt' : 'drop';
         var weekly = Math.round(car.price * 6.2);
-        var svg = silhouette(car.scale);
-        var styleVars = 'style="--accent:' + car.accent + '; --accent-bg: linear-gradient(160deg,' + car.accent + '22,#0a0b0d 70%);"';
+        var svg = silhouette(car.category);
+        var styleVars = 'style="--accent:' + car.accent + '; --accent-bg: linear-gradient(165deg,' + car.accent + '26,#0a0b0d 72%);"';
         var waText = encodeURIComponent('Bonjour, je souhaite réserver la ' + car.brand + ' ' + car.model + ' (' + car.price + '€/jour).');
 
         return '' +
           '<div class="car-tilt">' +
             '<div class="car-flip">' +
-              '<div class="car-face-layer l2"></div>' +
-              '<div class="car-face-layer l1"></div>' +
               '<div class="car-face car-face-front">' +
-                '<div class="car-face-inner">' +
-                  '<div class="car-visual" ' + styleVars + '>' +
-                    (badge ? '<span class="car-badge" style="--accent:' + car.accent + '" data-fr="' + badge[0] + '" data-en="' + badge[1] + '">' + badge[0] + '</span>' : '') +
+                '<div class="car-face-inner" ' + styleVars + '>' +
+                  '<div class="car-visual">' +
+                    (badge ? '<span class="car-badge" data-fr="' + badge[0] + '" data-en="' + badge[1] + '">' + badge[0] + '</span>' : '') +
                     '<span class="car-logo">WaRent</span>' +
                     svg +
                   '</div>' +
@@ -865,9 +821,8 @@
                       specChip('seat', car.seats + ' places', car.seats + ' seats') +
                       specChip('gear', trans[0], trans[1]) +
                       specChip(fuelIcon, fuel[0], fuel[1]) +
-                      specChip('bag', car.luggage + ' bagages', car.luggage + ' bags') +
                     '</div>' +
-                    '<div class="car-meta-row" style="margin-top:10px;">' +
+                    '<div class="car-meta-row">' +
                       '<span class="car-price">' + car.price + '€<small data-fr="/jour" data-en="/day"> /jour</small></span>' +
                       '<button type="button" class="car-cta" data-fr="Détails" data-en="Details">Détails</button>' +
                     '</div>' +
@@ -876,7 +831,7 @@
               '</div>' +
               '<div class="car-face car-face-back">' +
                 '<div class="car-face-inner">' +
-                  '<div class="car-back-bg" ' + styleVars + '>' + svg + '</div>' +
+                  '<div class="car-back-bg" ' + styleVars + '></div>' +
                   '<div class="car-back-overlay"></div>' +
                   '<div class="car-back-content">' +
                     '<p class="car-back-name">' + car.brand + ' ' + car.model + '</p>' +
@@ -896,6 +851,7 @@
             '</div>' +
           '</div>';
       }
+
       var viewport = document.getElementById('fleet-viewport');
       var track = document.getElementById('fleet-track');
       var prevBtn = document.getElementById('fleet-prev');
@@ -905,7 +861,7 @@
 
       var currentCars = FLEET.slice();
       var cardEls = [];
-      var progress = 0, targetProgress = 0, spacing = 300;
+      var progress = 0, targetProgress = 0, spacing = 240;
 
       function lerp(a, b, t) { return a + (b - a) * t; }
       function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
@@ -913,7 +869,7 @@
       function measure() {
         if (!cardEls.length) return;
         var w = cardEls[0].getBoundingClientRect().width;
-        if (w > 0) spacing = w * 0.74;
+        if (w > 0) spacing = w * 0.86;
       }
 
       function positionCards() {
@@ -923,17 +879,17 @@
           var d = i - progress;
           d = ((d + n / 2) % n + n) % n - n / 2;
           var absD = Math.abs(d);
-          var t = clamp(absD / 3.4, 0, 1);
+          var t = clamp(absD / 2.6, 0, 1);
           var s = t * t * (3 - 2 * t);
-          var scale = lerp(1, 0.52, s);
-          var opacity = 1 - clamp((absD - 2.2) / 1.1, 0, 1);
+          var scale = lerp(1, 0.6, s);
+          var opacity = lerp(1, 0.1, clamp(absD / 1.35, 0, 1));
           var x = d * spacing;
-          var rot = clamp(d * -24, -74, 74);
-          var z = -absD * 160;
+          var rot = clamp(d * -22, -68, 68);
+          var z = -absD * 170;
           el.style.transform = 'translateX(' + x.toFixed(1) + 'px) translateZ(' + z.toFixed(1) + 'px) rotateY(' + rot.toFixed(1) + 'deg) scale(' + scale.toFixed(3) + ')';
           el.style.opacity = opacity.toFixed(2);
           el.style.zIndex = Math.round(1000 - absD * 10);
-          el.style.pointerEvents = opacity < 0.12 ? 'none' : '';
+          el.style.pointerEvents = opacity < 0.1 ? 'none' : '';
         });
       }
 
@@ -963,7 +919,6 @@
           el.textContent = lang === 'en' ? el.dataset.en : el.dataset.fr;
         });
       }
-
       var dragging = false, moved = false, startX = 0, startProgress = 0, suppressClick = false;
 
       viewport.addEventListener('pointerdown', function (e) {
@@ -980,12 +935,21 @@
         if (Math.abs(dx) > 6) moved = true;
         if (moved) targetProgress = startProgress - dx / spacing;
       });
+
+      function unflipAll() {
+        cardEls.forEach(function (el) {
+          var f = el.querySelector('.car-flip');
+          if (f) f.classList.remove('is-flipped');
+        });
+      }
+
       function endDrag() {
         if (!dragging) return;
         dragging = false;
         viewport.classList.remove('is-dragging');
         if (moved) {
           targetProgress = Math.round(targetProgress);
+          unflipAll();
           suppressClick = true;
           setTimeout(function () { suppressClick = false; }, 60);
         }
@@ -1005,8 +969,9 @@
         }, 220);
       }, { passive: false });
 
-      if (prevBtn) prevBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) - 1; });
-      if (nextBtn) nextBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) + 1; });
+      if (prevBtn) prevBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) - 1; unflipAll(); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) + 1; unflipAll(); });
+
       track.addEventListener('pointermove', function (e) {
         var slot = e.target.closest ? e.target.closest('.car-slot') : null;
         cardEls.forEach(function (el) {
@@ -1016,8 +981,8 @@
             var rect = el.getBoundingClientRect();
             var px = (e.clientX - rect.left) / rect.width - 0.5;
             var py = (e.clientY - rect.top) / rect.height - 0.5;
-            tiltEl.style.setProperty('--ry', (px * 14).toFixed(2) + 'deg');
-            tiltEl.style.setProperty('--rx', (py * -10).toFixed(2) + 'deg');
+            tiltEl.style.setProperty('--ry', (px * 12).toFixed(2) + 'deg');
+            tiltEl.style.setProperty('--rx', (py * -8).toFixed(2) + 'deg');
           } else {
             tiltEl.style.setProperty('--ry', '0deg');
             tiltEl.style.setProperty('--rx', '0deg');
@@ -1039,6 +1004,20 @@
         if (e.target.closest && e.target.closest('.car-reserve')) return;
         var slot = e.target.closest ? e.target.closest('.car-slot') : null;
         if (!slot) return;
+        var i = cardEls.indexOf(slot);
+        var n = cardEls.length;
+        if (i < 0 || !n) return;
+
+        var centre = ((Math.round(targetProgress) % n) + n) % n;
+        if (i !== centre) {
+          var d = i - centre;
+          if (d > n / 2) d -= n;
+          if (d < -n / 2) d += n;
+          targetProgress = Math.round(targetProgress) + d;
+          unflipAll();
+          return;
+        }
+
         var flipEl = slot.querySelector('.car-flip');
         if (flipEl) flipEl.classList.toggle('is-flipped');
       });
@@ -1058,7 +1037,6 @@
       renderCars();
       requestAnimationFrame(loop);
     })();
-
     (function () {
       var STORAGE_KEY = 'warent-lang';
       var titles = {
