@@ -458,8 +458,36 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 38px 16px 16px;
+    padding: 34px 12px 12px;
     background: radial-gradient(125% 95% at 50% 12%, rgba(255,255,255,0.12), transparent 62%), var(--accent-bg, #14161a);
+  }
+  .car-photo {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center 56%;
+  }
+  .car-fallback {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 34px 12px 12px;
+  }
+  .car-ground {
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    bottom: 23%;
+    width: 72%;
+    height: 26px;
+    transform: translateX(-50%);
+    background: radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.55), rgba(0,0,0,0) 72%);
   }
   .car-silhouette {
     display: block;
@@ -760,8 +788,8 @@
       };
 
       var FLEET = [
-        { id: 'c0', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Clio 5 Esprit Alpine', badge: 'popular', price: 58, seats: 5, transmission: 'auto', fuel: 'hybride', luggage: 3, minAge: 21, accent: '#22c1c3' },
-        { id: 'b0', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Audi', model: 'A3 (2026)', badge: 'premium', price: 85, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23, accent: '#3b82f6' }
+        { id: 'c0', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Clio 5 Esprit Alpine', badge: 'popular', price: 58, seats: 5, transmission: 'auto', fuel: 'hybride', luggage: 3, minAge: 21, accent: '#22c1c3', img: 'clio.webp' },
+        { id: 'b0', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Audi', model: 'A3 (2026)', badge: 'premium', price: 85, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23, accent: '#3b82f6', img: 'audi.webp' }
       ];
 
       var WHATSAPP_NUMBER = '971501234567';
@@ -798,7 +826,15 @@
         var fuel = FUEL[car.fuel];
         var fuelIcon = (car.fuel === 'electrique' || car.fuel === 'hybride') ? 'bolt' : 'drop';
         var weekly = Math.round(car.price * 6.2);
-        var svg = silhouette(car.category);
+        // The photo sits on top; if the file is missing the browser fires
+        // onerror and we fall back to the vector silhouette, so a card is
+        // never left empty.
+        var visual = car.img
+          ? '<span class="car-ground"></span>' +
+            '<span class="car-fallback">' + silhouette(car.category) + '</span>' +
+            '<img class="car-photo" src="' + car.img + '" alt="' + car.brand + ' ' + car.model + '"' +
+            ' onerror="this.parentNode.querySelector(\'.car-fallback\').style.display=\'flex\';this.remove();">'
+          : silhouette(car.category);
         var styleVars = 'style="--accent:' + car.accent + '; --accent-bg: linear-gradient(165deg,' + car.accent + '26,#0a0b0d 72%);"';
         var waText = encodeURIComponent('Bonjour, je souhaite réserver la ' + car.brand + ' ' + car.model + ' (' + car.price + '€/jour).');
 
@@ -810,7 +846,7 @@
                   '<div class="car-visual">' +
                     (badge ? '<span class="car-badge" data-fr="' + badge[0] + '" data-en="' + badge[1] + '">' + badge[0] + '</span>' : '') +
                     '<span class="car-logo">WaRent</span>' +
-                    svg +
+                    visual +
                   '</div>' +
                   '<div class="car-info">' +
                     '<p class="car-name">' + car.brand + ' ' + car.model + '</p>' +
