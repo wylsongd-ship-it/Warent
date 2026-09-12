@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WaRent — Location de voitures premium</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    background: #ffffff;
+  }
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a {
+    color: #111111;
+    text-decoration: none;
+    transition: color .2s ease;
+  }
+  a:hover { color: #666666; }
+
+  /* ---------- Background video ---------- */
+  .video-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: #04060b;
+  }
+  #hero-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .video-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 6, 11, 0.35);
+  }
+
+  /* ---------- Preloader ---------- */
+  .preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: #04060b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .6s ease;
+  }
+  .preloader span {
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #b9cdea;
+  }
+  .preloader.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ---------- Page / content layer ---------- */
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Header ---------- */
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: clamp(14px, 2.4vw, 26px) clamp(20px, 2.8vw, 42px);
+    position: relative;
+    z-index: 2;
+  }
+  .logo {
+    font-size: clamp(20px, 2vw, 24px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+  }
+  .logo:hover { color: #ffffff; }
+
+  .site-nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: clamp(28px, 3.5vw, 56px);
+  }
+  .site-nav a {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .site-nav a:hover { color: #ffffff; }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 1.2vw, 14px);
+  }
+
+  .whatsapp-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.15);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background .2s ease;
+  }
+  .whatsapp-btn:hover {
+    background: rgba(255, 255, 255, 0.24);
+    color: #ffffff;
+  }
+  .wa-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+
+  /* ---------- Language switcher ---------- */
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .lang-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    font-family: inherit;
+    font-size: clamp(12px, 1vw, 13px);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 7px 11px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+  }
+  .lang-btn:hover { color: #ffffff; }
+  .lang-btn.active {
+    background: #ffffff;
+    color: #111111;
+  }
+  .lang-btn.active:hover { color: #111111; }
+
+  /* ---------- Hero bottom content ---------- */
+  .hero-bottom {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(24px, 4vw, 64px);
+    padding: 0 clamp(20px, 2.8vw, 42px) clamp(32px, 5vh, 56px);
+  }
+
+  .hero-left {
+    min-width: min(100%, 380px);
+    text-align: left;
+  }
+
+  .renters-badge {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: clamp(18px, 2.6vh, 28px);
+    opacity: 0;
+    animation: softIn .7s cubic-bezier(.22,1,.36,1) .15s forwards;
+  }
+  .avatars { display: flex; }
+  .avatar {
+    width: clamp(30px, 2.6vw, 38px);
+    height: clamp(30px, 2.6vw, 38px);
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    object-fit: cover;
+    margin-left: -12px;
+  }
+  .avatars .avatar:first-child { margin-left: 0; }
+  .renters-label {
+    font-size: clamp(15px, 1.3vw, 18px);
+    font-weight: 400;
+    color: #ffffff;
+  }
+
+  .headline {
+    font-size: clamp(27px, 4.2vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+    color: #ffffff;
+    margin: 0;
+  }
+  .headline.i18n-en { display: none; }
+  body.lang-en .headline.i18n-fr { display: none; }
+  body.lang-en .headline.i18n-en { display: block; }
+  .headline .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(26px);
+    animation: wordIn .8s cubic-bezier(.22,1,.36,1) forwards;
+  }
+
+  .hero-right {
+    width: min(100%, 480px);
+    margin-left: auto;
+    text-align: left;
+  }
+  .sub-text {
+    font-size: clamp(15px, 1.2vw, 18px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0 0 clamp(22px, 3.6vh, 36px);
+  }
+  .sub-text.i18n-en { display: none; }
+  body.lang-en .sub-text.i18n-fr { display: none; }
+  body.lang-en .sub-text.i18n-en { display: block; }
+  .sub-text .w {
+    display: inline-block;
+    opacity: 0;
+    animation: fadeIn .6s ease-out forwards;
+  }
+
+  .explore-btn {
+    display: inline-block;
+    background: #ffffff;
+    color: #111111;
+    border-radius: 12px;
+    padding: 15px 26px;
+    font-size: clamp(15px, 1.2vw, 17px);
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: softIn .7s cubic-bezier(.22,1,.36,1) 1.55s forwards;
+    transition: background .2s ease;
+  }
+  .explore-btn:hover {
+    background: #ededed;
+    color: #111111;
+  }
+
+  @keyframes wordIn {
+    from { opacity: 0; transform: translateY(26px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes softIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 899px) {
+    .site-nav { display: none; }
+  }
+  @media (max-width: 640px) {
+    .hero-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .hero-right {
+      margin-left: 0;
+      width: 100%;
+    }
+    #hero-video {
+      object-position: center 32%;
+    }
+  }
+  @media (max-width: 520px) {
+    .site-header {
+      padding-left: clamp(14px, 4vw, 20px);
+      padding-right: clamp(14px, 4vw, 20px);
+      gap: 8px;
+    }
+    .header-actions {
+      gap: 8px;
+    }
+    .whatsapp-btn {
+      padding: 10px;
+      border-radius: 12px;
+    }
+    .wa-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+    .lang-btn {
+      padding: 7px 9px;
+    }
+  }
+  @media (max-width: 360px) {
+    .logo { font-size: 18px; }
+  }
+  /* ==================== Fleet carousel ==================== */
+  .fleet-section {
+    position: relative;
+    z-index: 1;
+    background: #050607;
+    padding: clamp(56px, 9vh, 100px) 0 clamp(64px, 10vh, 110px);
+  }
+  .fleet-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 2.8vw, 42px);
+  }
+  .fleet-heading { text-align: center; margin-bottom: clamp(26px, 4vh, 40px); }
+  .fleet-title {
+    color: #ffffff;
+    font-size: clamp(26px, 3.4vw, 42px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    margin: 0 0 10px;
+  }
+  .fleet-subtitle {
+    color: rgba(255,255,255,0.6);
+    font-size: clamp(14px, 1.1vw, 16px);
+    margin: 0;
+  }
+
+  .fleet-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 4px 4px 22px;
+    scrollbar-width: none;
+  }
+  .fleet-filters::-webkit-scrollbar { display: none; }
+  .fleet-pill {
+    appearance: none;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.72);
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 9px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .fleet-pill:hover { color: #ffffff; border-color: rgba(255,255,255,0.32); }
+  .fleet-pill.active {
+    background: #ffffff;
+    color: #0a0a0a;
+    border-color: #ffffff;
+  }
+
+  .carousel-viewport {
+    --card-w: min(360px, 78vw);
+    --card-h: calc(var(--card-w) * 0.625);
+    position: relative;
+    perspective: 1600px;
+    height: calc(var(--card-h) + 40px);
+    display: flex;
+    align-items: center;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .carousel-viewport.is-dragging { cursor: grabbing; }
+  .carousel-track {
+    position: relative;
+    width: 100%;
+    height: var(--card-h);
+    transform-style: preserve-3d;
+  }
+
+  .car-slot {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: var(--card-w);
+    height: var(--card-h);
+    margin-left: calc(var(--card-w) / -2);
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+  }
+  .car-tilt {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform .18s cubic-bezier(.22,1,.36,1);
+  }
+  .car-flip {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform .65s cubic-bezier(.22,1,.36,1);
+    cursor: pointer;
+  }
+  .car-flip.is-flipped { transform: rotateY(180deg); }
+
+  .car-face-layer {
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    background: #0c0d10;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .car-face-layer.l1 { transform: translateZ(-5px) translateY(3px); opacity: .75; }
+  .car-face-layer.l2 { transform: translateZ(-10px) translateY(6px); opacity: .5; }
+
+  .car-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .car-face-back { transform: rotateY(180deg); }
+
+  .car-face-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    -webkit-clip-path: inset(0 round 18px);
+    clip-path: inset(0 round 18px);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    isolation: isolate;
+    background: linear-gradient(155deg, #14161a 0%, #0a0b0d 65%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 22px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .car-face-front .car-face-inner { display: flex; flex-direction: column; }
+
+  .car-visual {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(120% 100% at 50% 20%, rgba(255,255,255,0.10), transparent 60%), var(--accent-bg, #14161a);
+    overflow: hidden;
+    -webkit-clip-path: inset(0);
+    clip-path: inset(0);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    isolation: isolate;
+  }
+  .car-visual::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 45%;
+    background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+  }
+  .car-silhouette { width: 78%; max-width: 230px; color: var(--accent, #9ca3af); position: relative; z-index: 1; }
+  .car-silhouette .car-body { fill: currentColor; opacity: .92; }
+  .car-silhouette .car-wheel { fill: #05050600; stroke: #050607; stroke-width: 5; }
+  .car-silhouette .car-glass { fill: rgba(255,255,255,0.35); }
+  .car-silhouette .car-shadow { fill: rgba(0,0,0,0.4); filter: blur(3px); }
+  .car-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 62%;
+    z-index: 1;
+  }
+  .car-face-front .car-visual .car-photo { z-index: 1; }
+  .car-face-front .car-visual::after { z-index: 2; }
+  .car-face-front .car-visual .car-badge,
+  .car-face-front .car-visual .car-logo { z-index: 3; }
+
+  .car-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .03em;
+    color: #0a0a0a;
+    background: var(--accent, #ffffff);
+    padding: 5px 10px;
+    border-radius: 999px;
+  }
+  .car-logo {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    z-index: 2;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: -0.01em;
+  }
+
+  .car-info { padding: 12px 16px 14px; }
+  .car-name { color: #ffffff; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+  .car-cat { color: rgba(255,255,255,0.5); font-size: 12.5px; margin: 2px 0 10px; }
+  .car-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .car-price { color: #ffffff; font-size: 15px; font-weight: 600; }
+  .car-price small { color: rgba(255,255,255,0.5); font-weight: 400; font-size: 11.5px; }
+  .car-cta {
+    appearance: none; border: none; background: #ffffff; color: #0a0a0a;
+    font-family: inherit; font-size: 12px; font-weight: 600;
+    padding: 8px 13px; border-radius: 9px; cursor: pointer;
+  }
+  .car-specs { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .spec-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10.5px; color: rgba(255,255,255,0.62);
+    background: rgba(255,255,255,0.05); border-radius: 7px; padding: 4px 7px;
+  }
+  .spec-chip svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  .car-face-back .car-face-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 18px;
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  .car-back-bg {
+    position: absolute; inset: 0; z-index: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-bg, #14161a);
+    filter: blur(6px) brightness(.6);
+    transform: scale(1.15) translateZ(0);
+    -webkit-clip-path: inset(0);
+    clip-path: inset(0);
+    isolation: isolate;
+  }
+  .car-back-bg .car-silhouette { width: 90%; max-width: 260px; }
+  .car-back-overlay { position: absolute; inset: 0; z-index: 1; background: rgba(4,5,6,0.72); }
+  .car-back-content { position: relative; z-index: 2; }
+  .car-back-name { font-size: 17px; font-weight: 600; margin: 0 0 3px; }
+  .car-back-prices { font-size: 13px; color: rgba(255,255,255,0.75); margin: 0 0 12px; }
+  .car-back-prices b { color: #ffffff; font-weight: 600; }
+  .car-spec-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 11.5px; }
+  .car-spec-list li { display: flex; justify-content: space-between; color: rgba(255,255,255,0.6); border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 4px; }
+  .car-spec-list li span:last-child { color: #ffffff; font-weight: 500; }
+  .car-back-location { font-size: 11px; color: rgba(255,255,255,0.5); margin: 0 0 12px; }
+  .car-reserve {
+    display: block; text-align: center; background: #ffffff; color: #0a0a0a;
+    font-size: 13px; font-weight: 600; text-decoration: none;
+    padding: 11px; border-radius: 10px;
+  }
+
+  .carousel-nav {
+    appearance: none; border: none; cursor: pointer;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: #ffffff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    z-index: 5;
+    transition: background .2s ease;
+  }
+  .carousel-nav:hover { background: rgba(255,255,255,0.18); }
+  .carousel-nav svg { width: 20px; height: 20px; }
+  .carousel-nav.prev { margin-right: -42px; }
+  .carousel-nav.next { margin-left: -42px; }
+  @media (max-width: 720px) {
+    .carousel-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="preloader" id="preloader"><span id="preloader-text">0%</span></div>
+
+  <div class="video-bg">
+    <video id="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="https://qdrcnvgoldvoxaqj.public.blob.vercel-storage.com/13643106-uhd_3840_2160_24fps.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+  </div>
+
+  <div class="page">
+    <header class="site-header">
+      <a href="#" class="logo">WaRent</a>
+      <nav class="site-nav">
+        <a href="#fleet" data-fr="Flotte" data-en="Fleet">Flotte</a>
+        <a href="#pricing" data-fr="Tarifs" data-en="Pricing">Tarifs</a>
+        <a href="#how-it-works" data-fr="Comment ça marche" data-en="How It Works">Comment ça marche</a>
+        <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <a href="https://wa.me/971501234567" id="whatsapp-link" class="whatsapp-btn" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp">
+          <svg class="wa-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16.001 3C9.096 3 3.5 8.596 3.5 15.5c0 2.31.63 4.474 1.727 6.33L3 29l7.36-2.185A12.44 12.44 0 0 0 16.001 28C22.905 28 28.5 22.404 28.5 15.5S22.905 3 16.001 3Zm0 2c5.799 0 10.499 4.7 10.499 10.5S21.8 26 16.001 26a10.44 10.44 0 0 1-5.336-1.463l-.383-.226-4.368 1.297 1.32-4.256-.25-.397A10.44 10.44 0 0 1 5.5 15.5C5.5 9.701 10.202 5 16.001 5Zm-4.42 5.24c-.207 0-.542.078-.826.39-.284.31-1.083 1.058-1.083 2.58 0 1.522 1.109 2.994 1.264 3.201.155.207 2.15 3.436 5.313 4.68 2.628 1.034 3.163.83 3.734.778.57-.052 1.84-.752 2.099-1.478.259-.726.259-1.348.181-1.478-.077-.13-.284-.207-.594-.363-.31-.155-1.84-.908-2.125-1.012-.284-.104-.492-.155-.7.156-.207.31-.803 1.011-.984 1.219-.181.207-.362.233-.672.078-.31-.156-1.31-.483-2.494-1.538-.922-.822-1.545-1.837-1.727-2.147-.181-.31-.02-.478.136-.633.14-.14.31-.362.465-.544.155-.181.207-.31.31-.518.104-.207.052-.388-.026-.544-.078-.155-.7-1.702-.96-2.328-.253-.61-.51-.527-.7-.537-.181-.008-.388-.008-.596-.008Z"/></svg>
+          <span class="wa-text" data-fr="Contacter sur WhatsApp" data-en="Ask on WhatsApp">Contacter sur WhatsApp</span>
+        </a>
+        <div class="lang-switch" role="group" aria-label="Choix de la langue / Language switcher">
+          <button type="button" class="lang-btn active" data-lang-btn="fr" aria-pressed="true">FR</button>
+          <button type="button" class="lang-btn" data-lang-btn="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </header>
+
+
+    <div class="hero-bottom">
+      <div class="hero-left">
+        <div class="renters-badge">
+          <div class="avatars">
+            <img class="avatar" src="https://cdn.sceneai.art/Only%20man%20image/42b82183-3b58-4a03-8e82-ca8b4bea698e.png" alt="">
+            <img class="avatar" src="https://cdn.sceneai.art/Only%20man%20image/f042bdf5-73ea-4715-9b9b-6e1e9576119c.png" alt="">
+            <img class="avatar" src="https://cdn.sceneai.art/Only%20man%20image/11790acc-96cb-44c9-8fa0-a95192bc1e93.png" alt="">
+            <img class="avatar" src="https://cdn.sceneai.art/Only%20man%20image/0ccd6017-25fc-493b-abdf-321915dde101.jpg" alt="">
+            <img class="avatar" src="https://cdn.sceneai.art/Only%20man%20image/7e1339ef-7a01-4979-93c8-21d97af291ee.webp" alt="">
+          </div>
+          <span class="renters-label" data-fr="2 500+ locataires satisfaits" data-en="2,500+ Happy Renters">2 500+ locataires satisfaits</span>
+        </div>
+
+        <h1 class="headline i18n-fr">
+          <span class="word" style="animation-delay:0.30s">Louez</span> <span class="word" style="animation-delay:0.40s">des</span> <span class="word" style="animation-delay:0.50s">voitures</span><br>
+          <span class="word" style="animation-delay:0.60s">premium</span> <span class="word" style="animation-delay:0.70s">sans</span> <span class="word" style="animation-delay:0.80s">tracas</span>
+        </h1>
+        <h1 class="headline i18n-en">
+          <span class="word" style="animation-delay:0.30s">Rent</span> <span class="word" style="animation-delay:0.40s">Premium</span> <span class="word" style="animation-delay:0.50s">Cars</span><br>
+          <span class="word" style="animation-delay:0.60s">Without</span> <span class="word" style="animation-delay:0.70s">the</span> <span class="word" style="animation-delay:0.80s">Hassle</span>
+        </h1>
+      </div>
+
+      <div class="hero-right">
+        <p class="sub-text i18n-fr">
+          <span class="w" style="animation-delay:1.00s">Choisissez</span>
+          <span class="w" style="animation-delay:1.045s">votre</span>
+          <span class="w" style="animation-delay:1.09s">voiture</span>
+          <span class="w" style="animation-delay:1.135s">de</span>
+          <span class="w" style="animation-delay:1.18s">luxe,</span>
+          <span class="w" style="animation-delay:1.225s">réservez</span>
+          <span class="w" style="animation-delay:1.27s">en</span>
+          <span class="w" style="animation-delay:1.315s">quelques</span>
+          <span class="w" style="animation-delay:1.36s">secondes</span>
+          <span class="w" style="animation-delay:1.405s">et</span>
+          <span class="w" style="animation-delay:1.45s">récupérez-la</span>
+          <span class="w" style="animation-delay:1.495s">sur</span>
+          <span class="w" style="animation-delay:1.54s">place</span>
+          <span class="w" style="animation-delay:1.585s">en</span>
+          <span class="w" style="animation-delay:1.63s">Bretagne.</span>
+          <span class="w" style="animation-delay:1.675s">Livraison</span>
+          <span class="w" style="animation-delay:1.72s">à</span>
+          <span class="w" style="animation-delay:1.765s">domicile</span>
+          <span class="w" style="animation-delay:1.81s">disponible</span>
+          <span class="w" style="animation-delay:1.855s">avec</span>
+          <span class="w" style="animation-delay:1.90s">supplément.</span>
+        </p>
+        <p class="sub-text i18n-en">
+          <span class="w" style="animation-delay:1.00s">Choose</span>
+          <span class="w" style="animation-delay:1.045s">your</span>
+          <span class="w" style="animation-delay:1.09s">luxury</span>
+          <span class="w" style="animation-delay:1.135s">car,</span>
+          <span class="w" style="animation-delay:1.18s">book</span>
+          <span class="w" style="animation-delay:1.225s">in</span>
+          <span class="w" style="animation-delay:1.27s">seconds</span>
+          <span class="w" style="animation-delay:1.315s">and</span>
+          <span class="w" style="animation-delay:1.36s">pick</span>
+          <span class="w" style="animation-delay:1.405s">it</span>
+          <span class="w" style="animation-delay:1.45s">up</span>
+          <span class="w" style="animation-delay:1.495s">in</span>
+          <span class="w" style="animation-delay:1.54s">Brittany.</span>
+          <span class="w" style="animation-delay:1.585s">Home</span>
+          <span class="w" style="animation-delay:1.63s">delivery</span>
+          <span class="w" style="animation-delay:1.675s">available</span>
+          <span class="w" style="animation-delay:1.72s">for</span>
+          <span class="w" style="animation-delay:1.765s">an</span>
+          <span class="w" style="animation-delay:1.81s">extra</span>
+          <span class="w" style="animation-delay:1.855s">fee.</span>
+        </p>
+
+        <a href="#fleet" class="explore-btn" data-fr="Découvrir la flotte" data-en="Explore Fleet">Découvrir la flotte</a>
+      </div>
+    </div>
+  </div>
+  <section id="fleet" class="fleet-section">
+    <div class="fleet-inner">
+      <div class="fleet-heading">
+        <h2 class="fleet-title" data-fr="Notre flotte" data-en="Our Fleet">Notre flotte</h2>
+        <p class="fleet-subtitle" data-fr="Choisissez votre catégorie de véhicule" data-en="Choose your vehicle category">Choisissez votre catégorie de véhicule</p>
+      </div>
+
+      <div class="fleet-filters" id="fleet-filters">
+        <button type="button" class="fleet-pill active" data-cat="all" data-fr="Tous" data-en="All">Tous</button>
+        <button type="button" class="fleet-pill" data-cat="suv" data-fr="SUV" data-en="SUV">SUV</button>
+        <button type="button" class="fleet-pill" data-cat="berline" data-fr="Berline" data-en="Sedan">Berline</button>
+        <button type="button" class="fleet-pill" data-cat="citadine" data-fr="Citadine" data-en="City car">Citadine</button>
+        <button type="button" class="fleet-pill" data-cat="break" data-fr="Break" data-en="Wagon">Break</button>
+        <button type="button" class="fleet-pill" data-cat="sport" data-fr="Sport" data-en="Sport">Sport</button>
+      </div>
+
+      <div class="carousel-viewport" id="fleet-viewport">
+        <button type="button" class="carousel-nav prev" id="fleet-prev" aria-label="Précédent">
+          <svg viewBox="0 0 24 24"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="carousel-track" id="fleet-track"></div>
+        <button type="button" class="carousel-nav next" id="fleet-next" aria-label="Suivant">
+          <svg viewBox="0 0 24 24"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var video = document.getElementById('hero-video');
+      var preloader = document.getElementById('preloader');
+      var preloaderText = document.getElementById('preloader-text');
+
+      video.loop = true;
+
+      video.addEventListener('ended', function () {
+        video.currentTime = 0;
+        video.play();
+      });
+
+      video.addEventListener('pause', function () {
+        video.play();
+      });
+
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) {
+          video.play();
+        }
+      });
+
+      video.play().catch(function () { });
+
+      function updateBuffered() {
+        if (video.duration && video.buffered.length) {
+          var bufferedEnd = video.buffered.end(video.buffered.length - 1);
+          var pct = Math.min(100, Math.round((bufferedEnd / video.duration) * 100));
+          preloaderText.textContent = pct + '%';
+        }
+      }
+      video.addEventListener('progress', updateBuffered);
+
+      function hidePreloader() {
+        preloader.classList.add('hide');
+      }
+      video.addEventListener('canplaythrough', hidePreloader, { once: true });
+      setTimeout(hidePreloader, 6000);
+
+    })();
+
+    (function () {
+      var ICONS = {
+        seat: '<svg viewBox="0 0 24 24"><path d="M7 13V7a2 2 0 012-2h6a2 2 0 012 2v6M5 13h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+        gear: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7M18.4 18.4l-1.7-1.7M7.3 7.3L5.6 5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        drop: '<svg viewBox="0 0 24 24"><path d="M12 3s6 6.6 6 11a6 6 0 11-12 0c0-4.4 6-11 6-11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+        bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>',
+        bag: '<svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 8V6a3 3 0 013-3v0a3 3 0 013 3v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
+      };
+
+      var TRANSMISSION = { auto: ['Automatique', 'Automatic'], manual: ['Manuelle', 'Manual'] };
+      var FUEL = { essence: ['Essence', 'Petrol'], diesel: ['Diesel', 'Diesel'], electrique: ['Électrique', 'Electric'] };
+      var BADGES = {
+        available: ['Disponible', 'Available'],
+        popular: ['Populaire', 'Popular'],
+        electric: ['Électrique', 'Electric'],
+        premium: ['Premium', 'Premium']
+      };
+
+      var FLEET = [
+        { id: 'c1', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Peugeot', model: '208', badge: 'available', price: 48, seats: 4, transmission: 'manual', fuel: 'essence', luggage: 2, minAge: 21, accent: '#22c1c3', scale: [0.82, 0.9], img: 'https://images.unsplash.com/photo-1775500819263-03fccefe169a?auto=format&fit=crop&w=800&q=80' },
+        { id: 'c2', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Zoé', badge: 'electric', price: 52, seats: 4, transmission: 'auto', fuel: 'electrique', luggage: 2, minAge: 21, accent: '#22c1c3', scale: [0.82, 0.9], img: 'https://images.unsplash.com/photo-1777226807153-f73e2b74506c?auto=format&fit=crop&w=800&q=80' },
+        { id: 'b1', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'BMW', model: 'Série 3', badge: 'popular', price: 95, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23, accent: '#3b82f6', scale: [1, 1], img: 'https://images.unsplash.com/photo-1441148489547-da3f133be9ae?auto=format&fit=crop&w=800&q=80' },
+        { id: 'b2', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Mercedes', model: 'Classe C', badge: 'premium', price: 110, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 3, minAge: 23, accent: '#3b82f6', scale: [1, 1], img: 'https://images.unsplash.com/photo-1610587144035-4ce2cefe4051?auto=format&fit=crop&w=800&q=80' },
+        { id: 's1', category: 'suv', catFr: 'SUV', catEn: 'SUV', brand: 'Peugeot', model: '3008', badge: 'available', price: 98, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 4, minAge: 23, accent: '#22c55e', scale: [0.95, 1.18], img: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=800&q=80' },
+        { id: 's2', category: 'suv', catFr: 'SUV', catEn: 'SUV', brand: 'Range Rover', model: 'Evoque', badge: 'premium', price: 145, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 4, minAge: 25, accent: '#22c55e', scale: [0.95, 1.18], img: 'https://images.unsplash.com/photo-1612563893490-d86ed296e5e6?auto=format&fit=crop&w=800&q=80' },
+        { id: 'w1', category: 'break', catFr: 'Break', catEn: 'Wagon', brand: 'Audi', model: 'A4 Avant', badge: 'available', price: 92, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 5, minAge: 23, accent: '#f59e0b', scale: [1.18, 1], img: 'https://images.unsplash.com/photo-1766918070462-20206f5610f6?auto=format&fit=crop&w=800&q=80' },
+        { id: 'w2', category: 'break', catFr: 'Break', catEn: 'Wagon', brand: 'Volkswagen', model: 'Passat SW', badge: 'popular', price: 88, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 5, minAge: 23, accent: '#f59e0b', scale: [1.18, 1], img: 'https://images.unsplash.com/photo-1761432788023-fbf6dc5dc5ea?auto=format&fit=crop&w=800&q=80' },
+        { id: 'sp1', category: 'sport', catFr: 'Sport', catEn: 'Sport', brand: 'Audi', model: 'RS6 Avant', badge: 'premium', price: 390, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 27, accent: '#ef4444', scale: [1.05, 0.82], img: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80' },
+        { id: 'sp2', category: 'sport', catFr: 'Sport', catEn: 'Sport', brand: 'Porsche', model: '911 Carrera', badge: 'popular', price: 450, seats: 2, transmission: 'auto', fuel: 'essence', luggage: 1, minAge: 28, accent: '#ef4444', scale: [1.05, 0.82], img: 'https://images.unsplash.com/photo-1628519592419-bf288f08cef5?auto=format&fit=crop&w=800&q=80' }
+      ];
+
+      var WHATSAPP_NUMBER = '971501234567';
+      function silhouette(scale) {
+        return '<svg class="car-silhouette" viewBox="0 0 300 120" style="transform:scale(' + scale[0] + ',' + scale[1] + ')" aria-hidden="true">' +
+          '<ellipse class="car-shadow" cx="150" cy="102" rx="118" ry="9"></ellipse>' +
+          '<path class="car-body" d="M25,80 Q28,55 55,50 L85,32 Q105,20 150,20 L205,20 Q235,22 250,40 L268,52 Q288,55 288,80 L288,86 L262,86 Q262,66 240,66 Q218,66 218,86 L98,86 Q98,66 76,66 Q54,66 54,86 L25,86 Z"></path>' +
+          '<path class="car-glass" d="M92,50 L112,34 Q122,28 148,28 L188,28 Q198,30 206,42 L214,50 Z"></path>' +
+          '<circle class="car-wheel" cx="76" cy="88" r="15"></circle>' +
+          '<circle class="car-wheel" cx="240" cy="88" r="15"></circle>' +
+          '</svg>';
+      }
+
+      function specChip(icon, fr, en) {
+        return '<span class="spec-chip">' + ICONS[icon] + '<span data-fr="' + fr + '" data-en="' + en + '">' + fr + '</span></span>';
+      }
+
+      function specRow(labelFr, labelEn, valueFr, valueEn) {
+        return '<li><span data-fr="' + labelFr + '" data-en="' + labelEn + '">' + labelFr + '</span><span data-fr="' + valueFr + '" data-en="' + valueEn + '">' + valueFr + '</span></li>';
+      }
+
+      function buildCard(car) {
+        var badge = BADGES[car.badge];
+        var trans = TRANSMISSION[car.transmission];
+        var fuel = FUEL[car.fuel];
+        var fuelIcon = car.fuel === 'electrique' ? 'bolt' : 'drop';
+        var weekly = Math.round(car.price * 6.2);
+        var svg = silhouette(car.scale);
+        var styleVars = 'style="--accent:' + car.accent + '; --accent-bg: linear-gradient(160deg,' + car.accent + '22,#0a0b0d 70%);"';
+        var waText = encodeURIComponent('Bonjour, je souhaite réserver la ' + car.brand + ' ' + car.model + ' (' + car.price + '€/jour).');
+
+        return '' +
+          '<div class="car-tilt">' +
+            '<div class="car-flip">' +
+              '<div class="car-face-layer l2"></div>' +
+              '<div class="car-face-layer l1"></div>' +
+              '<div class="car-face car-face-front">' +
+                '<div class="car-face-inner">' +
+                  '<div class="car-visual" ' + styleVars + '>' +
+                    (badge ? '<span class="car-badge" style="--accent:' + car.accent + '" data-fr="' + badge[0] + '" data-en="' + badge[1] + '">' + badge[0] + '</span>' : '') +
+                    '<span class="car-logo">WaRent</span>' +
+                    svg +
+                  '</div>' +
+                  '<div class="car-info">' +
+                    '<p class="car-name">' + car.brand + ' ' + car.model + '</p>' +
+                    '<p class="car-cat" data-fr="' + car.catFr + '" data-en="' + car.catEn + '">' + car.catFr + '</p>' +
+                    '<div class="car-specs">' +
+                      specChip('seat', car.seats + ' places', car.seats + ' seats') +
+                      specChip('gear', trans[0], trans[1]) +
+                      specChip(fuelIcon, fuel[0], fuel[1]) +
+                      specChip('bag', car.luggage + ' bagages', car.luggage + ' bags') +
+                    '</div>' +
+                    '<div class="car-meta-row" style="margin-top:10px;">' +
+                      '<span class="car-price">' + car.price + '€<small data-fr="/jour" data-en="/day"> /jour</small></span>' +
+                      '<button type="button" class="car-cta" data-fr="Détails" data-en="Details">Détails</button>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="car-face car-face-back">' +
+                '<div class="car-face-inner">' +
+                  '<div class="car-back-bg" ' + styleVars + '>' + svg + '</div>' +
+                  '<div class="car-back-overlay"></div>' +
+                  '<div class="car-back-content">' +
+                    '<p class="car-back-name">' + car.brand + ' ' + car.model + '</p>' +
+                    '<p class="car-back-prices"><b>' + car.price + '€</b> <span data-fr="/ jour" data-en="/ day">/ jour</span> · <b>' + weekly + '€</b> <span data-fr="/ semaine (est.)" data-en="/ week (est.)">/ semaine (est.)</span></p>' +
+                    '<ul class="car-spec-list">' +
+                      specRow('Places', 'Seats', String(car.seats), String(car.seats)) +
+                      specRow('Boîte', 'Transmission', trans[0], trans[1]) +
+                      specRow('Carburant', 'Fuel', fuel[0], fuel[1]) +
+                      specRow('Bagages', 'Luggage', String(car.luggage), String(car.luggage)) +
+                      specRow('Âge minimum', 'Min. age', car.minAge + ' ans', car.minAge + ' yo') +
+                    '</ul>' +
+                    '<p class="car-back-location" data-fr="Prise en charge : Bretagne" data-en="Pickup: Brittany, France">Prise en charge : Bretagne</p>' +
+                    '<a class="car-reserve" href="https://wa.me/' + WHATSAPP_NUMBER + '?text=' + waText + '" target="_blank" rel="noopener" data-fr="Réserver maintenant" data-en="Reserve now">Réserver maintenant</a>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+      }
+      var viewport = document.getElementById('fleet-viewport');
+      var track = document.getElementById('fleet-track');
+      var prevBtn = document.getElementById('fleet-prev');
+      var nextBtn = document.getElementById('fleet-next');
+      var pills = document.querySelectorAll('.fleet-pill');
+      if (!viewport || !track) return;
+
+      var currentCars = FLEET.slice();
+      var cardEls = [];
+      var progress = 0, targetProgress = 0, spacing = 300;
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+      function measure() {
+        if (!cardEls.length) return;
+        var w = cardEls[0].getBoundingClientRect().width;
+        if (w > 0) spacing = w * 0.74;
+      }
+
+      function positionCards() {
+        var n = cardEls.length;
+        if (!n) return;
+        cardEls.forEach(function (el, i) {
+          var d = i - progress;
+          d = ((d + n / 2) % n + n) % n - n / 2;
+          var absD = Math.abs(d);
+          var t = clamp(absD / 3.4, 0, 1);
+          var s = t * t * (3 - 2 * t);
+          var scale = lerp(1, 0.52, s);
+          var opacity = 1 - clamp((absD - 2.2) / 1.1, 0, 1);
+          var x = d * spacing;
+          var rot = clamp(d * -24, -74, 74);
+          var z = -absD * 160;
+          el.style.transform = 'translateX(' + x.toFixed(1) + 'px) translateZ(' + z.toFixed(1) + 'px) rotateY(' + rot.toFixed(1) + 'deg) scale(' + scale.toFixed(3) + ')';
+          el.style.opacity = opacity.toFixed(2);
+          el.style.zIndex = Math.round(1000 - absD * 10);
+          el.style.pointerEvents = opacity < 0.12 ? 'none' : '';
+        });
+      }
+
+      function loop() {
+        progress += (targetProgress - progress) * 0.14;
+        positionCards();
+        requestAnimationFrame(loop);
+      }
+
+      function renderCars() {
+        track.innerHTML = '';
+        cardEls = [];
+        currentCars.forEach(function (car) {
+          var el = document.createElement('div');
+          el.className = 'car-slot';
+          el.innerHTML = buildCard(car);
+          track.appendChild(el);
+          cardEls.push(el);
+        });
+        progress = 0;
+        targetProgress = 0;
+        measure();
+        positionCards();
+
+        var lang = document.documentElement.lang === 'en' ? 'en' : 'fr';
+        track.querySelectorAll('[data-fr][data-en]').forEach(function (el) {
+          el.textContent = lang === 'en' ? el.dataset.en : el.dataset.fr;
+        });
+      }
+
+      var dragging = false, moved = false, startX = 0, startProgress = 0, suppressClick = false;
+
+      viewport.addEventListener('pointerdown', function (e) {
+        dragging = true;
+        moved = false;
+        startX = e.clientX;
+        startProgress = targetProgress;
+        viewport.classList.add('is-dragging');
+        try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      viewport.addEventListener('pointermove', function (e) {
+        if (!dragging) return;
+        var dx = e.clientX - startX;
+        if (Math.abs(dx) > 6) moved = true;
+        if (moved) targetProgress = startProgress - dx / spacing;
+      });
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+        viewport.classList.remove('is-dragging');
+        if (moved) {
+          targetProgress = Math.round(targetProgress);
+          suppressClick = true;
+          setTimeout(function () { suppressClick = false; }, 60);
+        }
+        moved = false;
+      }
+      viewport.addEventListener('pointerup', endDrag);
+      viewport.addEventListener('pointercancel', endDrag);
+      viewport.addEventListener('pointerleave', endDrag);
+
+      viewport.addEventListener('wheel', function (e) {
+        if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
+        e.preventDefault();
+        targetProgress += e.deltaX / spacing;
+        clearTimeout(viewport._wheelSnap);
+        viewport._wheelSnap = setTimeout(function () {
+          targetProgress = Math.round(targetProgress);
+        }, 220);
+      }, { passive: false });
+
+      if (prevBtn) prevBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) - 1; });
+      if (nextBtn) nextBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) + 1; });
+      track.addEventListener('pointermove', function (e) {
+        var slot = e.target.closest ? e.target.closest('.car-slot') : null;
+        cardEls.forEach(function (el) {
+          var tiltEl = el.querySelector('.car-tilt');
+          if (!tiltEl) return;
+          if (el === slot) {
+            var rect = el.getBoundingClientRect();
+            var px = (e.clientX - rect.left) / rect.width - 0.5;
+            var py = (e.clientY - rect.top) / rect.height - 0.5;
+            tiltEl.style.setProperty('--ry', (px * 14).toFixed(2) + 'deg');
+            tiltEl.style.setProperty('--rx', (py * -10).toFixed(2) + 'deg');
+          } else {
+            tiltEl.style.setProperty('--ry', '0deg');
+            tiltEl.style.setProperty('--rx', '0deg');
+          }
+        });
+      });
+      viewport.addEventListener('mouseleave', function () {
+        cardEls.forEach(function (el) {
+          var tiltEl = el.querySelector('.car-tilt');
+          if (tiltEl) {
+            tiltEl.style.setProperty('--ry', '0deg');
+            tiltEl.style.setProperty('--rx', '0deg');
+          }
+        });
+      });
+
+      track.addEventListener('click', function (e) {
+        if (suppressClick) return;
+        if (e.target.closest && e.target.closest('.car-reserve')) return;
+        var slot = e.target.closest ? e.target.closest('.car-slot') : null;
+        if (!slot) return;
+        var flipEl = slot.querySelector('.car-flip');
+        if (flipEl) flipEl.classList.toggle('is-flipped');
+      });
+
+      pills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          pills.forEach(function (p) { p.classList.remove('active'); });
+          pill.classList.add('active');
+          var cat = pill.getAttribute('data-cat');
+          currentCars = cat === 'all' ? FLEET.slice() : FLEET.filter(function (c) { return c.category === cat; });
+          renderCars();
+        });
+      });
+
+      window.addEventListener('resize', measure);
+
+      renderCars();
+      requestAnimationFrame(loop);
+    })();
+
+    (function () {
+      var STORAGE_KEY = 'warent-lang';
+      var titles = {
+        fr: 'WaRent — Location de voitures premium',
+        en: 'WaRent — Premium Car Rental'
+      };
+      var btns = document.querySelectorAll('.lang-btn');
+      var textEls = document.querySelectorAll('[data-fr][data-en]');
+      var waLink = document.getElementById('whatsapp-link');
+      var waLabels = { fr: 'Contacter sur WhatsApp', en: 'Ask on WhatsApp' };
+
+      function getStoredLang() {
+        try {
+          return localStorage.getItem(STORAGE_KEY);
+        } catch (e) {
+          return null;
+        }
+      }
+      function storeLang(lang) {
+        try {
+          localStorage.setItem(STORAGE_KEY, lang);
+        } catch (e) { }
+      }
+
+      function setLanguage(lang) {
+        if (lang !== 'en') lang = 'fr';
+
+        document.documentElement.lang = lang;
+        document.body.classList.toggle('lang-en', lang === 'en');
+        document.title = titles[lang];
+
+        textEls.forEach(function (el) {
+          el.textContent = lang === 'en' ? el.dataset.en : el.dataset.fr;
+        });
+
+        if (waLink) waLink.setAttribute('aria-label', waLabels[lang]);
+
+        btns.forEach(function (btn) {
+          var isActive = btn.getAttribute('data-lang-btn') === lang;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+
+        storeLang(lang);
+      }
+
+      btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setLanguage(btn.getAttribute('data-lang-btn'));
+        });
+      });
+
+      setLanguage(getStoredLang() || 'fr');
+    })();
+  </script>
+
+</body>
+</html>
