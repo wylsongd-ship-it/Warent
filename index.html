@@ -751,7 +751,7 @@
       };
 
       var TRANSMISSION = { auto: ['Automatique', 'Automatic'], manual: ['Manuelle', 'Manual'] };
-      var FUEL = { essence: ['Essence', 'Petrol'], diesel: ['Diesel', 'Diesel'], electrique: ['Électrique', 'Electric'] };
+      var FUEL = { essence: ['Essence', 'Petrol'], diesel: ['Diesel', 'Diesel'], electrique: ['Électrique', 'Electric'], hybride: ['Hybride', 'Hybrid'] };
       var BADGES = {
         available: ['Disponible', 'Available'],
         popular: ['Populaire', 'Popular'],
@@ -760,10 +760,8 @@
       };
 
       var FLEET = [
-        { id: 'c1', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Peugeot', model: '208', badge: 'available', price: 48, seats: 4, transmission: 'manual', fuel: 'essence', luggage: 2, minAge: 21, accent: '#22c1c3' },
-        { id: 'c2', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Zoé', badge: 'electric', price: 52, seats: 4, transmission: 'auto', fuel: 'electrique', luggage: 2, minAge: 21, accent: '#22c1c3' },
-        { id: 'b1', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'BMW', model: 'Série 3', badge: 'popular', price: 95, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23, accent: '#3b82f6' },
-        { id: 'b2', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Mercedes', model: 'Classe C', badge: 'premium', price: 110, seats: 5, transmission: 'auto', fuel: 'diesel', luggage: 3, minAge: 23, accent: '#3b82f6' }
+        { id: 'c0', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Clio 5 Esprit Alpine', badge: 'popular', price: 58, seats: 5, transmission: 'auto', fuel: 'hybride', luggage: 3, minAge: 21, accent: '#22c1c3' },
+        { id: 'b0', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Audi', model: 'A3 (2026)', badge: 'premium', price: 85, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23, accent: '#3b82f6' }
       ];
 
       var WHATSAPP_NUMBER = '971501234567';
@@ -798,7 +796,7 @@
         var badge = BADGES[car.badge];
         var trans = TRANSMISSION[car.transmission];
         var fuel = FUEL[car.fuel];
-        var fuelIcon = car.fuel === 'electrique' ? 'bolt' : 'drop';
+        var fuelIcon = (car.fuel === 'electrique' || car.fuel === 'hybride') ? 'bolt' : 'drop';
         var weekly = Math.round(car.price * 6.2);
         var svg = silhouette(car.category);
         var styleVars = 'style="--accent:' + car.accent + '; --accent-bg: linear-gradient(165deg,' + car.accent + '26,#0a0b0d 72%);"';
@@ -861,10 +859,14 @@
 
       var currentCars = FLEET.slice();
       var cardEls = [];
-      var progress = 0, targetProgress = 0, spacing = 240;
+      var progress = 0, targetProgress = 0, spacing = 240, wrap = false;
 
       function lerp(a, b, t) { return a + (b - a) * t; }
       function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+      function clampTarget() {
+        if (!wrap) targetProgress = clamp(targetProgress, 0, Math.max(0, cardEls.length - 1));
+      }
 
       function measure() {
         if (!cardEls.length) return;
@@ -877,7 +879,7 @@
         if (!n) return;
         cardEls.forEach(function (el, i) {
           var d = i - progress;
-          d = ((d + n / 2) % n + n) % n - n / 2;
+          if (wrap) d = ((d + n / 2) % n + n) % n - n / 2;
           var absD = Math.abs(d);
           var t = clamp(absD / 2.6, 0, 1);
           var s = t * t * (3 - 2 * t);
@@ -909,6 +911,7 @@
           track.appendChild(el);
           cardEls.push(el);
         });
+        wrap = cardEls.length >= 4;
         progress = 0;
         targetProgress = 0;
         measure();
@@ -933,7 +936,10 @@
         if (!dragging) return;
         var dx = e.clientX - startX;
         if (Math.abs(dx) > 6) moved = true;
-        if (moved) targetProgress = startProgress - dx / spacing;
+        if (moved) {
+          targetProgress = startProgress - dx / spacing;
+          clampTarget();
+        }
       });
 
       function unflipAll() {
@@ -949,6 +955,7 @@
         viewport.classList.remove('is-dragging');
         if (moved) {
           targetProgress = Math.round(targetProgress);
+          clampTarget();
           unflipAll();
           suppressClick = true;
           setTimeout(function () { suppressClick = false; }, 60);
@@ -963,14 +970,16 @@
         if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
         e.preventDefault();
         targetProgress += e.deltaX / spacing;
+        clampTarget();
         clearTimeout(viewport._wheelSnap);
         viewport._wheelSnap = setTimeout(function () {
           targetProgress = Math.round(targetProgress);
+          clampTarget();
         }, 220);
       }, { passive: false });
 
-      if (prevBtn) prevBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) - 1; unflipAll(); });
-      if (nextBtn) nextBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) + 1; unflipAll(); });
+      if (prevBtn) prevBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) - 1; clampTarget(); unflipAll(); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) + 1; clampTarget(); unflipAll(); });
 
       track.addEventListener('pointermove', function (e) {
         var slot = e.target.closest ? e.target.closest('.car-slot') : null;
@@ -1010,10 +1019,15 @@
 
         var centre = ((Math.round(targetProgress) % n) + n) % n;
         if (i !== centre) {
-          var d = i - centre;
-          if (d > n / 2) d -= n;
-          if (d < -n / 2) d += n;
-          targetProgress = Math.round(targetProgress) + d;
+          if (wrap) {
+            var d = i - centre;
+            if (d > n / 2) d -= n;
+            if (d < -n / 2) d += n;
+            targetProgress = Math.round(targetProgress) + d;
+          } else {
+            targetProgress = i;
+          }
+          clampTarget();
           unflipAll();
           return;
         }
@@ -1037,6 +1051,7 @@
       renderCars();
       requestAnimationFrame(loop);
     })();
+
     (function () {
       var STORAGE_KEY = 'warent-lang';
       var titles = {
