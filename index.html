@@ -180,7 +180,7 @@
     align-items: flex-end;
     justify-content: space-between;
     gap: clamp(24px, 4vw, 64px);
-    padding: 0 clamp(20px, 2.8vw, 42px) clamp(32px, 5vh, 56px);
+    padding: 0 clamp(20px, 2.8vw, 42px) clamp(22px, 3.2vh, 34px);
   }
 
   .hero-left {
@@ -251,24 +251,6 @@
     animation: fadeIn .6s ease-out forwards;
   }
 
-  .explore-btn {
-    display: inline-block;
-    background: #ffffff;
-    color: #111111;
-    border-radius: 12px;
-    padding: 15px 26px;
-    font-size: clamp(15px, 1.2vw, 17px);
-    font-weight: 500;
-    opacity: 0;
-    transform: translateY(14px);
-    animation: softIn .7s cubic-bezier(.22,1,.36,1) 1.55s forwards;
-    transition: background .2s ease;
-  }
-  .explore-btn:hover {
-    background: #ededed;
-    color: #111111;
-  }
-
   @keyframes wordIn {
     from { opacity: 0; transform: translateY(26px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -326,6 +308,115 @@
   @media (max-width: 360px) {
     .logo { font-size: 18px; }
   }
+  /* ==================== Barre de recherche (hero) ==================== */
+  .search-panel {
+    position: relative;
+    z-index: 3;
+    margin: 0 clamp(20px, 2.8vw, 42px) clamp(24px, 4vh, 44px);
+    padding: clamp(14px, 1.5vw, 18px);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 14px 44px rgba(0, 0, 0, 0.38);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: softIn .7s cubic-bezier(.22,1,.36,1) 1.3s forwards;
+  }
+  .search-form {
+    display: grid;
+    grid-template-columns: 1.05fr 1.35fr 1.35fr auto;
+    gap: 12px;
+    align-items: end;
+  }
+  .search-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+  .search-field > label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .search-control {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    height: 50px;
+    padding: 0 13px;
+    border-radius: 12px;
+    background: rgba(9, 11, 15, 0.46);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: border-color .2s ease;
+  }
+  .search-control:focus-within { border-color: rgba(255, 255, 255, 0.45); }
+  .search-control > svg {
+    width: 17px; height: 17px; flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .search-control select,
+  .search-control input {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    width: 100%;
+    min-width: 0;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14.5px;
+    font-weight: 500;
+    color-scheme: dark;
+  }
+  .search-control select option { background: #14161a; color: #ffffff; }
+  .search-control select option:disabled { color: rgba(255, 255, 255, 0.38); }
+  .search-duo { display: grid; grid-template-columns: 1.35fr 1fr; gap: 8px; min-width: 0; }
+  .search-submit {
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    height: 50px;
+    padding: 0 clamp(20px, 2vw, 30px);
+    border-radius: 12px;
+    background: #ffffff;
+    color: #111111;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background .2s ease;
+  }
+  .search-submit:hover { background: #ededed; }
+  .search-hint {
+    margin: 11px 3px 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .search-error {
+    margin: 9px 3px 0;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #ffbcbc;
+  }
+
+  @media (max-width: 1240px) {
+    .search-form { grid-template-columns: 1fr 1fr 1fr; }
+    .search-submit { grid-column: 1 / -1; }
+  }
+  @media (max-width: 1020px) {
+    .search-form { grid-template-columns: 1fr 1fr; }
+    .search-field-city { grid-column: 1 / -1; }
+    .search-submit { grid-column: 1 / -1; }
+  }
+  @media (max-width: 620px) {
+    .search-form { grid-template-columns: 1fr; }
+    .search-panel { border-radius: 16px; }
+  }
+
   /* ==================== Fleet carousel ==================== */
   .fleet-section {
     position: relative;
@@ -698,9 +789,54 @@
           <span class="w" style="animation-delay:1.81s">extra</span>
           <span class="w" style="animation-delay:1.855s">fee.</span>
         </p>
-
-        <a href="#fleet" class="explore-btn" data-fr="Découvrir la flotte" data-en="Explore Fleet">Découvrir la flotte</a>
       </div>
+    </div>
+
+    <div class="search-panel">
+      <form class="search-form" id="search-form" novalidate>
+        <div class="search-field search-field-city">
+          <label for="pickup-city" data-fr="Lieu de prise en charge" data-en="Pick-up location">Lieu de prise en charge</label>
+          <div class="search-control">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.6"/></svg>
+            <select id="pickup-city">
+              <option value="Lorient" selected>Lorient (56)</option>
+              <option value="" disabled data-fr="Vannes — bientôt" data-en="Vannes — coming soon">Vannes — bientôt</option>
+              <option value="" disabled data-fr="Quimper — bientôt" data-en="Quimper — coming soon">Quimper — bientôt</option>
+              <option value="" disabled data-fr="Rennes — bientôt" data-en="Rennes — coming soon">Rennes — bientôt</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="search-field">
+          <label for="start-date" data-fr="Date de départ" data-en="Pick-up date">Date de départ</label>
+          <div class="search-duo">
+            <div class="search-control">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.5h17M8 3.2v3.4M16 3.2v3.4" stroke-linecap="round"/></svg>
+              <input type="date" id="start-date">
+            </div>
+            <div class="search-control">
+              <input type="time" id="start-time" value="10:00">
+            </div>
+          </div>
+        </div>
+
+        <div class="search-field">
+          <label for="end-date" data-fr="Date de retour" data-en="Return date">Date de retour</label>
+          <div class="search-duo">
+            <div class="search-control">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.5h17M8 3.2v3.4M16 3.2v3.4" stroke-linecap="round"/></svg>
+              <input type="date" id="end-date">
+            </div>
+            <div class="search-control">
+              <input type="time" id="end-time" value="10:00">
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="search-submit" data-fr="Voir les véhicules" data-en="See vehicles">Voir les véhicules</button>
+      </form>
+      <p class="search-error" id="search-error" hidden></p>
+      <p class="search-hint" data-fr="Une seule agence pour le moment : Lorient (56). Livraison possible ailleurs dans le Morbihan, avec supplément." data-en="One branch for now: Lorient (56). Delivery elsewhere in Morbihan available for an extra fee.">Une seule agence pour le moment : Lorient (56). Livraison possible ailleurs dans le Morbihan, avec supplément.</p>
     </div>
   </div>
 
@@ -729,6 +865,20 @@
     </div>
   </section>
   <script>
+    // État partagé entre la barre de recherche et les cartes véhicules.
+    var WARENT = {
+      phone: '971501234567',
+      search: null
+    };
+
+    WARENT.waLink = function (label, price) {
+      var msg = 'Bonjour, je souhaite réserver la ' + label;
+      if (price) msg += ' (' + price + '€/jour)';
+      if (WARENT.search) msg += ' ' + WARENT.search.sentence;
+      msg += '.';
+      return 'https://wa.me/' + WARENT.phone + '?text=' + encodeURIComponent(msg);
+    };
+
     (function () {
       var video = document.getElementById('hero-video');
       var preloader = document.getElementById('preloader');
@@ -792,8 +942,6 @@
         { id: 'b0', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Audi', model: 'A3 (2026)', badge: 'premium', price: 85, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23, accent: '#3b82f6', img: 'audi.webp' }
       ];
 
-      var WHATSAPP_NUMBER = '971501234567';
-
       function silhouette(category) {
         if (category === 'berline') {
           return '<svg class="car-silhouette" viewBox="0 0 300 132" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
@@ -826,9 +974,9 @@
         var fuel = FUEL[car.fuel];
         var fuelIcon = (car.fuel === 'electrique' || car.fuel === 'hybride') ? 'bolt' : 'drop';
         var weekly = Math.round(car.price * 6.2);
-        // The photo sits on top; if the file is missing the browser fires
-        // onerror and we fall back to the vector silhouette, so a card is
-        // never left empty.
+        // La photo passe au-dessus ; si le fichier manque, le navigateur
+        // declenche onerror et la silhouette vectorielle reprend la main,
+        // donc une carte n'est jamais vide.
         var visual = car.img
           ? '<span class="car-ground"></span>' +
             '<span class="car-fallback">' + silhouette(car.category) + '</span>' +
@@ -836,7 +984,7 @@
             ' onerror="this.parentNode.querySelector(\'.car-fallback\').style.display=\'flex\';this.remove();">'
           : silhouette(car.category);
         var styleVars = 'style="--accent:' + car.accent + '; --accent-bg: linear-gradient(165deg,' + car.accent + '26,#0a0b0d 72%);"';
-        var waText = encodeURIComponent('Bonjour, je souhaite réserver la ' + car.brand + ' ' + car.model + ' (' + car.price + '€/jour).');
+        var carLabel = car.brand + ' ' + car.model;
 
         return '' +
           '<div class="car-tilt">' +
@@ -849,7 +997,7 @@
                     visual +
                   '</div>' +
                   '<div class="car-info">' +
-                    '<p class="car-name">' + car.brand + ' ' + car.model + '</p>' +
+                    '<p class="car-name">' + carLabel + '</p>' +
                     '<p class="car-cat" data-fr="' + car.catFr + '" data-en="' + car.catEn + '">' + car.catFr + '</p>' +
                     '<div class="car-specs">' +
                       specChip('seat', car.seats + ' places', car.seats + ' seats') +
@@ -868,7 +1016,7 @@
                   '<div class="car-back-bg" ' + styleVars + '></div>' +
                   '<div class="car-back-overlay"></div>' +
                   '<div class="car-back-content">' +
-                    '<p class="car-back-name">' + car.brand + ' ' + car.model + '</p>' +
+                    '<p class="car-back-name">' + carLabel + '</p>' +
                     '<p class="car-back-prices"><b>' + car.price + '€</b> <span data-fr="/ jour" data-en="/ day">/ jour</span> · <b>' + weekly + '€</b> <span data-fr="/ semaine (est.)" data-en="/ week (est.)">/ semaine (est.)</span></p>' +
                     '<ul class="car-spec-list">' +
                       specRow('Places', 'Seats', String(car.seats), String(car.seats)) +
@@ -877,8 +1025,8 @@
                       specRow('Bagages', 'Luggage', String(car.luggage), String(car.luggage)) +
                       specRow('Âge minimum', 'Min. age', car.minAge + ' ans', car.minAge + ' yo') +
                     '</ul>' +
-                    '<p class="car-back-location" data-fr="Prise en charge : Bretagne" data-en="Pickup: Brittany, France">Prise en charge : Bretagne</p>' +
-                    '<a class="car-reserve" href="https://wa.me/' + WHATSAPP_NUMBER + '?text=' + waText + '" target="_blank" rel="noopener" data-fr="Réserver maintenant" data-en="Reserve now">Réserver maintenant</a>' +
+                    '<p class="car-back-location" data-fr="Prise en charge : Lorient (56)" data-en="Pickup: Lorient, Brittany">Prise en charge : Lorient (56)</p>' +
+                    '<a class="car-reserve" href="' + WARENT.waLink(carLabel, car.price) + '" data-car="' + carLabel + '" data-price="' + car.price + '" target="_blank" rel="noopener" data-fr="Réserver maintenant" data-en="Reserve now">Réserver maintenant</a>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
@@ -1086,6 +1234,95 @@
 
       renderCars();
       requestAnimationFrame(loop);
+    })();
+    (function () {
+      var form = document.getElementById('search-form');
+      if (!form) return;
+
+      var city = document.getElementById('pickup-city');
+      var sd = document.getElementById('start-date');
+      var st = document.getElementById('start-time');
+      var ed = document.getElementById('end-date');
+      var et = document.getElementById('end-time');
+      var errorEl = document.getElementById('search-error');
+
+      function isoDate(d) {
+        var m = String(d.getMonth() + 1);
+        var day = String(d.getDate());
+        if (m.length < 2) m = '0' + m;
+        if (day.length < 2) day = '0' + day;
+        return d.getFullYear() + '-' + m + '-' + day;
+      }
+
+      // Valeurs par défaut : demain -> dans 4 jours, pour que le formulaire
+      // ne soit jamais vide au chargement.
+      var now = new Date();
+      var DAY = 86400000;
+      sd.value = isoDate(new Date(now.getTime() + DAY));
+      ed.value = isoDate(new Date(now.getTime() + 4 * DAY));
+      sd.min = isoDate(now);
+      ed.min = isoDate(now);
+
+      sd.addEventListener('change', function () {
+        ed.min = sd.value;
+        if (ed.value && ed.value < sd.value) ed.value = sd.value;
+      });
+
+      function prettyDate(value) {
+        var p = value.split('-');
+        return p[2] + '/' + p[1] + '/' + p[0];
+      }
+
+      function showError(fr, en) {
+        errorEl.textContent = document.documentElement.lang === 'en' ? en : fr;
+        errorEl.hidden = false;
+      }
+
+      function refreshLinks() {
+        var links = document.querySelectorAll('.car-reserve');
+        Array.prototype.forEach.call(links, function (a) {
+          a.href = WARENT.waLink(a.getAttribute('data-car'), a.getAttribute('data-price'));
+        });
+        var head = document.getElementById('whatsapp-link');
+        if (head && WARENT.search) {
+          head.href = 'https://wa.me/' + WARENT.phone + '?text=' +
+            encodeURIComponent('Bonjour, je souhaite louer un véhicule ' + WARENT.search.sentence + '.');
+        }
+      }
+      WARENT.refreshLinks = refreshLinks;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        if (!sd.value || !ed.value || !st.value || !et.value) {
+          showError('Merci de renseigner les dates et les heures.', 'Please fill in both dates and times.');
+          return;
+        }
+
+        var startAt = new Date(sd.value + 'T' + st.value);
+        var endAt = new Date(ed.value + 'T' + et.value);
+        if (isNaN(startAt.getTime()) || isNaN(endAt.getTime())) {
+          showError('Dates invalides.', 'Invalid dates.');
+          return;
+        }
+        if (endAt <= startAt) {
+          showError('Le retour doit être après le départ.', 'The return must be after the pick-up.');
+          return;
+        }
+
+        errorEl.hidden = true;
+
+        var place = city.value || 'Lorient';
+        WARENT.search = {
+          city: place,
+          sentence: 'à ' + place + ', du ' + prettyDate(sd.value) + ' à ' + st.value +
+                    ' au ' + prettyDate(ed.value) + ' à ' + et.value
+        };
+        refreshLinks();
+
+        var fleet = document.getElementById('fleet');
+        if (fleet) fleet.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     })();
 
     (function () {
