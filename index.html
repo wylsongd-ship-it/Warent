@@ -4,693 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>WaRent — Location de voitures premium</title>
-<style>
-  * { box-sizing: border-box; }
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden;
-    background: #ffffff;
-  }
-  body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  a {
-    color: #111111;
-    text-decoration: none;
-    transition: color .2s ease;
-  }
-  a:hover { color: #666666; }
-
-  .video-bg {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    background: #04060b;
-  }
-  #hero-video {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .video-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(4, 6, 11, 0.35);
-  }
-
-  .preloader {
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    background: #04060b;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity .6s ease;
-  }
-  .preloader span {
-    font-size: 13px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: #b9cdea;
-  }
-  .preloader.hide {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .page {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .site-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    padding: clamp(14px, 2.4vw, 26px) clamp(20px, 2.8vw, 42px);
-    position: relative;
-    z-index: 2;
-  }
-  .logo {
-    font-size: clamp(20px, 2vw, 24px);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: #ffffff;
-  }
-  .logo:hover { color: #ffffff; }
-
-  .site-nav {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: clamp(28px, 3.5vw, 56px);
-  }
-  .site-nav a {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
-  }
-  .site-nav a:hover { color: #ffffff; }
-
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: clamp(8px, 1.2vw, 14px);
-  }
-
-  .whatsapp-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.12);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-    backdrop-filter: blur(16px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.15);
-    color: #ffffff;
-    border-radius: 12px;
-    padding: 10px 18px;
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
-    transition: background .2s ease;
-  }
-  .whatsapp-btn:hover {
-    background: rgba(255, 255, 255, 0.24);
-    color: #ffffff;
-  }
-  .wa-icon {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    fill: currentColor;
-  }
-
-  .lang-switch {
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.12);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-    backdrop-filter: blur(16px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.15);
-    border-radius: 12px;
-    padding: 3px;
-    gap: 2px;
-  }
-  .lang-btn {
-    appearance: none;
-    border: none;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.75);
-    font-family: inherit;
-    font-size: clamp(12px, 1vw, 13px);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    padding: 7px 11px;
-    border-radius: 9px;
-    cursor: pointer;
-    transition: background .2s ease, color .2s ease;
-  }
-  .lang-btn:hover { color: #ffffff; }
-  .lang-btn.active {
-    background: #ffffff;
-    color: #111111;
-  }
-  .lang-btn.active:hover { color: #111111; }
-
-  .hero-bottom {
-    position: relative;
-    z-index: 2;
-    margin-top: auto;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: clamp(24px, 4vw, 64px);
-    padding: 0 clamp(20px, 2.8vw, 42px) clamp(22px, 3.2vh, 34px);
-  }
-
-  .hero-left {
-    min-width: min(100%, 380px);
-    text-align: left;
-  }
-
-  .renters-badge {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: clamp(18px, 2.6vh, 28px);
-    opacity: 0;
-    animation: softIn .7s cubic-bezier(.22,1,.36,1) .15s forwards;
-  }
-  .avatars { display: flex; }
-  .avatar {
-    width: clamp(30px, 2.6vw, 38px);
-    height: clamp(30px, 2.6vw, 38px);
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.9);
-    object-fit: cover;
-    margin-left: -12px;
-  }
-  .avatars .avatar:first-child { margin-left: 0; }
-  .renters-label {
-    font-size: clamp(15px, 1.3vw, 18px);
-    font-weight: 400;
-    color: #ffffff;
-  }
-
-  .headline {
-    font-size: clamp(27px, 4.2vw, 56px);
-    font-weight: 500;
-    letter-spacing: -0.035em;
-    line-height: 1.04;
-    color: #ffffff;
-    margin: 0;
-  }
-  .headline.i18n-en { display: none; }
-  body.lang-en .headline.i18n-fr { display: none; }
-  body.lang-en .headline.i18n-en { display: block; }
-  .headline .word {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(26px);
-    animation: wordIn .8s cubic-bezier(.22,1,.36,1) forwards;
-  }
-
-  .hero-right {
-    width: min(100%, 480px);
-    margin-left: auto;
-    text-align: left;
-  }
-  .sub-text {
-    font-size: clamp(15px, 1.2vw, 18px);
-    font-weight: 400;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.88);
-    margin: 0 0 clamp(22px, 3.6vh, 36px);
-  }
-  .sub-text.i18n-en { display: none; }
-  body.lang-en .sub-text.i18n-fr { display: none; }
-  body.lang-en .sub-text.i18n-en { display: block; }
-  .sub-text .w {
-    display: inline-block;
-    opacity: 0;
-    animation: fadeIn .6s ease-out forwards;
-  }
-
-  @keyframes wordIn {
-    from { opacity: 0; transform: translateY(26px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes softIn {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  @media (max-width: 899px) {
-    .site-nav { display: none; }
-  }
-  @media (max-width: 640px) {
-    .hero-bottom {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .hero-right {
-      margin-left: 0;
-      width: 100%;
-    }
-    #hero-video {
-      object-position: center 32%;
-    }
-  }
-  @media (max-width: 520px) {
-    .site-header {
-      padding-left: clamp(14px, 4vw, 20px);
-      padding-right: clamp(14px, 4vw, 20px);
-      gap: 8px;
-    }
-    .header-actions {
-      gap: 8px;
-    }
-    .whatsapp-btn {
-      padding: 10px;
-      border-radius: 12px;
-    }
-    .wa-text {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-    }
-    .lang-btn {
-      padding: 7px 9px;
-    }
-  }
-  @media (max-width: 360px) {
-    .logo { font-size: 18px; }
-  }
-  /* ==================== Barre de recherche (hero) ==================== */
-  .search-panel {
-    position: relative;
-    z-index: 3;
-    margin: 0 clamp(20px, 2.8vw, 42px) clamp(24px, 4vh, 44px);
-    padding: clamp(14px, 1.5vw, 18px);
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.12);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    backdrop-filter: blur(18px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 14px 44px rgba(0, 0, 0, 0.38);
-    opacity: 0;
-    transform: translateY(14px);
-    animation: softIn .7s cubic-bezier(.22,1,.36,1) 1.3s forwards;
-  }
-  .search-form {
-    display: grid;
-    grid-template-columns: 1.05fr 1.35fr 1.35fr auto;
-    gap: 12px;
-    align-items: end;
-  }
-  .search-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
-  .search-field > label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.72);
-  }
-  .search-control {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    min-width: 0;
-    height: 50px;
-    padding: 0 13px;
-    border-radius: 12px;
-    background: rgba(9, 11, 15, 0.46);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    transition: border-color .2s ease;
-  }
-  .search-control:focus-within { border-color: rgba(255, 255, 255, 0.45); }
-  .search-control > svg {
-    width: 17px; height: 17px; flex-shrink: 0;
-    color: rgba(255, 255, 255, 0.55);
-  }
-  .search-control select {
-    appearance: none;
-    -webkit-appearance: none;
-  }
-  .search-control select,
-  .search-control input {
-    background: transparent;
-    border: none;
-    outline: none;
-    padding: 0;
-    width: 100%;
-    min-width: 0;
-    color: #ffffff;
-    font-family: inherit;
-    font-size: 14.5px;
-    font-weight: 500;
-    color-scheme: dark;
-  }
-  .search-control select option { background: #14161a; color: #ffffff; }
-  .search-control select option:disabled { color: rgba(255, 255, 255, 0.38); }
-  .search-duo { display: grid; grid-template-columns: 1.35fr 1fr; gap: 8px; min-width: 0; }
-  .search-submit {
-    appearance: none;
-    border: none;
-    cursor: pointer;
-    height: 50px;
-    padding: 0 clamp(20px, 2vw, 30px);
-    border-radius: 12px;
-    background: #22c1c3;
-    color: #05201f;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: background .2s ease;
-  }
-  .search-submit:hover { background: #1cadaf; }
-  .search-hint {
-    margin: 11px 3px 0;
-    font-size: 12px;
-    line-height: 1.45;
-    color: rgba(255, 255, 255, 0.6);
-  }
-  .search-error {
-    margin: 9px 3px 0;
-    font-size: 12.5px;
-    font-weight: 500;
-    color: #ffbcbc;
-  }
-
-  @media (max-width: 1240px) {
-    .search-form { grid-template-columns: 1fr 1fr 1fr; }
-    .search-submit { grid-column: 1 / -1; }
-  }
-  @media (max-width: 1020px) {
-    .search-form { grid-template-columns: 1fr 1fr; }
-    .search-field-city { grid-column: 1 / -1; }
-    .search-submit { grid-column: 1 / -1; }
-  }
-  @media (max-width: 620px) {
-    .search-form { grid-template-columns: 1fr; }
-    .search-panel { border-radius: 16px; }
-  }
-
-  /* ==================== Fleet carousel ==================== */
-  .fleet-section {
-    position: relative;
-    z-index: 1;
-    background: #050607;
-    padding: clamp(56px, 9vh, 100px) 0 clamp(64px, 10vh, 110px);
-  }
-  .fleet-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 clamp(20px, 2.8vw, 42px);
-  }
-  .fleet-heading { text-align: center; margin-bottom: clamp(22px, 3.4vh, 34px); }
-  .fleet-title {
-    color: #ffffff;
-    font-size: clamp(26px, 3.4vw, 42px);
-    font-weight: 500;
-    letter-spacing: -0.03em;
-    margin: 0 0 10px;
-  }
-  .fleet-subtitle {
-    color: rgba(255,255,255,0.6);
-    font-size: clamp(14px, 1.1vw, 16px);
-    margin: 0;
-  }
-
-  .fleet-filters {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    padding: 4px 4px 26px;
-  }
-  .fleet-pill {
-    appearance: none;
-    border: 1px solid rgba(255,255,255,0.16);
-    background: rgba(255,255,255,0.04);
-    color: rgba(255,255,255,0.72);
-    font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 500;
-    padding: 9px 20px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background .2s ease, color .2s ease, border-color .2s ease;
-  }
-  .fleet-pill:hover { color: #ffffff; border-color: rgba(255,255,255,0.32); }
-  .fleet-pill.active {
-    background: #ffffff;
-    color: #0a0a0a;
-    border-color: #ffffff;
-  }
-
-  .carousel-viewport {
-    --card-w: min(300px, 74vw);
-    --card-h: calc(var(--card-w) * 1.34);
-    position: relative;
-    perspective: 1700px;
-    height: calc(var(--card-h) + 44px);
-    display: flex;
-    align-items: center;
-    touch-action: pan-y;
-    cursor: grab;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .carousel-viewport.is-dragging { cursor: grabbing; }
-  .carousel-track {
-    position: relative;
-    width: 100%;
-    height: var(--card-h);
-    transform-style: preserve-3d;
-  }
-
-  .car-slot {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: var(--card-w);
-    height: var(--card-h);
-    margin-left: calc(var(--card-w) / -2);
-    transform-style: preserve-3d;
-    will-change: transform, opacity;
-  }
-  .car-tilt {
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-    transition: transform .18s cubic-bezier(.22,1,.36,1);
-  }
-  .car-flip {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform .65s cubic-bezier(.22,1,.36,1);
-    cursor: pointer;
-  }
-  .car-flip.is-flipped { transform: rotateY(180deg); }
-
-  .car-face {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-  .car-face-back { transform: rotateY(180deg); }
-
-  .car-face-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 22px;
-    overflow: hidden;
-    -webkit-clip-path: inset(0 round 22px);
-    clip-path: inset(0 round 22px);
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    isolation: isolate;
-    background: linear-gradient(165deg, #171a1f 0%, #0a0b0d 68%);
-    border: 1px solid rgba(255,255,255,0.09);
-    box-shadow: 0 26px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07);
-  }
-  .car-face-front .car-face-inner { display: flex; flex-direction: column; }
-
-  .car-visual {
-    position: relative;
-    flex: 1 1 auto;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 34px 12px 12px;
-    background: radial-gradient(125% 95% at 50% 12%, rgba(255,255,255,0.12), transparent 62%), var(--accent-bg, #14161a);
-  }
-  .car-photo {
-    position: relative;
-    z-index: 1;
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center 56%;
-  }
-  .car-fallback {
-    display: none;
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    align-items: center;
-    justify-content: center;
-    padding: 34px 12px 12px;
-  }
-  .car-ground {
-    position: absolute;
-    z-index: 0;
-    left: 50%;
-    bottom: 23%;
-    width: 72%;
-    height: 26px;
-    transform: translateX(-50%);
-    background: radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.55), rgba(0,0,0,0) 72%);
-  }
-  .car-silhouette {
-    display: block;
-    width: 100%;
-    height: 100%;
-    color: var(--accent, #9ca3af);
-  }
-  .car-silhouette .car-body { fill: currentColor; opacity: .95; }
-  .car-silhouette .car-wheel { fill: none; stroke: #050607; stroke-width: 5; }
-  .car-silhouette .car-glass { fill: rgba(255,255,255,0.34); }
-  .car-silhouette .car-shadow { fill: rgba(0,0,0,0.38); }
-
-  .car-badge {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    z-index: 2;
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: #0a0a0a;
-    background: var(--accent, #ffffff);
-    padding: 5px 10px;
-    border-radius: 999px;
-  }
-  .car-logo {
-    position: absolute;
-    top: 14px;
-    right: 15px;
-    z-index: 2;
-    font-size: 11.5px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.8);
-    letter-spacing: -0.01em;
-  }
-
-  .car-info {
-    flex: 0 0 auto;
-    padding: 16px 18px 18px;
-    border-top: 1px solid rgba(255,255,255,0.07);
-    background: rgba(6,7,9,0.55);
-  }
-  .car-name { color: #ffffff; font-size: 17.5px; font-weight: 600; letter-spacing: -0.015em; margin: 0; }
-  .car-cat { color: rgba(255,255,255,0.5); font-size: 12.5px; margin: 3px 0 12px; }
-  .car-specs { display: flex; gap: 6px; margin-bottom: 14px; }
-  .spec-chip {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10.5px; color: rgba(255,255,255,0.66);
-    background: rgba(255,255,255,0.06); border-radius: 8px; padding: 5px 8px;
-    white-space: nowrap;
-  }
-  .spec-chip svg { width: 12px; height: 12px; flex-shrink: 0; }
-  .car-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  .car-price { color: #ffffff; font-size: 17px; font-weight: 600; }
-  .car-price small { color: rgba(255,255,255,0.5); font-weight: 400; font-size: 11.5px; }
-  .car-cta {
-    appearance: none; border: none; background: #ffffff; color: #0a0a0a;
-    font-family: inherit; font-size: 12.5px; font-weight: 600;
-    padding: 9px 15px; border-radius: 10px; cursor: pointer;
-  }
-
-  .car-face-back .car-face-inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 20px;
-    color: #ffffff;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  }
-  .car-back-bg {
-    position: absolute; inset: 0; z-index: 0;
-    background: var(--accent-bg, #14161a);
-  }
-  .car-back-overlay { position: absolute; inset: 0; z-index: 1; background: rgba(4,5,6,0.78); }
-  .car-back-content { position: relative; z-index: 2; }
-  .car-back-name { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
-  .car-back-prices { font-size: 13px; color: rgba(255,255,255,0.75); margin: 0 0 16px; }
-  .car-back-prices b { color: #ffffff; font-weight: 600; }
-  .car-spec-list { list-style: none; margin: 0 0 16px; padding: 0; font-size: 12.5px; }
-  .car-spec-list li { display: flex; justify-content: space-between; color: rgba(255,255,255,0.6); border-bottom: 1px solid rgba(255,255,255,0.09); padding: 7px 0; }
-  .car-spec-list li span:last-child { color: #ffffff; font-weight: 500; }
-  .car-back-location { font-size: 11.5px; color: rgba(255,255,255,0.5); margin: 0 0 14px; }
-  .car-reserve {
-    display: block; text-align: center; background: #ffffff; color: #0a0a0a;
-    font-size: 13.5px; font-weight: 600; text-decoration: none;
-    padding: 13px; border-radius: 12px;
-  }
-
-  .carousel-nav {
-    appearance: none; border: none; cursor: pointer;
-    width: 42px; height: 42px; border-radius: 50%;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.16);
-    color: #ffffff;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    z-index: 5;
-    transition: background .2s ease;
-  }
-  .carousel-nav:hover { background: rgba(255,255,255,0.18); }
-  .carousel-nav svg { width: 20px; height: 20px; }
-  .carousel-nav.prev { margin-right: -42px; }
-  .carousel-nav.next { margin-left: -42px; }
-  @media (max-width: 720px) {
-    .carousel-nav { display: none; }
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
   <div class="preloader" id="preloader"><span id="preloader-text">0%</span></div>
 
   <div class="video-bg">
@@ -868,539 +185,189 @@
       </div>
     </div>
   </section>
-  <script>
-    // État partagé entre la barre de recherche et les cartes véhicules.
-    var WARENT = {
-      phone: '971501234567',
-      search: null
-    };
 
-    WARENT.waLink = function (label, price) {
-      var msg = 'Bonjour, je souhaite réserver la ' + label;
-      if (price) msg += ' (' + price + '€/jour)';
-      if (WARENT.search) msg += ' ' + WARENT.search.sentence;
-      msg += '.';
-      return 'https://wa.me/' + WARENT.phone + '?text=' + encodeURIComponent(msg);
-    };
+  <section id="pricing" class="section section-alt">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="section-title" data-fr="Tarifs" data-en="Pricing">Tarifs</h2>
+        <p class="section-sub" data-fr="Des tarifs clairs, sans frais cachés. Le prix baisse dès que vous louez plusieurs jours." data-en="Clear rates, no hidden fees. The longer you book, the lower the daily price.">Des tarifs clairs, sans frais cachés. Le prix baisse dès que vous louez plusieurs jours.</p>
+      </div>
+      <div class="price-grid" id="price-grid"></div>
+      <p class="price-note" data-fr="Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé à la réservation. Les kilomètres au-delà du forfait sont facturés au tarif indiqué dans le contrat. Livraison en dehors de Lorient sur devis." data-en="A deposit is taken at handover; the amount depends on the vehicle and is confirmed when you book. Extra kilometres beyond the allowance are charged at the rate stated in the contract. Delivery outside Lorient on request.">Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé à la réservation. Les kilomètres au-delà du forfait sont facturés au tarif indiqué dans le contrat. Livraison en dehors de Lorient sur devis.</p>
+    </div>
+  </section>
 
-    (function () {
-      var video = document.getElementById('hero-video');
-      var preloader = document.getElementById('preloader');
-      var preloaderText = document.getElementById('preloader-text');
+  <section id="how-it-works" class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="section-title" data-fr="Comment ça marche" data-en="How it works">Comment ça marche</h2>
+        <p class="section-sub" data-fr="Quatre étapes, aucune paperasse inutile. Vous pouvez réserver en quelques minutes." data-en="Four steps, no useless paperwork. You can book in a couple of minutes.">Quatre étapes, aucune paperasse inutile. Vous pouvez réserver en quelques minutes.</p>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <div class="step-num">1</div>
+          <h3 class="step-title" data-fr="Choisissez votre véhicule" data-en="Pick your car">Choisissez votre véhicule</h3>
+          <p class="step-text" data-fr="Sélectionnez la voiture et vos dates directement depuis le site." data-en="Choose the car and your dates straight from the site.">Sélectionnez la voiture et vos dates directement depuis le site.</p>
+        </article>
+        <article class="step">
+          <div class="step-num">2</div>
+          <h3 class="step-title" data-fr="Réservez en un message" data-en="Book in one message">Réservez en un message</h3>
+          <p class="step-text" data-fr="Votre demande part sur WhatsApp avec les dates déjà remplies. On vous confirme la disponibilité." data-en="Your request goes to WhatsApp with the dates already filled in. We confirm availability.">Votre demande part sur WhatsApp avec les dates déjà remplies. On vous confirme la disponibilité.</p>
+        </article>
+        <article class="step">
+          <div class="step-num">3</div>
+          <h3 class="step-title" data-fr="Présentez vos documents" data-en="Show your documents">Présentez vos documents</h3>
+          <p class="step-text" data-fr="Permis et pièce d'identité sont vérifiés en main propre à la remise des clés." data-en="Licence and ID are checked in person when you collect the keys.">Permis et pièce d'identité sont vérifiés en main propre à la remise des clés.</p>
+        </article>
+        <article class="step">
+          <div class="step-num">4</div>
+          <h3 class="step-title" data-fr="Prenez la route" data-en="Hit the road">Prenez la route</h3>
+          <p class="step-text" data-fr="On fait l'état des lieux en photos ensemble, puis le véhicule est à vous." data-en="We do the photo check together, then the car is yours.">On fait l'état des lieux en photos ensemble, puis le véhicule est à vous.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-      video.loop = true;
+  <section id="occasions" class="section section-alt">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="section-title" data-fr="Pour quelle occasion ?" data-en="What's the occasion?">Pour quelle occasion ?</h2>
+        <p class="section-sub" data-fr="Que ce soit pour le plaisir, pour marquer le coup ou pour travailler, le véhicule s'adapte." data-en="Whether it's for fun, for a special day or for work, the car adapts.">Que ce soit pour le plaisir, pour marquer le coup ou pour travailler, le véhicule s'adapte.</p>
+      </div>
+      <div class="tiles">
+        <article class="tile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6" stroke-linecap="round"/></svg>
+          <h3 class="tile-title" data-fr="Particuliers" data-en="Private customers">Particuliers</h3>
+          <p class="tile-text" data-fr="Envie de rouler dans une voiture qui change de l'ordinaire, le temps d'un week-end ou de quelques jours." data-en="Drive something out of the ordinary, for a weekend or a few days.">Envie de rouler dans une voiture qui change de l'ordinaire, le temps d'un week-end ou de quelques jours.</p>
+        </article>
+        <article class="tile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20s-7.3-4.4-7.3-9.4A4.1 4.1 0 0112 8.3a4.1 4.1 0 017.3 2.3c0 5-7.3 9.4-7.3 9.4z" stroke-linejoin="round"/></svg>
+          <h3 class="tile-title" data-fr="Mariages et événements" data-en="Weddings and events">Mariages et événements</h3>
+          <p class="tile-text" data-fr="Une voiture soignée et présentable pour un mariage, un anniversaire ou une occasion qui compte." data-en="A spotless, presentable car for a wedding, a birthday or any day that matters.">Une voiture soignée et présentable pour un mariage, un anniversaire ou une occasion qui compte.</p>
+        </article>
+        <article class="tile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.2" y="7.4" width="17.6" height="12.4" rx="2.2"/><path d="M9 7.4V5.6a1.8 1.8 0 011.8-1.8h2.4A1.8 1.8 0 0115 5.6v1.8" stroke-linecap="round"/></svg>
+          <h3 class="tile-title" data-fr="Entreprises" data-en="Businesses">Entreprises</h3>
+          <p class="tile-text" data-fr="Déplacements professionnels, séminaires et événements d'entreprise, avec facturation adaptée." data-en="Business trips, seminars and company events, with proper invoicing.">Déplacements professionnels, séminaires et événements d'entreprise, avec facturation adaptée.</p>
+        </article>
+        <article class="tile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="13.5" height="10" rx="2.2"/><path d="M16.5 11.2l4.5-2.6v6.8l-4.5-2.6z" stroke-linejoin="round"/></svg>
+          <h3 class="tile-title" data-fr="Shootings et créateurs" data-en="Shoots and creators">Shootings et créateurs</h3>
+          <p class="tile-text" data-fr="Véhicules disponibles pour vos shootings photo et vidéo, avec des conditions adaptées au tournage." data-en="Cars available for photo and video shoots, on terms that suit a production.">Véhicules disponibles pour vos shootings photo et vidéo, avec des conditions adaptées au tournage.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section id="conditions" class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="section-title" data-fr="Ce qu'il faut prévoir" data-en="What you'll need">Ce qu'il faut prévoir</h2>
+        <p class="section-sub" data-fr="Quelques règles simples, pensées pour protéger le véhicule autant que vous." data-en="A few simple rules, there to protect the car and you alike.">Quelques règles simples, pensées pour protéger le véhicule autant que vous.</p>
+      </div>
+      <div class="conds">
+        <div class="cond">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3 1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div>
+            <p class="cond-title" data-fr="Âge minimum" data-en="Minimum age">Âge minimum</p>
+            <p class="cond-text" data-fr="21 ans pour la Clio, 23 ans pour l'Audi A3." data-en="21 for the Clio, 23 for the Audi A3.">21 ans pour la Clio, 23 ans pour l'Audi A3.</p>
+          </div>
+        </div>
+        <div class="cond">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 13.5h4M5.6 16c.6-1.6 1.9-2.4 3.4-2.4s2.8.8 3.4 2.4" stroke-linecap="round"/></svg>
+          <div>
+            <p class="cond-title" data-fr="Permis et pièce d'identité" data-en="Licence and ID">Permis et pièce d'identité</p>
+            <p class="cond-text" data-fr="Les originaux sont vérifiés en personne au moment de la remise." data-en="Originals are checked in person at handover.">Les originaux sont vérifiés en personne au moment de la remise.</p>
+          </div>
+        </div>
+        <div class="cond">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4.8" y="10.4" width="14.4" height="9.4" rx="2.2"/><path d="M8.4 10.4V8a3.6 3.6 0 017.2 0v2.4" stroke-linecap="round"/></svg>
+          <div>
+            <p class="cond-title" data-fr="Dépôt de garantie" data-en="Security deposit">Dépôt de garantie</p>
+            <p class="cond-text" data-fr="Demandé à la remise des clés, restitué au retour du véhicule." data-en="Taken at handover and released when the car comes back.">Demandé à la remise des clés, restitué au retour du véhicule.</p>
+          </div>
+        </div>
+        <div class="cond">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="6.4" width="18" height="13.2" rx="2.2"/><circle cx="12" cy="13" r="3.2"/><path d="M8.4 6.4l1.2-2h4.8l1.2 2" stroke-linejoin="round"/></svg>
+          <div>
+            <p class="cond-title" data-fr="État des lieux" data-en="Condition report">État des lieux</p>
+            <p class="cond-text" data-fr="Photos du véhicule et relevé du kilométrage au départ comme au retour." data-en="Photos of the car and mileage noted at departure and on return.">Photos du véhicule et relevé du kilométrage au départ comme au retour.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="faq" class="section section-alt">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="section-title" data-fr="Questions fréquentes" data-en="Frequently asked questions">Questions fréquentes</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary><span data-fr="Où récupère-t-on le véhicule ?" data-en="Where do I collect the car?">Où récupère-t-on le véhicule ?</span></summary>
+          <p class="faq-answer" data-fr="La remise se fait à Lorient (56). Une livraison ailleurs dans le Morbihan est possible, avec un supplément calculé selon la distance." data-en="Handover takes place in Lorient (56). Delivery elsewhere in Morbihan is possible, with a supplement based on distance.">La remise se fait à Lorient (56). Une livraison ailleurs dans le Morbihan est possible, avec un supplément calculé selon la distance.</p>
+        </details>
+        <details>
+          <summary><span data-fr="Quels documents dois-je apporter ?" data-en="What documents do I need?">Quels documents dois-je apporter ?</span></summary>
+          <p class="faq-answer" data-fr="Votre permis de conduire original et une pièce d'identité. Les deux sont vérifiés en personne, il n'est pas possible de louer uniquement avec des photocopies ou des photos." data-en="Your original driving licence and an ID document. Both are checked in person, so photocopies or phone pictures aren't enough.">Votre permis de conduire original et une pièce d'identité. Les deux sont vérifiés en personne, il n'est pas possible de louer uniquement avec des photocopies ou des photos.</p>
+        </details>
+        <details>
+          <summary><span data-fr="Y a-t-il une caution ?" data-en="Is there a deposit?">Y a-t-il une caution ?</span></summary>
+          <p class="faq-answer" data-fr="Oui. Un dépôt de garantie est demandé à la remise des clés. Son montant dépend du véhicule loué et vous est communiqué avant la réservation, sans surprise le jour J." data-en="Yes. A deposit is taken at handover. The amount depends on the vehicle and is given to you before booking, so there's no surprise on the day.">Oui. Un dépôt de garantie est demandé à la remise des clés. Son montant dépend du véhicule loué et vous est communiqué avant la réservation, sans surprise le jour J.</p>
+        </details>
+        <details>
+          <summary><span data-fr="Combien de kilomètres sont inclus ?" data-en="How many kilometres are included?">Combien de kilomètres sont inclus ?</span></summary>
+          <p class="faq-answer" data-fr="200 km par jour de location. Au-delà, chaque kilomètre supplémentaire est facturé au tarif indiqué dans le contrat." data-en="200 km per rental day. Beyond that, each extra kilometre is charged at the rate stated in the contract.">200 km par jour de location. Au-delà, chaque kilomètre supplémentaire est facturé au tarif indiqué dans le contrat.</p>
+        </details>
+        <details>
+          <summary><span data-fr="Puis-je ajouter un deuxième conducteur ?" data-en="Can I add a second driver?">Puis-je ajouter un deuxième conducteur ?</span></summary>
+          <p class="faq-answer" data-fr="Oui, à condition qu'il soit déclaré au contrat et qu'il remplisse les mêmes conditions d'âge et de permis. Un conducteur non déclaré n'est pas couvert." data-en="Yes, as long as they're named on the contract and meet the same age and licence conditions. An undeclared driver isn't covered.">Oui, à condition qu'il soit déclaré au contrat et qu'il remplisse les mêmes conditions d'âge et de permis. Un conducteur non déclaré n'est pas couvert.</p>
+        </details>
+        <details>
+          <summary><span data-fr="Puis-je louer pour un mariage ou un tournage ?" data-en="Can I rent for a wedding or a shoot?">Puis-je louer pour un mariage ou un tournage ?</span></summary>
+          <p class="faq-answer" data-fr="Oui. Ces locations sont fréquentes et les conditions sont adaptées à l'usage prévu, notamment sur les horaires et le kilométrage. Parlez-en dès votre demande." data-en="Yes. These bookings are common and the terms are adapted to the use, particularly around timing and mileage. Just mention it when you enquire.">Oui. Ces locations sont fréquentes et les conditions sont adaptées à l'usage prévu, notamment sur les horaires et le kilométrage. Parlez-en dès votre demande.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+  <section id="contact" class="section">
+    <div class="section-inner">
+      <div class="contact-card">
+        <h2 class="contact-title" data-fr="Une question, une date à bloquer ?" data-en="A question, or a date to lock in?">Une question, une date à bloquer ?</h2>
+        <p class="contact-text" data-fr="Le plus simple reste WhatsApp : vous écrivez, on vous répond avec la disponibilité et le détail du tarif." data-en="WhatsApp is the quickest route: send a message and you'll get availability and a full price breakdown back.">Le plus simple reste WhatsApp : vous écrivez, on vous répond avec la disponibilité et le détail du tarif.</p>
+        <a class="contact-btn" id="contact-wa" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.001 3C9.096 3 3.5 8.596 3.5 15.5c0 2.31.63 4.474 1.727 6.33L3 29l7.36-2.185A12.44 12.44 0 0 0 16.001 28C22.905 28 28.5 22.404 28.5 15.5S22.905 3 16.001 3Zm0 2c5.799 0 10.499 4.7 10.499 10.5S21.8 26 16.001 26a10.44 10.44 0 0 1-5.336-1.463l-.383-.226-4.368 1.297 1.32-4.256-.25-.397A10.44 10.44 0 0 1 5.5 15.5C5.5 9.701 10.202 5 16.001 5Zm-4.42 5.24c-.207 0-.542.078-.826.39-.284.31-1.083 1.058-1.083 2.58 0 1.522 1.109 2.994 1.264 3.201.155.207 2.15 3.436 5.313 4.68 2.628 1.034 3.163.83 3.734.778.57-.052 1.84-.752 2.099-1.478.259-.726.259-1.348.181-1.478-.077-.13-.284-.207-.594-.363-.31-.155-1.84-.908-2.125-1.012-.284-.104-.492-.155-.7.156-.207.31-.803 1.011-.984 1.219-.181.207-.362.233-.672.078-.31-.156-1.31-.483-2.494-1.538-.922-.822-1.545-1.837-1.727-2.147-.181-.31-.02-.478.136-.633.14-.14.31-.362.465-.544.155-.181.207-.31.31-.518.104-.207.052-.388-.026-.544-.078-.155-.7-1.702-.96-2.328-.253-.61-.51-.527-.7-.537-.181-.008-.388-.008-.596-.008Z"/></svg>
+          <span data-fr="Écrire sur WhatsApp" data-en="Message us on WhatsApp">Écrire sur WhatsApp</span>
+        </a>
+        <div class="contact-meta">
+          <span data-fr="Agence de Lorient (56)" data-en="Lorient branch (56)">Agence de Lorient (56)</span>
+          <span data-fr="Livraison dans le Morbihan" data-en="Delivery across Morbihan">Livraison dans le Morbihan</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      video.addEventListener('ended', function () {
-        video.currentTime = 0;
-        video.play();
-      });
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <p class="footer-logo">WaRent</p>
+        <p class="footer-tag" data-fr="Location de véhicules premium à Lorient. Des voitures récentes, entretenues, remises en main propre." data-en="Premium car rental in Lorient. Recent, well-kept cars, handed over in person.">Location de véhicules premium à Lorient. Des voitures récentes, entretenues, remises en main propre.</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="#fleet" data-fr="Notre flotte" data-en="Our fleet">Notre flotte</a>
+        <a href="#pricing" data-fr="Tarifs" data-en="Pricing">Tarifs</a>
+        <a href="#how-it-works" data-fr="Comment ça marche" data-en="How it works">Comment ça marche</a>
+        <a href="#faq" data-fr="Questions fréquentes" data-en="FAQ">Questions fréquentes</a>
+      </nav>
+      <nav class="footer-nav">
+        <a href="#conditions" data-fr="Conditions de location" data-en="Rental conditions">Conditions de location</a>
+        <a href="#occasions" data-fr="Occasions" data-en="Occasions">Occasions</a>
+        <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+      </nav>
+    </div>
+    <p class="footer-bottom" data-fr="WaRent — Lorient (56), Morbihan, Bretagne." data-en="WaRent — Lorient (56), Morbihan, Brittany.">WaRent — Lorient (56), Morbihan, Bretagne.</p>
+  </footer>
 
-      video.addEventListener('pause', function () {
-        video.play();
-      });
-
-      document.addEventListener('visibilitychange', function () {
-        if (!document.hidden) {
-          video.play();
-        }
-      });
-
-      video.play().catch(function () { });
-
-      function updateBuffered() {
-        if (video.duration && video.buffered.length) {
-          var bufferedEnd = video.buffered.end(video.buffered.length - 1);
-          var pct = Math.min(100, Math.round((bufferedEnd / video.duration) * 100));
-          preloaderText.textContent = pct + '%';
-        }
-      }
-      video.addEventListener('progress', updateBuffered);
-
-      function hidePreloader() {
-        preloader.classList.add('hide');
-      }
-      video.addEventListener('canplaythrough', hidePreloader, { once: true });
-      setTimeout(hidePreloader, 6000);
-
-    })();
-
-    (function () {
-      var ICONS = {
-        seat: '<svg viewBox="0 0 24 24"><path d="M7 13V7a2 2 0 012-2h6a2 2 0 012 2v6M5 13h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>',
-        gear: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7M18.4 18.4l-1.7-1.7M7.3 7.3L5.6 5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
-        drop: '<svg viewBox="0 0 24 24"><path d="M12 3s6 6.6 6 11a6 6 0 11-12 0c0-4.4 6-11 6-11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
-        bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>'
-      };
-
-      var TRANSMISSION = { auto: ['Automatique', 'Automatic'], manual: ['Manuelle', 'Manual'] };
-      var FUEL = { essence: ['Essence', 'Petrol'], diesel: ['Diesel', 'Diesel'], electrique: ['Électrique', 'Electric'], hybride: ['Hybride', 'Hybrid'] };
-      var BADGES = {
-        available: ['Disponible', 'Available'],
-        popular: ['Populaire', 'Popular'],
-        electric: ['Électrique', 'Electric'],
-        premium: ['Premium', 'Premium']
-      };
-
-      var FLEET = [
-        { id: 'c0', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Clio 5 Esprit Alpine', badge: 'popular', price: 58, seats: 5, transmission: 'auto', fuel: 'hybride', luggage: 3, minAge: 21, accent: '#22c1c3', img: 'clio.webp' },
-        { id: 'b0', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Audi', model: 'A3 (2026)', badge: 'premium', price: 85, seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23, accent: '#3b82f6', img: 'audi.webp' }
-      ];
-
-      function silhouette(category) {
-        if (category === 'berline') {
-          return '<svg class="car-silhouette" viewBox="0 0 300 132" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
-            '<ellipse class="car-shadow" cx="154" cy="118" rx="126" ry="7"></ellipse>' +
-            '<path class="car-body" d="M16,92 Q18,68 44,62 L86,38 Q104,28 146,28 L206,28 Q238,30 254,48 L274,64 Q292,68 292,92 L292,98 L266,98 Q266,78 246,78 Q226,78 226,98 L92,98 Q92,78 72,78 Q52,78 52,98 L16,98 Z"></path>' +
-            '<path class="car-glass" d="M92,62 L114,42 Q126,36 152,36 L198,36 Q212,38 222,52 L232,62 Z"></path>' +
-            '<circle class="car-wheel" cx="72" cy="100" r="16"></circle>' +
-            '<circle class="car-wheel" cx="246" cy="100" r="16"></circle>' +
-            '</svg>';
-        }
-        return '<svg class="car-silhouette" viewBox="0 0 300 132" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
-          '<ellipse class="car-shadow" cx="152" cy="118" rx="104" ry="7"></ellipse>' +
-          '<path class="car-body" d="M48,92 Q50,66 76,60 L102,34 Q116,24 148,24 L188,24 Q212,26 224,42 L240,60 Q258,64 258,92 L258,98 L236,98 Q236,78 216,78 Q196,78 196,98 L114,98 Q114,78 94,78 Q74,78 74,98 L48,98 Z"></path>' +
-          '<path class="car-glass" d="M108,60 L126,38 Q134,32 154,32 L180,32 Q192,34 200,46 L208,60 Z"></path>' +
-          '<circle class="car-wheel" cx="94" cy="100" r="15"></circle>' +
-          '<circle class="car-wheel" cx="216" cy="100" r="15"></circle>' +
-          '</svg>';
-      }
-
-      function specChip(icon, fr, en) {
-        return '<span class="spec-chip">' + ICONS[icon] + '<span data-fr="' + fr + '" data-en="' + en + '">' + fr + '</span></span>';
-      }
-
-      function specRow(labelFr, labelEn, valueFr, valueEn) {
-        return '<li><span data-fr="' + labelFr + '" data-en="' + labelEn + '">' + labelFr + '</span><span data-fr="' + valueFr + '" data-en="' + valueEn + '">' + valueFr + '</span></li>';
-      }
-      function buildCard(car) {
-        var badge = BADGES[car.badge];
-        var trans = TRANSMISSION[car.transmission];
-        var fuel = FUEL[car.fuel];
-        var fuelIcon = (car.fuel === 'electrique' || car.fuel === 'hybride') ? 'bolt' : 'drop';
-        var weekly = Math.round(car.price * 6.2);
-        // La photo passe au-dessus ; si le fichier manque, le navigateur
-        // declenche onerror et la silhouette vectorielle reprend la main,
-        // donc une carte n'est jamais vide.
-        var visual = car.img
-          ? '<span class="car-ground"></span>' +
-            '<span class="car-fallback">' + silhouette(car.category) + '</span>' +
-            '<img class="car-photo" src="' + car.img + '" alt="' + car.brand + ' ' + car.model + '"' +
-            ' onerror="this.parentNode.querySelector(\'.car-fallback\').style.display=\'flex\';this.remove();">'
-          : silhouette(car.category);
-        var styleVars = 'style="--accent:' + car.accent + '; --accent-bg: linear-gradient(165deg,' + car.accent + '26,#0a0b0d 72%);"';
-        var carLabel = car.brand + ' ' + car.model;
-
-        return '' +
-          '<div class="car-tilt">' +
-            '<div class="car-flip">' +
-              '<div class="car-face car-face-front">' +
-                '<div class="car-face-inner" ' + styleVars + '>' +
-                  '<div class="car-visual">' +
-                    (badge ? '<span class="car-badge" data-fr="' + badge[0] + '" data-en="' + badge[1] + '">' + badge[0] + '</span>' : '') +
-                    '<span class="car-logo">WaRent</span>' +
-                    visual +
-                  '</div>' +
-                  '<div class="car-info">' +
-                    '<p class="car-name">' + carLabel + '</p>' +
-                    '<p class="car-cat" data-fr="' + car.catFr + '" data-en="' + car.catEn + '">' + car.catFr + '</p>' +
-                    '<div class="car-specs">' +
-                      specChip('seat', car.seats + ' places', car.seats + ' seats') +
-                      specChip('gear', trans[0], trans[1]) +
-                      specChip(fuelIcon, fuel[0], fuel[1]) +
-                    '</div>' +
-                    '<div class="car-meta-row">' +
-                      '<span class="car-price">' + car.price + '€<small data-fr="/jour" data-en="/day"> /jour</small></span>' +
-                      '<button type="button" class="car-cta" data-fr="Détails" data-en="Details">Détails</button>' +
-                    '</div>' +
-                  '</div>' +
-                '</div>' +
-              '</div>' +
-              '<div class="car-face car-face-back">' +
-                '<div class="car-face-inner">' +
-                  '<div class="car-back-bg" ' + styleVars + '></div>' +
-                  '<div class="car-back-overlay"></div>' +
-                  '<div class="car-back-content">' +
-                    '<p class="car-back-name">' + carLabel + '</p>' +
-                    '<p class="car-back-prices"><b>' + car.price + '€</b> <span data-fr="/ jour" data-en="/ day">/ jour</span> · <b>' + weekly + '€</b> <span data-fr="/ semaine (est.)" data-en="/ week (est.)">/ semaine (est.)</span></p>' +
-                    '<ul class="car-spec-list">' +
-                      specRow('Places', 'Seats', String(car.seats), String(car.seats)) +
-                      specRow('Boîte', 'Transmission', trans[0], trans[1]) +
-                      specRow('Carburant', 'Fuel', fuel[0], fuel[1]) +
-                      specRow('Bagages', 'Luggage', String(car.luggage), String(car.luggage)) +
-                      specRow('Âge minimum', 'Min. age', car.minAge + ' ans', car.minAge + ' yo') +
-                    '</ul>' +
-                    '<p class="car-back-location" data-fr="Prise en charge : Lorient (56)" data-en="Pickup: Lorient, Brittany">Prise en charge : Lorient (56)</p>' +
-                    '<a class="car-reserve" href="' + WARENT.waLink(carLabel, car.price) + '" data-car="' + carLabel + '" data-price="' + car.price + '" target="_blank" rel="noopener" data-fr="Réserver maintenant" data-en="Reserve now">Réserver maintenant</a>' +
-                  '</div>' +
-                '</div>' +
-              '</div>' +
-            '</div>' +
-          '</div>';
-      }
-
-      var viewport = document.getElementById('fleet-viewport');
-      var track = document.getElementById('fleet-track');
-      var prevBtn = document.getElementById('fleet-prev');
-      var nextBtn = document.getElementById('fleet-next');
-      var pills = document.querySelectorAll('.fleet-pill');
-      if (!viewport || !track) return;
-
-      var currentCars = FLEET.slice();
-      var cardEls = [];
-      var progress = 0, targetProgress = 0, spacing = 240, wrap = false;
-
-      function lerp(a, b, t) { return a + (b - a) * t; }
-      function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
-
-      function clampTarget() {
-        if (!wrap) targetProgress = clamp(targetProgress, 0, Math.max(0, cardEls.length - 1));
-      }
-
-      function measure() {
-        if (!cardEls.length) return;
-        var w = cardEls[0].getBoundingClientRect().width;
-        if (w > 0) spacing = w * 0.86;
-      }
-
-      function positionCards() {
-        var n = cardEls.length;
-        if (!n) return;
-        cardEls.forEach(function (el, i) {
-          var d = i - progress;
-          if (wrap) d = ((d + n / 2) % n + n) % n - n / 2;
-          var absD = Math.abs(d);
-          var t = clamp(absD / 2.6, 0, 1);
-          var s = t * t * (3 - 2 * t);
-          var scale = lerp(1, 0.6, s);
-          var opacity = lerp(1, 0.1, clamp(absD / 1.35, 0, 1));
-          var x = d * spacing;
-          var rot = clamp(d * -22, -68, 68);
-          var z = -absD * 170;
-          el.style.transform = 'translateX(' + x.toFixed(1) + 'px) translateZ(' + z.toFixed(1) + 'px) rotateY(' + rot.toFixed(1) + 'deg) scale(' + scale.toFixed(3) + ')';
-          el.style.opacity = opacity.toFixed(2);
-          el.style.zIndex = Math.round(1000 - absD * 10);
-          el.style.pointerEvents = opacity < 0.1 ? 'none' : '';
-        });
-      }
-
-      function loop() {
-        progress += (targetProgress - progress) * 0.14;
-        positionCards();
-        requestAnimationFrame(loop);
-      }
-
-      function renderCars() {
-        track.innerHTML = '';
-        cardEls = [];
-        currentCars.forEach(function (car) {
-          var el = document.createElement('div');
-          el.className = 'car-slot';
-          el.innerHTML = buildCard(car);
-          track.appendChild(el);
-          cardEls.push(el);
-        });
-        wrap = cardEls.length >= 4;
-        progress = 0;
-        targetProgress = 0;
-        measure();
-        positionCards();
-
-        var lang = document.documentElement.lang === 'en' ? 'en' : 'fr';
-        track.querySelectorAll('[data-fr][data-en]').forEach(function (el) {
-          el.textContent = lang === 'en' ? el.dataset.en : el.dataset.fr;
-        });
-      }
-      var dragging = false, moved = false, startX = 0, startProgress = 0, suppressClick = false;
-
-      viewport.addEventListener('pointerdown', function (e) {
-        dragging = true;
-        moved = false;
-        startX = e.clientX;
-        startProgress = targetProgress;
-        viewport.classList.add('is-dragging');
-        try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
-      });
-      viewport.addEventListener('pointermove', function (e) {
-        if (!dragging) return;
-        var dx = e.clientX - startX;
-        if (Math.abs(dx) > 6) moved = true;
-        if (moved) {
-          targetProgress = startProgress - dx / spacing;
-          clampTarget();
-        }
-      });
-
-      function unflipAll() {
-        cardEls.forEach(function (el) {
-          var f = el.querySelector('.car-flip');
-          if (f) f.classList.remove('is-flipped');
-        });
-      }
-
-      function endDrag() {
-        if (!dragging) return;
-        dragging = false;
-        viewport.classList.remove('is-dragging');
-        if (moved) {
-          targetProgress = Math.round(targetProgress);
-          clampTarget();
-          unflipAll();
-          suppressClick = true;
-          setTimeout(function () { suppressClick = false; }, 60);
-        }
-        moved = false;
-      }
-      viewport.addEventListener('pointerup', endDrag);
-      viewport.addEventListener('pointercancel', endDrag);
-      viewport.addEventListener('pointerleave', endDrag);
-
-      viewport.addEventListener('wheel', function (e) {
-        if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
-        e.preventDefault();
-        targetProgress += e.deltaX / spacing;
-        clampTarget();
-        clearTimeout(viewport._wheelSnap);
-        viewport._wheelSnap = setTimeout(function () {
-          targetProgress = Math.round(targetProgress);
-          clampTarget();
-        }, 220);
-      }, { passive: false });
-
-      if (prevBtn) prevBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) - 1; clampTarget(); unflipAll(); });
-      if (nextBtn) nextBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) + 1; clampTarget(); unflipAll(); });
-
-      track.addEventListener('pointermove', function (e) {
-        var slot = e.target.closest ? e.target.closest('.car-slot') : null;
-        cardEls.forEach(function (el) {
-          var tiltEl = el.querySelector('.car-tilt');
-          if (!tiltEl) return;
-          if (el === slot) {
-            var rect = el.getBoundingClientRect();
-            var px = (e.clientX - rect.left) / rect.width - 0.5;
-            var py = (e.clientY - rect.top) / rect.height - 0.5;
-            tiltEl.style.setProperty('--ry', (px * 12).toFixed(2) + 'deg');
-            tiltEl.style.setProperty('--rx', (py * -8).toFixed(2) + 'deg');
-          } else {
-            tiltEl.style.setProperty('--ry', '0deg');
-            tiltEl.style.setProperty('--rx', '0deg');
-          }
-        });
-      });
-      viewport.addEventListener('mouseleave', function () {
-        cardEls.forEach(function (el) {
-          var tiltEl = el.querySelector('.car-tilt');
-          if (tiltEl) {
-            tiltEl.style.setProperty('--ry', '0deg');
-            tiltEl.style.setProperty('--rx', '0deg');
-          }
-        });
-      });
-
-      track.addEventListener('click', function (e) {
-        if (suppressClick) return;
-        if (e.target.closest && e.target.closest('.car-reserve')) return;
-        var slot = e.target.closest ? e.target.closest('.car-slot') : null;
-        if (!slot) return;
-        var i = cardEls.indexOf(slot);
-        var n = cardEls.length;
-        if (i < 0 || !n) return;
-
-        var centre = ((Math.round(targetProgress) % n) + n) % n;
-        if (i !== centre) {
-          if (wrap) {
-            var d = i - centre;
-            if (d > n / 2) d -= n;
-            if (d < -n / 2) d += n;
-            targetProgress = Math.round(targetProgress) + d;
-          } else {
-            targetProgress = i;
-          }
-          clampTarget();
-          unflipAll();
-          return;
-        }
-
-        var flipEl = slot.querySelector('.car-flip');
-        if (flipEl) flipEl.classList.toggle('is-flipped');
-      });
-
-      pills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          pills.forEach(function (p) { p.classList.remove('active'); });
-          pill.classList.add('active');
-          var cat = pill.getAttribute('data-cat');
-          currentCars = cat === 'all' ? FLEET.slice() : FLEET.filter(function (c) { return c.category === cat; });
-          renderCars();
-        });
-      });
-
-      window.addEventListener('resize', measure);
-
-      renderCars();
-      requestAnimationFrame(loop);
-    })();
-    (function () {
-      var form = document.getElementById('search-form');
-      if (!form) return;
-
-      var city = document.getElementById('pickup-city');
-      var sd = document.getElementById('start-date');
-      var st = document.getElementById('start-time');
-      var ed = document.getElementById('end-date');
-      var et = document.getElementById('end-time');
-      var errorEl = document.getElementById('search-error');
-
-      function isoDate(d) {
-        var m = String(d.getMonth() + 1);
-        var day = String(d.getDate());
-        if (m.length < 2) m = '0' + m;
-        if (day.length < 2) day = '0' + day;
-        return d.getFullYear() + '-' + m + '-' + day;
-      }
-
-      // Valeurs par défaut : demain -> dans 4 jours, pour que le formulaire
-      // ne soit jamais vide au chargement.
-      var now = new Date();
-      var DAY = 86400000;
-      sd.value = isoDate(new Date(now.getTime() + DAY));
-      ed.value = isoDate(new Date(now.getTime() + 4 * DAY));
-      sd.min = isoDate(now);
-      ed.min = isoDate(now);
-
-      // Créneaux horaires en 24h, toutes les 30 min. Un <select> plutôt qu'un
-      // <input type="time"> : le format natif suit la langue du système (donc
-      // AM/PM sur un appareil configuré en anglais) et reste capricieux au tap
-      // sur iOS. Ici l'affichage est garanti identique partout.
-      function fillTimes(sel, selected) {
-        var html = '';
-        for (var h = 0; h < 24; h++) {
-          for (var m = 0; m < 60; m += 30) {
-            var v = (h < 10 ? '0' : '') + h + ':' + (m === 0 ? '00' : '30');
-            html += '<option value="' + v + '"' + (v === selected ? ' selected' : '') + '>' + v + '</option>';
-          }
-        }
-        sel.innerHTML = html;
-      }
-      fillTimes(st, '10:00');
-      fillTimes(et, '10:00');
-
-      sd.addEventListener('change', function () {
-        ed.min = sd.value;
-        if (ed.value && ed.value < sd.value) ed.value = sd.value;
-      });
-
-      function prettyDate(value) {
-        var p = value.split('-');
-        return p[2] + '/' + p[1] + '/' + p[0];
-      }
-
-      function showError(fr, en) {
-        errorEl.textContent = document.documentElement.lang === 'en' ? en : fr;
-        errorEl.hidden = false;
-      }
-
-      function refreshLinks() {
-        var links = document.querySelectorAll('.car-reserve');
-        Array.prototype.forEach.call(links, function (a) {
-          a.href = WARENT.waLink(a.getAttribute('data-car'), a.getAttribute('data-price'));
-        });
-        var head = document.getElementById('whatsapp-link');
-        if (head && WARENT.search) {
-          head.href = 'https://wa.me/' + WARENT.phone + '?text=' +
-            encodeURIComponent('Bonjour, je souhaite louer un véhicule ' + WARENT.search.sentence + '.');
-        }
-      }
-      WARENT.refreshLinks = refreshLinks;
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        if (!sd.value || !ed.value || !st.value || !et.value) {
-          showError('Merci de renseigner les dates et les heures.', 'Please fill in both dates and times.');
-          return;
-        }
-
-        var startAt = new Date(sd.value + 'T' + st.value);
-        var endAt = new Date(ed.value + 'T' + et.value);
-        if (isNaN(startAt.getTime()) || isNaN(endAt.getTime())) {
-          showError('Dates invalides.', 'Invalid dates.');
-          return;
-        }
-        if (endAt <= startAt) {
-          showError('Le retour doit être après le départ.', 'The return must be after the pick-up.');
-          return;
-        }
-
-        errorEl.hidden = true;
-
-        var place = city.value || 'Lorient';
-        WARENT.search = {
-          city: place,
-          sentence: 'à ' + place + ', du ' + prettyDate(sd.value) + ' à ' + st.value +
-                    ' au ' + prettyDate(ed.value) + ' à ' + et.value
-        };
-        refreshLinks();
-
-        var fleet = document.getElementById('fleet');
-        if (fleet) fleet.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    })();
-
-    (function () {
-      var STORAGE_KEY = 'warent-lang';
-      var titles = {
-        fr: 'WaRent — Location de voitures premium',
-        en: 'WaRent — Premium Car Rental'
-      };
-      var btns = document.querySelectorAll('.lang-btn');
-      var textEls = document.querySelectorAll('[data-fr][data-en]');
-      var waLink = document.getElementById('whatsapp-link');
-      var waLabels = { fr: 'Contacter sur WhatsApp', en: 'Ask on WhatsApp' };
-
-      function getStoredLang() {
-        try {
-          return localStorage.getItem(STORAGE_KEY);
-        } catch (e) {
-          return null;
-        }
-      }
-      function storeLang(lang) {
-        try {
-          localStorage.setItem(STORAGE_KEY, lang);
-        } catch (e) { }
-      }
-
-      function setLanguage(lang) {
-        if (lang !== 'en') lang = 'fr';
-
-        document.documentElement.lang = lang;
-        document.body.classList.toggle('lang-en', lang === 'en');
-        document.title = titles[lang];
-
-        textEls.forEach(function (el) {
-          el.textContent = lang === 'en' ? el.dataset.en : el.dataset.fr;
-        });
-
-        if (waLink) waLink.setAttribute('aria-label', waLabels[lang]);
-
-        btns.forEach(function (btn) {
-          var isActive = btn.getAttribute('data-lang-btn') === lang;
-          btn.classList.toggle('active', isActive);
-          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-        });
-
-        storeLang(lang);
-      }
-
-      btns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          setLanguage(btn.getAttribute('data-lang-btn'));
-        });
-      });
-
-      setLanguage(getStoredLang() || 'fr');
-    })();
-  </script>
+  <script src="app.js"></script>
 
 </body>
 </html>
