@@ -58,7 +58,13 @@ WARENT.waLink = function (label, price) {
     seat: '<svg viewBox="0 0 24 24"><path d="M7 13V7a2 2 0 012-2h6a2 2 0 012 2v6M5 13h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>',
     gear: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7M18.4 18.4l-1.7-1.7M7.3 7.3L5.6 5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
     drop: '<svg viewBox="0 0 24 24"><path d="M12 3s6 6.6 6 11a6 6 0 11-12 0c0-4.4 6-11 6-11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
-    bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>'
+    bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>',
+    bag: '<svg viewBox="0 0 24 24"><rect x="4" y="7.5" width="16" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 7.5V5.6A1.6 1.6 0 0110.6 4h2.8A1.6 1.6 0 0115 5.6v1.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    cabin: '<svg viewBox="0 0 24 24"><rect x="6" y="9" width="12" height="11" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 9V6.4A1.4 1.4 0 0111.4 5h1.2A1.4 1.4 0 0114 6.4V9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    door: '<svg viewBox="0 0 24 24"><path d="M5 20V6.6a1.6 1.6 0 011.3-1.57l9-1.8A1.6 1.6 0 0117 4.8V20z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="13.6" cy="12.4" r="1" fill="currentColor"/></svg>',
+    id: '<svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="11" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 10h4M14 13.5h4M5.6 16c.6-1.6 1.9-2.4 3.4-2.4s2.8.8 3.4 2.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    road: '<svg viewBox="0 0 24 24"><path d="M8 3.5L5.5 20.5M16 3.5l2.5 17M12 4v2.6M12 10.7v2.6M12 17.4V20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    calendar: '<svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 10h17M8 3.5v4M16 3.5v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
   };
 
   var TRANSMISSION = { auto: ['Automatique', 'Automatic'], manual: ['Manuelle', 'Manual'] };
@@ -70,18 +76,18 @@ WARENT.waLink = function (label, price) {
     premium: ['Premium', 'Premium']
   };
 
-  // Source unique des tarifs : les cartes de la flotte ET la section Tarifs
+  // Source unique des tarifs : les cartes de la flotte ET la fiche detaillee
   // sont generees a partir de ce tableau, elles ne peuvent donc pas diverger.
   var FLEET = [
     { id: 'c0', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Clio 5 Esprit Alpine',
       badge: 'popular', tagFr: 'Le plus demandé', tagEn: 'Most booked',
-      price: 89, priceWeekend: 160, priceWeek: 490,
-      seats: 5, transmission: 'auto', fuel: 'hybride', luggage: 3, minAge: 21,
+      price: 89, priceWeekend: 160, priceWeek: 490, kmUnlimited: 10,
+      seats: 5, doors: 5, transmission: 'auto', fuel: 'hybride', luggage: 3, cabin: 1, minAge: 21,
       accent: '#22c1c3', ink: '#05201f', img: 'clio.webp' },
     { id: 'b0', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Audi', model: 'A3 (2026)',
       badge: 'premium', tagFr: 'Premium', tagEn: 'Premium',
-      price: 129, priceWeekend: 235, priceWeek: 710,
-      seats: 5, transmission: 'auto', fuel: 'essence', luggage: 3, minAge: 23,
+      price: 129, priceWeekend: 235, priceWeek: 710, kmUnlimited: 15,
+      seats: 5, doors: 5, transmission: 'auto', fuel: 'essence', luggage: 3, cabin: 1, minAge: 23,
       accent: '#3b82f6', ink: '#06122b', img: 'audi.webp' }
   ];
 
@@ -108,18 +114,14 @@ WARENT.waLink = function (label, price) {
     return '<span class="spec-chip">' + ICONS[icon] + '<span data-fr="' + fr + '" data-en="' + en + '">' + fr + '</span></span>';
   }
 
-  function specRow(labelFr, labelEn, valueFr, valueEn) {
-    return '<li><span data-fr="' + labelFr + '" data-en="' + labelEn + '">' + labelFr + '</span><span data-fr="' + valueFr + '" data-en="' + valueEn + '">' + valueFr + '</span></li>';
-  }
-
   function buildCard(car) {
     var badge = BADGES[car.badge];
     var trans = TRANSMISSION[car.transmission];
     var fuel = FUEL[car.fuel];
     var fuelIcon = (car.fuel === 'electrique' || car.fuel === 'hybride') ? 'bolt' : 'drop';
-    // La photo passe au-dessus ; si le fichier manque, le navigateur
-    // declenche onerror et la silhouette vectorielle reprend la main,
-    // donc une carte n'est jamais vide.
+    // The photo sits on top; if the file is missing the browser fires
+    // onerror and we fall back to the vector silhouette, so a card is
+    // never left empty.
     var visual = car.img
       ? '<span class="car-ground"></span>' +
         '<span class="car-fallback">' + silhouette(car.category) + '</span>' +
@@ -127,7 +129,6 @@ WARENT.waLink = function (label, price) {
         ' onerror="this.parentNode.querySelector(\'.car-fallback\').style.display=\'flex\';this.remove();">'
       : silhouette(car.category);
     var styleVars = 'style="--accent:' + car.accent + '; --accent-bg: linear-gradient(165deg,' + car.accent + '26,#0a0b0d 72%);"';
-    var carLabel = car.brand + ' ' + car.model;
 
     return '' +
       '<div class="car-tilt">' +
@@ -140,7 +141,7 @@ WARENT.waLink = function (label, price) {
                 visual +
               '</div>' +
               '<div class="car-info">' +
-                '<p class="car-name">' + carLabel + '</p>' +
+                '<p class="car-name">' + car.brand + ' ' + car.model + '</p>' +
                 '<p class="car-cat" data-fr="' + car.catFr + '" data-en="' + car.catEn + '">' + car.catFr + '</p>' +
                 '<div class="car-specs">' +
                   specChip('seat', car.seats + ' places', car.seats + ' seats') +
@@ -149,27 +150,8 @@ WARENT.waLink = function (label, price) {
                 '</div>' +
                 '<div class="car-meta-row">' +
                   '<span class="car-price">' + car.price + '€<small data-fr="/jour" data-en="/day"> /jour</small></span>' +
-                  '<button type="button" class="car-cta" data-fr="Détails" data-en="Details">Détails</button>' +
+                  '<button type="button" class="car-cta" data-detail="' + car.id + '" data-fr="Détails" data-en="Details">Détails</button>' +
                 '</div>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="car-face car-face-back">' +
-            '<div class="car-face-inner">' +
-              '<div class="car-back-bg" ' + styleVars + '></div>' +
-              '<div class="car-back-overlay"></div>' +
-              '<div class="car-back-content">' +
-                '<p class="car-back-name">' + carLabel + '</p>' +
-                '<p class="car-back-prices"><b>' + car.price + '€</b> <span data-fr="/ jour" data-en="/ day">/ jour</span> · <b>' + car.priceWeek + '€</b> <span data-fr="/ semaine" data-en="/ week">/ semaine</span></p>' +
-                '<ul class="car-spec-list">' +
-                  specRow('Places', 'Seats', String(car.seats), String(car.seats)) +
-                  specRow('Boîte', 'Transmission', trans[0], trans[1]) +
-                  specRow('Carburant', 'Fuel', fuel[0], fuel[1]) +
-                  specRow('Bagages', 'Luggage', String(car.luggage), String(car.luggage)) +
-                  specRow('Âge minimum', 'Min. age', car.minAge + ' ans', car.minAge + ' yo') +
-                '</ul>' +
-                '<p class="car-back-location" data-fr="Prise en charge : Lorient (56)" data-en="Pickup: Lorient, Brittany">Prise en charge : Lorient (56)</p>' +
-                '<a class="car-reserve" href="' + WARENT.waLink(carLabel, car.price) + '" data-car="' + carLabel + '" data-price="' + car.price + '" target="_blank" rel="noopener" data-fr="Réserver maintenant" data-en="Reserve now">Réserver maintenant</a>' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -191,6 +173,9 @@ WARENT.waLink = function (label, price) {
   function lerp(a, b, t) { return a + (b - a) * t; }
   function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
+  // Looping only makes sense with enough cards; below that the wrap-around
+  // would push the neighbour card to one side only. Small sets scroll
+  // linearly and stay inside their bounds instead.
   function clampTarget() {
     if (!wrap) targetProgress = clamp(targetProgress, 0, Math.max(0, cardEls.length - 1));
   }
@@ -234,6 +219,7 @@ WARENT.waLink = function (label, price) {
     currentCars.forEach(function (car) {
       var el = document.createElement('div');
       el.className = 'car-slot';
+      el.setAttribute('data-id', car.id);
       el.innerHTML = buildCard(car);
       track.appendChild(el);
       cardEls.push(el);
@@ -252,11 +238,18 @@ WARENT.waLink = function (label, price) {
 
   var dragging = false, moved = false, startX = 0, startProgress = 0, suppressClick = false;
 
+  // La carte s'incline au survol : entre le pointerdown et le click, la
+  // transition de l'inclinaison peut la deplacer de quelques pixels sous le
+  // curseur, et le click finit alors sur le viewport plutot que sur la carte.
+  // On memorise donc la carte visee au pointerdown et on s'en sert au click.
+  var downSlot = null;
+
   viewport.addEventListener('pointerdown', function (e) {
     dragging = true;
     moved = false;
     startX = e.clientX;
     startProgress = targetProgress;
+    downSlot = e.target.closest ? e.target.closest('.car-slot') : null;
     viewport.classList.add('is-dragging');
     try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
   });
@@ -269,14 +262,6 @@ WARENT.waLink = function (label, price) {
       clampTarget();
     }
   });
-
-  function unflipAll() {
-    cardEls.forEach(function (el) {
-      var f = el.querySelector('.car-flip');
-      if (f) f.classList.remove('is-flipped');
-    });
-  }
-
   function endDrag() {
     if (!dragging) return;
     dragging = false;
@@ -284,7 +269,6 @@ WARENT.waLink = function (label, price) {
     if (moved) {
       targetProgress = Math.round(targetProgress);
       clampTarget();
-      unflipAll();
       suppressClick = true;
       setTimeout(function () { suppressClick = false; }, 60);
     }
@@ -306,8 +290,8 @@ WARENT.waLink = function (label, price) {
     }, 220);
   }, { passive: false });
 
-  if (prevBtn) prevBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) - 1; clampTarget(); unflipAll(); });
-  if (nextBtn) nextBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) + 1; clampTarget(); unflipAll(); });
+  if (prevBtn) prevBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) - 1; clampTarget(); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { targetProgress = Math.round(targetProgress) + 1; clampTarget(); });
 
   track.addEventListener('pointermove', function (e) {
     var slot = e.target.closest ? e.target.closest('.car-slot') : null;
@@ -336,11 +320,14 @@ WARENT.waLink = function (label, price) {
     });
   });
 
-  track.addEventListener('click', function (e) {
+  // Un clic sur une carte laterale la ramene au centre ; une fois au centre,
+  // la carte (ou son bouton Details) ouvre la fiche detaillee.
+  viewport.addEventListener('click', function (e) {
     if (suppressClick) return;
-    if (e.target.closest && e.target.closest('.car-reserve')) return;
-    var slot = e.target.closest ? e.target.closest('.car-slot') : null;
-    if (!slot) return;
+    if (e.target.closest && e.target.closest('.carousel-nav')) return;
+    var slot = (e.target.closest && e.target.closest('.car-slot')) || downSlot;
+    downSlot = null;
+    if (!slot || !slot.isConnected) return;
     var i = cardEls.indexOf(slot);
     var n = cardEls.length;
     if (i < 0 || !n) return;
@@ -356,12 +343,11 @@ WARENT.waLink = function (label, price) {
         targetProgress = i;
       }
       clampTarget();
-      unflipAll();
       return;
     }
 
-    var flipEl = slot.querySelector('.car-flip');
-    if (flipEl) flipEl.classList.toggle('is-flipped');
+    var id = slot.getAttribute('data-id');
+    if (id && WARENT.openDetail) WARENT.openDetail(id);
   });
 
   pills.forEach(function (pill) {
@@ -377,49 +363,266 @@ WARENT.waLink = function (label, price) {
   window.addEventListener('resize', measure);
 
   WARENT.fleet = FLEET;
+  WARENT.icons = ICONS;
+  WARENT.labels = { transmission: TRANSMISSION, fuel: FUEL };
 
   renderCars();
   requestAnimationFrame(loop);
 })();
 
-// ---- Section Tarifs, generee depuis FLEET ----
+// ---- Fiche detaillee vehicule, ouverte depuis les cartes de la flotte ----
+// Remplace l'ancienne section Tarifs : les prix vivent maintenant dans cette
+// fiche, generee a partir de WARENT.fleet, donc toujours en phase avec les
+// cartes de la flotte.
 (function () {
-  var grid = document.getElementById('price-grid');
-  if (!grid || !WARENT.fleet) return;
+  var FLEET = WARENT.fleet;
+  if (!FLEET || !FLEET.length) return;
 
-  function row(labelFr, labelEn, amount) {
-    return '<li><span data-fr="' + labelFr + '" data-en="' + labelEn + '">' + labelFr +
-           '</span><b>' + amount + ' €</b></li>';
-  }
+  var ICONS = WARENT.icons || {};
+  var LABELS = WARENT.labels || {};
+  var TRANSMISSION = LABELS.transmission || {};
+  var FUEL = LABELS.fuel || {};
+
+  var KM_PER_DAY = 200;
 
   var INCLUDED = [
-    ['200 km inclus par jour', '200 km included per day'],
     ['Assurance et entretien inclus', 'Insurance and servicing included'],
     ['Véhicule nettoyé et contrôlé avant chaque départ', 'Cleaned and checked before every rental'],
-    ['Livraison possible dans le Morbihan', 'Delivery available across Morbihan']
+    ['Retrait à Lorient, livraison possible dans le Morbihan', 'Pick-up in Lorient, delivery available across Morbihan']
   ];
 
-  grid.innerHTML = WARENT.fleet.map(function (car) {
-    var label = car.brand + ' ' + car.model;
-    return '<article class="price-card" style="--accent:' + car.accent + '; --ink:' + car.ink + '">' +
-      '<span class="price-tag" data-fr="' + car.tagFr + '" data-en="' + car.tagEn + '">' + car.tagFr + '</span>' +
-      '<h3 class="price-name">' + label + '</h3>' +
-      '<p class="price-cat" data-fr="' + car.catFr + '" data-en="' + car.catEn + '">' + car.catFr + '</p>' +
-      '<ul class="price-rows">' +
-        row('1 jour', '1 day', car.price) +
-        row('Week-end (2 jours)', 'Weekend (2 days)', car.priceWeekend) +
-        row('Semaine (7 jours)', 'Week (7 days)', car.priceWeek) +
-      '</ul>' +
-      '<ul class="price-incl">' +
-        INCLUDED.map(function (i) {
-          return '<li data-fr="' + i[0] + '" data-en="' + i[1] + '">' + i[0] + '</li>';
-        }).join('') +
-      '</ul>' +
-      '<a class="price-cta" href="#" data-car="' + label + '" data-price="' + car.price + '"' +
-      ' target="_blank" rel="noopener" data-fr="Réserver sur WhatsApp" data-en="Book on WhatsApp">Réserver sur WhatsApp</a>' +
-    '</article>';
-  }).join('');
+  function lang() {
+    return document.documentElement.lang === 'en' ? 'en' : 'fr';
+  }
+
+  function t(fr, en) {
+    return lang() === 'en' ? en : fr;
+  }
+
+  function money(n) {
+    return n.toLocaleString(lang() === 'en' ? 'en-GB' : 'fr-FR') + ' €';
+  }
+
+  // Meilleure combinaison des tarifs publies pour une duree donnee : on ne
+  // facture jamais plus que la formule la plus avantageuse affichee au client.
+  function bestPrice(car, days) {
+    var weeks = Math.floor(days / 7);
+    var rest = days % 7;
+    var restCost = Math.floor(rest / 2) * car.priceWeekend + (rest % 2) * car.price;
+    var byBlocks = weeks * car.priceWeek + restCost;
+    var byDays = days * car.price;
+    var roundedUp = (weeks + 1) * car.priceWeek;
+    var best = Math.min(byBlocks, byDays);
+    if (days > 7 * weeks && weeks >= 1) best = Math.min(best, roundedUp);
+    if (days <= 7) best = Math.min(best, car.priceWeek);
+    return best;
+  }
+
+  function durationsFor(car) {
+    var list = [
+      { id: 'day', days: 1, fr: '1 jour', en: '1 day', subFr: 'Formule journée', subEn: 'Day rate', total: car.price },
+      { id: 'weekend', days: 2, fr: 'Week-end', en: 'Weekend', subFr: '2 jours consécutifs', subEn: '2 consecutive days', total: car.priceWeekend },
+      { id: 'week', days: 7, fr: 'Semaine', en: 'Week', subFr: '7 jours consécutifs', subEn: '7 consecutive days', total: car.priceWeek }
+    ];
+    var s = WARENT.search;
+    if (s && s.days && s.days !== 1 && s.days !== 2 && s.days !== 7) {
+      list.unshift({
+        id: 'search', days: s.days,
+        fr: 'Vos dates (' + s.days + ' jours)', en: 'Your dates (' + s.days + ' days)',
+        subFr: 'Du ' + s.fromFr + ' au ' + s.toFr, subEn: 'From ' + s.fromEn + ' to ' + s.toEn,
+        total: bestPrice(car, s.days)
+      });
+    }
+    return list;
+  }
+
+  var overlay = document.createElement('div');
+  overlay.className = 'vd-overlay';
+  overlay.id = 'vehicle-detail';
+  overlay.hidden = true;
+  overlay.innerHTML =
+    '<div class="vd-backdrop" data-close="1"></div>' +
+    '<div class="vd-dialog" role="dialog" aria-modal="true" aria-labelledby="vd-name"></div>';
+  document.body.appendChild(overlay);
+
+  var dialog = overlay.querySelector('.vd-dialog');
+  var current = null;
+  var choice = { duration: 'day', km: 'included' };
+  var lastFocus = null;
+
+  function spec(icon, fr, en) {
+    return '<li>' + (ICONS[icon] || '') +
+      '<span data-fr="' + fr + '" data-en="' + en + '">' + t(fr, en) + '</span></li>';
+  }
+
+  function option(group, id, selected, titleFr, titleEn, subFr, subEn, priceHtml) {
+    return '<button type="button" class="vd-option' + (selected ? ' is-selected' : '') + '"' +
+      ' role="radio" aria-checked="' + (selected ? 'true' : 'false') + '"' +
+      ' data-group="' + group + '" data-value="' + id + '">' +
+      '<span class="vd-radio" aria-hidden="true"></span>' +
+      '<span class="vd-option-text">' +
+        '<span class="vd-option-title" data-fr="' + titleFr + '" data-en="' + titleEn + '">' + t(titleFr, titleEn) + '</span>' +
+        '<span class="vd-option-sub" data-fr="' + subFr + '" data-en="' + subEn + '">' + t(subFr, subEn) + '</span>' +
+      '</span>' +
+      '<span class="vd-option-price">' + priceHtml + '</span>' +
+    '</button>';
+  }
+
+  function totals(car) {
+    var durations = durationsFor(car);
+    var d = durations.filter(function (x) { return x.id === choice.duration; })[0] || durations[0];
+    var extra = choice.km === 'unlimited' ? car.kmUnlimited * d.days : 0;
+    return { duration: d, extra: extra, total: d.total + extra, perDay: Math.round((d.total + extra) / d.days) };
+  }
+
+  function render() {
+    var car = current;
+    if (!car) return;
+    var trans = TRANSMISSION[car.transmission] || ['', ''];
+    var fuel = FUEL[car.fuel] || ['', ''];
+    var durations = durationsFor(car);
+    var sums = totals(car);
+
+    var visual = car.img
+      ? '<img class="vd-photo" src="' + car.img + '" alt="' + car.brand + ' ' + car.model + '">'
+      : '';
+
+    // L'accent du vehicule est pose sur le dialogue : il cascade ainsi sur
+    // les options selectionnees, les puces et le bouton, pas seulement sur
+    // la colonne visuelle.
+    dialog.style.setProperty('--accent', car.accent);
+    dialog.style.setProperty('--ink', car.ink);
+
+    dialog.innerHTML =
+      '<button type="button" class="vd-close" data-close="1" aria-label="' + t('Fermer', 'Close') + '">' +
+        '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' +
+      '</button>' +
+      '<div class="vd-visual">' +
+        '<div class="vd-visual-head">' +
+          '<p class="vd-name" id="vd-name">' + car.brand + ' ' + car.model + '</p>' +
+          '<p class="vd-cat"><span data-fr="' + car.catFr + '" data-en="' + car.catEn + '">' + t(car.catFr, car.catEn) + '</span> · ' +
+            '<span data-fr="' + trans[0] + '" data-en="' + trans[1] + '">' + t(trans[0], trans[1]) + '</span></p>' +
+        '</div>' +
+        '<div class="vd-photo-wrap">' + visual + '</div>' +
+        '<ul class="vd-specs">' +
+          spec('seat', car.seats + ' places', car.seats + ' seats') +
+          spec('bag', car.luggage + ' valises', car.luggage + ' suitcases') +
+          spec('cabin', car.cabin + ' bagage cabine', car.cabin + ' cabin bag') +
+          spec('gear', trans[0], trans[1]) +
+          spec('door', car.doors + ' portes', car.doors + ' doors') +
+          spec('id', 'Âge min. ' + car.minAge + ' ans', 'Min. age ' + car.minAge) +
+        '</ul>' +
+      '</div>' +
+      '<div class="vd-panel">' +
+        '<div class="vd-scroll">' +
+          '<h3 class="vd-group-title" data-fr="Durée de location" data-en="Rental duration">' + t('Durée de location', 'Rental duration') + '</h3>' +
+          '<div class="vd-options" role="radiogroup">' +
+            durations.map(function (d) {
+              return option('duration', d.id, d.id === sums.duration.id, d.fr, d.en, d.subFr, d.subEn,
+                '<b>' + money(d.total) + '</b><small>' + money(Math.round(d.total / d.days)) +
+                t(' / jour', ' / day') + '</small>');
+            }).join('') +
+          '</div>' +
+          '<h3 class="vd-group-title" data-fr="Kilométrage" data-en="Mileage">' + t('Kilométrage', 'Mileage') + '</h3>' +
+          '<div class="vd-options" role="radiogroup">' +
+            option('km', 'included', choice.km === 'included',
+              KM_PER_DAY + ' km par jour', KM_PER_DAY + ' km per day',
+              'Au-delà, chaque km est facturé au tarif du contrat', 'Beyond that, each km is charged at the contract rate',
+              '<b data-fr="Inclus" data-en="Included">' + t('Inclus', 'Included') + '</b>') +
+            option('km', 'unlimited', choice.km === 'unlimited',
+              'Kilomètres illimités', 'Unlimited mileage',
+              'Aucune limite pendant toute la location', 'No limit for the whole rental',
+              '<b>+ ' + money(car.kmUnlimited) + '</b><small>' + t('par jour', 'per day') + '</small>') +
+          '</div>' +
+          '<ul class="vd-included">' +
+            INCLUDED.map(function (i) {
+              return '<li data-fr="' + i[0] + '" data-en="' + i[1] + '">' + t(i[0], i[1]) + '</li>';
+            }).join('') +
+          '</ul>' +
+          '<p class="vd-legal" data-fr="Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne." data-en="A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person.">' +
+            t('Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne.',
+              'A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person.') +
+          '</p>' +
+        '</div>' +
+        '<div class="vd-foot">' +
+          '<div class="vd-total">' +
+            '<b>' + money(sums.total) + '</b>' +
+            '<span>' + t('Total', 'Total') + ' · ' + money(sums.perDay) + t(' / jour', ' / day') + '</span>' +
+          '</div>' +
+          '<a class="vd-cta" href="' + waHref(car, sums) + '" target="_blank" rel="noopener"' +
+            ' data-fr="Réserver sur WhatsApp" data-en="Book on WhatsApp">' + t('Réserver sur WhatsApp', 'Book on WhatsApp') + '</a>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function waHref(car, sums) {
+    var article = /^[aeiouyéèêAEIOUY]/.test(car.brand) ? "l'" : 'la ';
+    var days = sums.duration.days;
+    var msg = 'Bonjour, je souhaite réserver ' + article + car.brand + ' ' + car.model +
+      ' pour ' + days + (days > 1 ? ' jours' : ' jour') +
+      ' : ' + sums.total + ' € au total, ';
+    msg += choice.km === 'unlimited'
+      ? 'kilomètres illimités (+' + car.kmUnlimited + ' €/jour)'
+      : KM_PER_DAY + ' km/jour inclus';
+    msg += WARENT.search ? ', ' + WARENT.search.sentence : ', à Lorient';
+    return 'https://wa.me/' + WARENT.phone + '?text=' + encodeURIComponent(msg + '.');
+  }
+
+  function open(id) {
+    var car = FLEET.filter(function (c) { return c.id === id; })[0];
+    if (!car) return;
+    if (!overlay.hidden && current === car) return;
+    current = car;
+    // Si le visiteur a deja choisi ses dates, la fiche s'ouvre sur cette duree.
+    var s = WARENT.search;
+    choice.duration = 'day';
+    if (s && s.days === 2) choice.duration = 'weekend';
+    else if (s && s.days === 7) choice.duration = 'week';
+    else if (s && s.days) choice.duration = 'search';
+    choice.km = 'included';
+    render();
+    lastFocus = document.activeElement;
+    overlay.hidden = false;
+    document.body.classList.add('vd-open');
+    var close = dialog.querySelector('.vd-close');
+    if (close) close.focus();
+  }
+
+  function close() {
+    overlay.hidden = true;
+    document.body.classList.remove('vd-open');
+    current = null;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  overlay.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[data-close]')) { close(); return; }
+    var opt = e.target.closest ? e.target.closest('.vd-option') : null;
+    if (!opt) return;
+    choice[opt.getAttribute('data-group')] = opt.getAttribute('data-value');
+    render();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !overlay.hidden) close();
+  });
+
+  // Le bouton Details des cartes ouvre la fiche ; le clic sur la carte elle-meme
+  // est gere par le carrousel, qui appelle WARENT.openDetail.
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('[data-detail]') : null;
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    open(btn.getAttribute('data-detail'));
+  });
+
+  WARENT.openDetail = open;
+  WARENT.closeDetail = close;
+  WARENT.renderDetail = function () { if (current) render(); };
 })();
+
+
 
 (function () {
   var form = document.getElementById('search-form');
@@ -449,9 +652,9 @@ WARENT.waLink = function (label, price) {
   sd.min = isoDate(now);
   ed.min = isoDate(now);
 
-  // Créneaux horaires en 24h, toutes les 30 min. Un <select> plutôt qu'un
-  // <input type="time"> : le format natif suit la langue du système (donc
-  // AM/PM sur un appareil configuré en anglais) et reste capricieux au tap
+  // Creneaux horaires en 24h, toutes les 30 min. Un <select> plutot qu'un
+  // <input type="time"> : le format natif suit la langue du systeme (donc
+  // AM/PM sur un appareil configure en anglais) et reste capricieux au tap
   // sur iOS. Ici l'affichage est garanti identique partout.
   function fillTimes(sel, selected) {
     var html = '';
@@ -488,8 +691,7 @@ WARENT.waLink = function (label, price) {
     return 'https://wa.me/' + WARENT.phone + '?text=' + encodeURIComponent(msg + '.');
   }
 
-  // [data-car] couvre a la fois les cartes de la flotte et les boutons de la
-  // section Tarifs, pour que tous repartent avec les dates choisies.
+  // Tout lien portant [data-car] repart avec les dates choisies.
   function refreshLinks() {
     Array.prototype.forEach.call(document.querySelectorAll('[data-car]'), function (a) {
       a.href = WARENT.waLink(a.getAttribute('data-car'), a.getAttribute('data-price'));
@@ -527,6 +729,11 @@ WARENT.waLink = function (label, price) {
     var place = city.value || 'Lorient';
     WARENT.search = {
       city: place,
+      days: Math.max(1, Math.ceil((endAt - startAt) / DAY)),
+      fromFr: prettyDate(sd.value) + ' à ' + st.value,
+      fromEn: prettyDate(sd.value) + ' at ' + st.value,
+      toFr: prettyDate(ed.value) + ' à ' + et.value,
+      toEn: prettyDate(ed.value) + ' at ' + et.value,
       sentence: 'à ' + place + ', du ' + prettyDate(sd.value) + ' à ' + st.value +
                 ' au ' + prettyDate(ed.value) + ' à ' + et.value
     };
@@ -580,6 +787,10 @@ WARENT.waLink = function (label, price) {
       btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 
+    // La fiche detaillee est generee en JS : elle n'est pas dans textEls,
+    // il faut la redessiner si elle est ouverte au moment du changement.
+    if (WARENT.renderDetail) WARENT.renderDetail();
+
     storeLang(lang);
   }
 
@@ -591,4 +802,3 @@ WARENT.waLink = function (label, price) {
 
   setLanguage(getStoredLang() || 'fr');
 })();
-
