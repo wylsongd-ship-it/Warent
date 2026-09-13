@@ -355,10 +355,12 @@
     width: 17px; height: 17px; flex-shrink: 0;
     color: rgba(255, 255, 255, 0.55);
   }
-  .search-control select,
-  .search-control input {
+  .search-control select {
     appearance: none;
     -webkit-appearance: none;
+  }
+  .search-control select,
+  .search-control input {
     background: transparent;
     border: none;
     outline: none;
@@ -815,7 +817,8 @@
               <input type="date" id="start-date">
             </div>
             <div class="search-control">
-              <input type="time" id="start-time" value="10:00">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <select id="start-time" aria-label="Heure"></select>
             </div>
           </div>
         </div>
@@ -828,7 +831,8 @@
               <input type="date" id="end-date">
             </div>
             <div class="search-control">
-              <input type="time" id="end-time" value="10:00">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <select id="end-time" aria-label="Heure"></select>
             </div>
           </div>
         </div>
@@ -1262,6 +1266,23 @@
       ed.value = isoDate(new Date(now.getTime() + 4 * DAY));
       sd.min = isoDate(now);
       ed.min = isoDate(now);
+
+      // Créneaux horaires en 24h, toutes les 30 min. Un <select> plutôt qu'un
+      // <input type="time"> : le format natif suit la langue du système (donc
+      // AM/PM sur un appareil configuré en anglais) et reste capricieux au tap
+      // sur iOS. Ici l'affichage est garanti identique partout.
+      function fillTimes(sel, selected) {
+        var html = '';
+        for (var h = 0; h < 24; h++) {
+          for (var m = 0; m < 60; m += 30) {
+            var v = (h < 10 ? '0' : '') + h + ':' + (m === 0 ? '00' : '30');
+            html += '<option value="' + v + '"' + (v === selected ? ' selected' : '') + '>' + v + '</option>';
+          }
+        }
+        sel.innerHTML = html;
+      }
+      fillTimes(st, '10:00');
+      fillTimes(et, '10:00');
 
       sd.addEventListener('change', function () {
         ed.min = sd.value;
