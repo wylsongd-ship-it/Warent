@@ -11,9 +11,10 @@
   <div class="preloader" id="preloader"><span id="preloader-text">0%</span></div>
 
   <div class="video-bg">
-    <video id="hero-video" autoplay muted loop playsinline preload="auto">
-      <source src="https://qdrcnvgoldvoxaqj.public.blob.vercel-storage.com/13643106-uhd_3840_2160_24fps.mp4" type="video/mp4">
-    </video>
+    <picture class="hero-media">
+      <source media="(max-width: 700px)" srcset="hero-tall.webp">
+      <img id="hero-media" src="hero.webp" alt="Audi RS6 noire dans un hall sombre" fetchpriority="high" decoding="async">
+    </picture>
     <div class="video-overlay"></div>
   </div>
 

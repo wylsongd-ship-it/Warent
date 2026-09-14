@@ -13,44 +13,26 @@ WARENT.waLink = function (label, price) {
 };
 
 (function () {
-  var video = document.getElementById('hero-video');
+  // Le hero est une image fixe : le preloader s'efface des qu'elle est
+  // decodee (ou au bout de 4 s si le reseau traine), pour ne jamais bloquer
+  // l'affichage du site.
+  var img = document.getElementById('hero-media');
   var preloader = document.getElementById('preloader');
   var preloaderText = document.getElementById('preloader-text');
 
-  video.loop = true;
-
-  video.addEventListener('ended', function () {
-    video.currentTime = 0;
-    video.play();
-  });
-
-  video.addEventListener('pause', function () {
-    video.play();
-  });
-
-  document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) {
-      video.play();
-    }
-  });
-
-  video.play().catch(function () { });
-
-  function updateBuffered() {
-    if (video.duration && video.buffered.length) {
-      var bufferedEnd = video.buffered.end(video.buffered.length - 1);
-      var pct = Math.min(100, Math.round((bufferedEnd / video.duration) * 100));
-      preloaderText.textContent = pct + '%';
-    }
-  }
-  video.addEventListener('progress', updateBuffered);
+  if (preloaderText) preloaderText.textContent = 'WaRent';
 
   function hidePreloader() {
-    preloader.classList.add('hide');
+    if (preloader) preloader.classList.add('hide');
   }
-  video.addEventListener('canplaythrough', hidePreloader, { once: true });
-  setTimeout(hidePreloader, 6000);
 
+  if (!img || (img.complete && img.naturalWidth)) {
+    hidePreloader();
+  } else {
+    img.addEventListener('load', hidePreloader, { once: true });
+    img.addEventListener('error', hidePreloader, { once: true });
+  }
+  setTimeout(hidePreloader, 4000);
 })();
 
 (function () {
