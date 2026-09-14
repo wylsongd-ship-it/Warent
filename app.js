@@ -384,6 +384,7 @@ WARENT.waLink = function (label, price) {
   var FUEL = LABELS.fuel || {};
 
   var KM_PER_DAY = 200;
+  var BOOKING_EMAIL = 'wylsongd@gmail.com';
 
   var INCLUDED = [
     ['Assurance et entretien inclus', 'Insurance and servicing included'],
@@ -539,9 +540,9 @@ WARENT.waLink = function (label, price) {
               return '<li data-fr="' + i[0] + '" data-en="' + i[1] + '">' + t(i[0], i[1]) + '</li>';
             }).join('') +
           '</ul>' +
-          '<p class="vd-legal" data-fr="Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne." data-en="A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person.">' +
-            t('Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne.',
-              'A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person.') +
+          '<p class="vd-legal" data-fr="Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne. Le bouton Réserver ouvre un e-mail pré-rempli : la réservation n\'est ferme qu\'une fois confirmée par WaRent." data-en="A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person. The Book button opens a pre-filled email: the booking is only firm once WaRent confirms it.">' +
+            t('Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne. Le bouton Réserver ouvre un e-mail pré-rempli : la réservation n\'est ferme qu\'une fois confirmée par WaRent.',
+              'A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person. The Book button opens a pre-filled email: the booking is only firm once WaRent confirms it.') +
           '</p>' +
         '</div>' +
         '<div class="vd-foot">' +
@@ -549,23 +550,45 @@ WARENT.waLink = function (label, price) {
             '<b>' + money(sums.total) + '</b>' +
             '<span>' + t('Total', 'Total') + ' · ' + money(sums.perDay) + t(' / jour', ' / day') + '</span>' +
           '</div>' +
-          '<a class="vd-cta" href="' + waHref(car, sums) + '" target="_blank" rel="noopener"' +
-            ' data-fr="Réserver sur WhatsApp" data-en="Book on WhatsApp">' + t('Réserver sur WhatsApp', 'Book on WhatsApp') + '</a>' +
+          '<a class="vd-cta" href="' + bookingHref(car, sums) + '" target="_blank" rel="noopener"' +
+            ' data-fr="Réserver" data-en="Book now">' + t('Réserver', 'Book now') + '</a>' +
         '</div>' +
       '</div>';
   }
 
-  function waHref(car, sums) {
-    var article = /^[aeiouyéèêAEIOUY]/.test(car.brand) ? "l'" : 'la ';
+  function bookingHref(car, sums) {
+    var NL = String.fromCharCode(13, 10);
     var days = sums.duration.days;
-    var msg = 'Bonjour, je souhaite réserver ' + article + car.brand + ' ' + car.model +
-      ' pour ' + days + (days > 1 ? ' jours' : ' jour') +
-      ' : ' + sums.total + ' € au total, ';
-    msg += choice.km === 'unlimited'
-      ? 'kilomètres illimités (+' + car.kmUnlimited + ' €/jour)'
-      : KM_PER_DAY + ' km/jour inclus';
-    msg += WARENT.search ? ', ' + WARENT.search.sentence : ', à Lorient';
-    return 'https://wa.me/' + WARENT.phone + '?text=' + encodeURIComponent(msg + '.');
+    var dayWord = days > 1 ? t(' jours', ' days') : t(' jour', ' day');
+    var km = choice.km === 'unlimited'
+      ? t('illimité (+' + car.kmUnlimited + ' €/jour)', 'unlimited (+' + car.kmUnlimited + ' €/day)')
+      : KM_PER_DAY + t(' km/jour inclus', ' km/day included');
+    var s = WARENT.search;
+    var pickup = s
+      ? s.city + t(', du ' + s.fromFr + ' au ' + s.toFr, ', from ' + s.fromEn + ' to ' + s.toEn)
+      : 'Lorient (56)';
+    var lines = [
+      t('Bonjour,', 'Hello,'),
+      '',
+      t('Je souhaite réserver le véhicule suivant :', 'I would like to book the following vehicle:'),
+      '',
+      t('Véhicule : ', 'Vehicle: ') + car.brand + ' ' + car.model,
+      t('Formule : ', 'Rate: ') + t(sums.duration.fr, sums.duration.en),
+      t('Durée : ', 'Duration: ') + days + dayWord,
+      t('Kilométrage : ', 'Mileage: ') + km,
+      t('Total estimé : ', 'Estimated total: ') + sums.total + ' €',
+      t('Prise en charge : ', 'Pick-up: ') + pickup,
+      '',
+      t('Mes coordonnées :', 'My details:'),
+      t('Nom et prénom : ', 'Full name: '),
+      t('Téléphone : ', 'Phone: '),
+      t('Âge : ', 'Age: '),
+      '',
+      t('Merci de me confirmer la disponibilité.', 'Please confirm availability.')
+    ];
+    return 'mailto:' + BOOKING_EMAIL +
+      '?subject=' + encodeURIComponent(t('Demande de réservation — ', 'Booking request — ') + car.brand + ' ' + car.model) +
+      '&body=' + encodeURIComponent(lines.join(NL));
   }
 
   function open(id) {
@@ -712,7 +735,6 @@ WARENT.waLink = function (label, price) {
       showError('Merci de renseigner les dates et les heures.', 'Please fill in both dates and times.');
       return;
     }
-
     var startAt = new Date(sd.value + 'T' + st.value);
     var endAt = new Date(ed.value + 'T' + et.value);
     if (isNaN(startAt.getTime()) || isNaN(endAt.getTime())) {
