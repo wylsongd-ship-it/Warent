@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WaRent — Demande de réservation</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="reservation.css">
+</head>
+<body class="bk-body">
+
+  <header class="bk-header">
+    <div class="bk-header-inner">
+      <a class="bk-back" href="index.html#fleet">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-fr="Retour aux véhicules" data-en="Back to the fleet">Retour aux véhicules</span>
+      </a>
+      <a class="bk-logo" href="index.html">WaRent</a>
+      <div class="bk-header-right">
+        <div class="bk-header-total">
+          <span class="bk-header-total-label" data-fr="Total estimé" data-en="Estimated total">Total estimé</span>
+          <b id="header-total">—</b>
+        </div>
+        <div class="lang-switch" role="group" aria-label="Choix de la langue / Language switcher">
+          <button type="button" class="lang-btn active" data-lang-btn="fr" aria-pressed="true">FR</button>
+          <button type="button" class="lang-btn" data-lang-btn="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="bk-main" id="bk-main">
+    <div class="bk-grid">
+
+      <div class="bk-col-form">
+        <h1 class="bk-title" data-fr="Finaliser votre demande" data-en="Complete your request">Finaliser votre demande</h1>
+        <p class="bk-intro" data-fr="Il ne reste qu'à nous dire qui conduit. Votre demande part ensuite chez WaRent, qui vous confirme la disponibilité." data-en="All that's left is telling us who's driving. Your request then goes to WaRent, who confirm availability.">Il ne reste qu'à nous dire qui conduit. Votre demande part ensuite chez WaRent, qui vous confirme la disponibilité.</p>
+
+        <form id="booking-form" novalidate>
+
+          <section class="bk-card">
+            <h2 class="bk-section-title" data-fr="Qui va conduire ?" data-en="Who's driving?">Qui va conduire ?</h2>
+
+            <div class="bk-field">
+              <label for="bk-email" data-fr="Adresse e-mail" data-en="Email address">Adresse e-mail</label>
+              <input type="email" id="bk-email" name="email" autocomplete="email" required>
+              <p class="bk-error" data-for="bk-email" hidden></p>
+            </div>
+
+            <div class="bk-row">
+              <div class="bk-field">
+                <label for="bk-first" data-fr="Prénom" data-en="First name">Prénom</label>
+                <input type="text" id="bk-first" name="prenom" autocomplete="given-name" required>
+                <p class="bk-error" data-for="bk-first" hidden></p>
+              </div>
+              <div class="bk-field">
+                <label for="bk-last" data-fr="Nom de famille" data-en="Last name">Nom de famille</label>
+                <input type="text" id="bk-last" name="nom" autocomplete="family-name" required>
+                <p class="bk-error" data-for="bk-last" hidden></p>
+              </div>
+            </div>
+
+            <div class="bk-row bk-row-phone">
+              <div class="bk-field">
+                <label for="bk-dial" data-fr="Pays" data-en="Country">Pays</label>
+                <select id="bk-dial" name="indicatif">
+                  <option value="+33" selected>France +33</option>
+                  <option value="+32">Belgique +32</option>
+                  <option value="+41">Suisse +41</option>
+                  <option value="+352">Luxembourg +352</option>
+                  <option value="+44">Royaume-Uni +44</option>
+                  <option value="+49">Allemagne +49</option>
+                  <option value="+34">Espagne +34</option>
+                  <option value="+39">Italie +39</option>
+                </select>
+              </div>
+              <div class="bk-field">
+                <label for="bk-phone" data-fr="Numéro de téléphone" data-en="Phone number">Numéro de téléphone</label>
+                <input type="tel" id="bk-phone" name="telephone" autocomplete="tel" required>
+                <p class="bk-error" data-for="bk-phone" hidden></p>
+              </div>
+            </div>
+
+            <div class="bk-field">
+              <label for="bk-company">
+                <span data-fr="Entreprise" data-en="Company">Entreprise</span>
+                <span class="bk-optional" data-fr="(optionnel)" data-en="(optional)">(optionnel)</span>
+              </label>
+              <input type="text" id="bk-company" name="entreprise" autocomplete="organization">
+            </div>
+          </section>
+
+          <section class="bk-card">
+            <h2 class="bk-section-title" data-fr="Conditions du véhicule" data-en="Vehicle requirements">Conditions du véhicule</h2>
+            <p class="bk-note" id="bk-requirements"></p>
+
+            <label class="bk-check">
+              <input type="checkbox" id="bk-age" name="age" required>
+              <span class="bk-check-box" aria-hidden="true"></span>
+              <span class="bk-check-text" id="bk-age-label"></span>
+            </label>
+
+            <label class="bk-check">
+              <input type="checkbox" id="bk-licence" name="permis" required>
+              <span class="bk-check-box" aria-hidden="true"></span>
+              <span class="bk-check-text" id="bk-licence-label"></span>
+            </label>
+            <p class="bk-error" data-for="bk-checks" hidden></p>
+          </section>
+
+          <section class="bk-card">
+            <h2 class="bk-section-title" data-fr="Une précision à ajouter ?" data-en="Anything to add?">Une précision à ajouter ?</h2>
+            <div class="bk-field">
+              <label for="bk-message">
+                <span data-fr="Message pour WaRent" data-en="Message for WaRent">Message pour WaRent</span>
+                <span class="bk-optional" data-fr="(optionnel)" data-en="(optional)">(optionnel)</span>
+              </label>
+              <textarea id="bk-message" name="message" rows="4" placeholder="Livraison souhaitée, conducteur supplémentaire, mariage, tournage…"></textarea>
+            </div>
+          </section>
+
+          <section class="bk-card bk-card-pay">
+            <h2 class="bk-section-title" data-fr="Paiement" data-en="Payment">Paiement</h2>
+            <ul class="bk-pay-list">
+              <li data-fr="Aucun paiement en ligne : rien n'est débité à l'envoi de cette demande." data-en="No online payment: nothing is charged when you send this request.">Aucun paiement en ligne : rien n'est débité à l'envoi de cette demande.</li>
+              <li data-fr="Le règlement se fait à la remise des clés, une fois la disponibilité confirmée." data-en="Payment is made at handover, once availability is confirmed.">Le règlement se fait à la remise des clés, une fois la disponibilité confirmée.</li>
+              <li data-fr="Un dépôt de garantie est demandé au départ et restitué au retour du véhicule." data-en="A security deposit is taken at departure and released when the car comes back.">Un dépôt de garantie est demandé au départ et restitué au retour du véhicule.</li>
+            </ul>
+          </section>
+
+          <label class="bk-check bk-check-consent">
+            <input type="checkbox" id="bk-consent" name="consent" required>
+            <span class="bk-check-box" aria-hidden="true"></span>
+            <span class="bk-check-text" data-fr="J'ai lu les conditions de location et j'accepte que WaRent utilise ces informations pour traiter ma demande." data-en="I've read the rental conditions and agree that WaRent may use this information to handle my request.">J'ai lu les conditions de location et j'accepte que WaRent utilise ces informations pour traiter ma demande.</span>
+          </label>
+          <p class="bk-error" data-for="bk-consent" hidden></p>
+
+          <button type="submit" class="bk-submit" id="bk-submit" data-fr="Envoyer ma demande" data-en="Send my request">Envoyer ma demande</button>
+
+          <p class="bk-legal" data-fr="L'envoi ouvre votre messagerie avec le récapitulatif déjà rédigé : il ne vous reste qu'à l'envoyer. WaRent revient vers vous pour confirmer la disponibilité, le dépôt de garantie et l'heure de remise." data-en="Sending opens your mail app with the summary already written: all you have to do is send it. WaRent gets back to you to confirm availability, the deposit and the handover time.">L'envoi ouvre votre messagerie avec le récapitulatif déjà rédigé : il ne vous reste qu'à l'envoyer. WaRent revient vers vous pour confirmer la disponibilité, le dépôt de garantie et l'heure de remise.</p>
+        </form>
+      </div>
+
+      <aside class="bk-col-recap">
+        <div class="bk-recap" id="bk-recap"></div>
+      </aside>
+
+    </div>
+  </main>
+
+  <section class="bk-done" id="bk-done" hidden></section>
+
+  <script src="core.js"></script>
+  <script src="reservation.js"></script>
+
+</body>
+</html>

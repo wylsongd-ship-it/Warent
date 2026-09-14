@@ -1,16 +1,5 @@
-// État partagé entre la barre de recherche et les cartes véhicules.
-var WARENT = {
-  phone: '971501234567',
-  search: null
-};
-
-WARENT.waLink = function (label, price) {
-  var msg = 'Bonjour, je souhaite réserver la ' + label;
-  if (price) msg += ' (' + price + '€/jour)';
-  if (WARENT.search) msg += ' ' + WARENT.search.sentence;
-  msg += '.';
-  return 'https://wa.me/' + WARENT.phone + '?text=' + encodeURIComponent(msg);
-};
+// La page d'accueil : hero, carrousel de la flotte, fiche detaillee et
+// barre de recherche. Les donnees et les tarifs viennent de core.js.
 
 (function () {
   // Le hero est une image fixe : le preloader s'efface des qu'elle est
@@ -36,42 +25,11 @@ WARENT.waLink = function (label, price) {
 })();
 
 (function () {
-  var ICONS = {
-    seat: '<svg viewBox="0 0 24 24"><path d="M7 13V7a2 2 0 012-2h6a2 2 0 012 2v6M5 13h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>',
-    gear: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7M18.4 18.4l-1.7-1.7M7.3 7.3L5.6 5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
-    drop: '<svg viewBox="0 0 24 24"><path d="M12 3s6 6.6 6 11a6 6 0 11-12 0c0-4.4 6-11 6-11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
-    bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg>',
-    bag: '<svg viewBox="0 0 24 24"><rect x="4" y="7.5" width="16" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 7.5V5.6A1.6 1.6 0 0110.6 4h2.8A1.6 1.6 0 0115 5.6v1.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
-    cabin: '<svg viewBox="0 0 24 24"><rect x="6" y="9" width="12" height="11" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 9V6.4A1.4 1.4 0 0111.4 5h1.2A1.4 1.4 0 0114 6.4V9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
-    door: '<svg viewBox="0 0 24 24"><path d="M5 20V6.6a1.6 1.6 0 011.3-1.57l9-1.8A1.6 1.6 0 0117 4.8V20z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="13.6" cy="12.4" r="1" fill="currentColor"/></svg>',
-    id: '<svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="11" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 10h4M14 13.5h4M5.6 16c.6-1.6 1.9-2.4 3.4-2.4s2.8.8 3.4 2.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
-    road: '<svg viewBox="0 0 24 24"><path d="M8 3.5L5.5 20.5M16 3.5l2.5 17M12 4v2.6M12 10.7v2.6M12 17.4V20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
-    calendar: '<svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 10h17M8 3.5v4M16 3.5v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
-  };
-
-  var TRANSMISSION = { auto: ['Automatique', 'Automatic'], manual: ['Manuelle', 'Manual'] };
-  var FUEL = { essence: ['Essence', 'Petrol'], diesel: ['Diesel', 'Diesel'], electrique: ['Électrique', 'Electric'], hybride: ['Hybride', 'Hybrid'] };
-  var BADGES = {
-    available: ['Disponible', 'Available'],
-    popular: ['Populaire', 'Popular'],
-    electric: ['Électrique', 'Electric'],
-    premium: ['Premium', 'Premium']
-  };
-
-  // Source unique des tarifs : les cartes de la flotte ET la fiche detaillee
-  // sont generees a partir de ce tableau, elles ne peuvent donc pas diverger.
-  var FLEET = [
-    { id: 'c0', category: 'citadine', catFr: 'Citadine', catEn: 'City car', brand: 'Renault', model: 'Clio 5 Esprit Alpine',
-      badge: 'popular', tagFr: 'Le plus demandé', tagEn: 'Most booked',
-      price: 89, priceWeekend: 160, priceWeek: 490, kmUnlimited: 10,
-      seats: 5, doors: 5, transmission: 'auto', fuel: 'hybride', luggage: 3, cabin: 1, minAge: 21,
-      accent: '#22c1c3', ink: '#05201f', img: 'clio.webp' },
-    { id: 'b0', category: 'berline', catFr: 'Berline', catEn: 'Sedan', brand: 'Audi', model: 'A3 (2026)',
-      badge: 'premium', tagFr: 'Premium', tagEn: 'Premium',
-      price: 129, priceWeekend: 235, priceWeek: 710, kmUnlimited: 15,
-      seats: 5, doors: 5, transmission: 'auto', fuel: 'essence', luggage: 3, cabin: 1, minAge: 23,
-      accent: '#3b82f6', ink: '#06122b', img: 'audi.webp' }
-  ];
+  var ICONS = WARENT.icons;
+  var TRANSMISSION = WARENT.labels.transmission;
+  var FUEL = WARENT.labels.fuel;
+  var BADGES = WARENT.labels.badges;
+  var FLEET = WARENT.fleet;
 
   function silhouette(category) {
     if (category === 'berline') {
@@ -344,10 +302,6 @@ WARENT.waLink = function (label, price) {
 
   window.addEventListener('resize', measure);
 
-  WARENT.fleet = FLEET;
-  WARENT.icons = ICONS;
-  WARENT.labels = { transmission: TRANSMISSION, fuel: FUEL };
-
   renderCars();
   requestAnimationFrame(loop);
 })();
@@ -360,64 +314,15 @@ WARENT.waLink = function (label, price) {
   var FLEET = WARENT.fleet;
   if (!FLEET || !FLEET.length) return;
 
-  var ICONS = WARENT.icons || {};
-  var LABELS = WARENT.labels || {};
-  var TRANSMISSION = LABELS.transmission || {};
-  var FUEL = LABELS.fuel || {};
+  var ICONS = WARENT.icons;
+  var TRANSMISSION = WARENT.labels.transmission;
+  var FUEL = WARENT.labels.fuel;
+  var KM_PER_DAY = WARENT.kmPerDay;
+  var INCLUDED = WARENT.included;
 
-  var KM_PER_DAY = 200;
-  var BOOKING_EMAIL = 'wylsongd@gmail.com';
-
-  var INCLUDED = [
-    ['Assurance et entretien inclus', 'Insurance and servicing included'],
-    ['Véhicule nettoyé et contrôlé avant chaque départ', 'Cleaned and checked before every rental'],
-    ['Retrait à Lorient, livraison possible dans le Morbihan', 'Pick-up in Lorient, delivery available across Morbihan']
-  ];
-
-  function lang() {
-    return document.documentElement.lang === 'en' ? 'en' : 'fr';
-  }
-
-  function t(fr, en) {
-    return lang() === 'en' ? en : fr;
-  }
-
-  function money(n) {
-    return n.toLocaleString(lang() === 'en' ? 'en-GB' : 'fr-FR') + ' €';
-  }
-
-  // Meilleure combinaison des tarifs publies pour une duree donnee : on ne
-  // facture jamais plus que la formule la plus avantageuse affichee au client.
-  function bestPrice(car, days) {
-    var weeks = Math.floor(days / 7);
-    var rest = days % 7;
-    var restCost = Math.floor(rest / 2) * car.priceWeekend + (rest % 2) * car.price;
-    var byBlocks = weeks * car.priceWeek + restCost;
-    var byDays = days * car.price;
-    var roundedUp = (weeks + 1) * car.priceWeek;
-    var best = Math.min(byBlocks, byDays);
-    if (days > 7 * weeks && weeks >= 1) best = Math.min(best, roundedUp);
-    if (days <= 7) best = Math.min(best, car.priceWeek);
-    return best;
-  }
-
-  function durationsFor(car) {
-    var list = [
-      { id: 'day', days: 1, fr: '1 jour', en: '1 day', subFr: 'Formule journée', subEn: 'Day rate', total: car.price },
-      { id: 'weekend', days: 2, fr: 'Week-end', en: 'Weekend', subFr: '2 jours consécutifs', subEn: '2 consecutive days', total: car.priceWeekend },
-      { id: 'week', days: 7, fr: 'Semaine', en: 'Week', subFr: '7 jours consécutifs', subEn: '7 consecutive days', total: car.priceWeek }
-    ];
-    var s = WARENT.search;
-    if (s && s.days && s.days !== 1 && s.days !== 2 && s.days !== 7) {
-      list.unshift({
-        id: 'search', days: s.days,
-        fr: 'Vos dates (' + s.days + ' jours)', en: 'Your dates (' + s.days + ' days)',
-        subFr: 'Du ' + s.fromFr + ' au ' + s.toFr, subEn: 'From ' + s.fromEn + ' to ' + s.toEn,
-        total: bestPrice(car, s.days)
-      });
-    }
-    return list;
-  }
+  var t = WARENT.t;
+  var money = WARENT.money;
+  var durationsFor = WARENT.durationsFor;
 
   var overlay = document.createElement('div');
   overlay.className = 'vd-overlay';
@@ -452,10 +357,7 @@ WARENT.waLink = function (label, price) {
   }
 
   function totals(car) {
-    var durations = durationsFor(car);
-    var d = durations.filter(function (x) { return x.id === choice.duration; })[0] || durations[0];
-    var extra = choice.km === 'unlimited' ? car.kmUnlimited * d.days : 0;
-    return { duration: d, extra: extra, total: d.total + extra, perDay: Math.round((d.total + extra) / d.days) };
+    return WARENT.totals(car, choice);
   }
 
   function render() {
@@ -522,9 +424,9 @@ WARENT.waLink = function (label, price) {
               return '<li data-fr="' + i[0] + '" data-en="' + i[1] + '">' + t(i[0], i[1]) + '</li>';
             }).join('') +
           '</ul>' +
-          '<p class="vd-legal" data-fr="Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne. Le bouton Réserver ouvre un e-mail pré-rempli : la réservation n\'est ferme qu\'une fois confirmée par WaRent." data-en="A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person. The Book button opens a pre-filled email: the booking is only firm once WaRent confirms it.">' +
-            t('Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne. Le bouton Réserver ouvre un e-mail pré-rempli : la réservation n\'est ferme qu\'une fois confirmée par WaRent.',
-              'A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person. The Book button opens a pre-filled email: the booking is only firm once WaRent confirms it.') +
+          '<p class="vd-legal" data-fr="Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne. Le bouton Réserver ouvre la page de demande : la réservation n\'est ferme qu\'une fois confirmée par WaRent." data-en="A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person. The Book button opens the request form: the booking is only firm once WaRent confirms it.">' +
+            t('Un dépôt de garantie est demandé à la remise des clés, son montant dépend du véhicule et vous est précisé avant la réservation. Permis et pièce d\'identité originaux vérifiés en personne. Le bouton Réserver ouvre la page de demande : la réservation n\'est ferme qu\'une fois confirmée par WaRent.',
+              'A deposit is taken at handover; the amount depends on the vehicle and is confirmed before you book. Original licence and ID checked in person. The Book button opens the request form: the booking is only firm once WaRent confirms it.') +
           '</p>' +
         '</div>' +
         '<div class="vd-foot">' +
@@ -532,45 +434,14 @@ WARENT.waLink = function (label, price) {
             '<b>' + money(sums.total) + '</b>' +
             '<span>' + t('Total', 'Total') + ' · ' + money(sums.perDay) + t(' / jour', ' / day') + '</span>' +
           '</div>' +
-          '<a class="vd-cta" href="' + bookingHref(car, sums) + '" target="_blank" rel="noopener"' +
+          '<a class="vd-cta" href="' + bookingHref(car) + '"' +
             ' data-fr="Réserver" data-en="Book now">' + t('Réserver', 'Book now') + '</a>' +
         '</div>' +
       '</div>';
   }
 
-  function bookingHref(car, sums) {
-    var NL = String.fromCharCode(13, 10);
-    var days = sums.duration.days;
-    var dayWord = days > 1 ? t(' jours', ' days') : t(' jour', ' day');
-    var km = choice.km === 'unlimited'
-      ? t('illimité (+' + car.kmUnlimited + ' €/jour)', 'unlimited (+' + car.kmUnlimited + ' €/day)')
-      : KM_PER_DAY + t(' km/jour inclus', ' km/day included');
-    var s = WARENT.search;
-    var pickup = s
-      ? s.city + t(', du ' + s.fromFr + ' au ' + s.toFr, ', from ' + s.fromEn + ' to ' + s.toEn)
-      : 'Lorient (56)';
-    var lines = [
-      t('Bonjour,', 'Hello,'),
-      '',
-      t('Je souhaite réserver le véhicule suivant :', 'I would like to book the following vehicle:'),
-      '',
-      t('Véhicule : ', 'Vehicle: ') + car.brand + ' ' + car.model,
-      t('Formule : ', 'Rate: ') + t(sums.duration.fr, sums.duration.en),
-      t('Durée : ', 'Duration: ') + days + dayWord,
-      t('Kilométrage : ', 'Mileage: ') + km,
-      t('Total estimé : ', 'Estimated total: ') + sums.total + ' €',
-      t('Prise en charge : ', 'Pick-up: ') + pickup,
-      '',
-      t('Mes coordonnées :', 'My details:'),
-      t('Nom et prénom : ', 'Full name: '),
-      t('Téléphone : ', 'Phone: '),
-      t('Âge : ', 'Age: '),
-      '',
-      t('Merci de me confirmer la disponibilité.', 'Please confirm availability.')
-    ];
-    return 'mailto:' + BOOKING_EMAIL +
-      '?subject=' + encodeURIComponent(t('Demande de réservation — ', 'Booking request — ') + car.brand + ' ' + car.model) +
-      '&body=' + encodeURIComponent(lines.join(NL));
+  function bookingHref(car) {
+    return WARENT.bookingUrl(car, choice);
   }
 
   function open(id) {
