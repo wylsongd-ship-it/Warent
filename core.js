@@ -132,43 +132,64 @@ WARENT.pickupLabel = function () {
                            ', from ' + s.fromEn + ' to ' + s.toEn);
 };
 
-// La selection voyage d'une page a l'autre dans l'URL : pas de stockage, donc
-// un lien de reservation reste valable si le client l'envoie a quelqu'un.
+// Les dates choisies dans le hero voyagent d'une page a l'autre par l'URL :
+// pas de stockage, donc un lien reste valable si le client l'envoie a
+// quelqu'un, et un rafraichissement ne perd jamais la selection.
+WARENT.searchQuery = function () {
+  var s = WARENT.search;
+  if (!s) return '';
+  return ['days=' + s.days,
+          'city=' + encodeURIComponent(s.city),
+          'from=' + encodeURIComponent(s.fromFr),
+          'to=' + encodeURIComponent(s.toFr),
+          'fromEn=' + encodeURIComponent(s.fromEn),
+          'toEn=' + encodeURIComponent(s.toEn)].join('&');
+};
+
+WARENT.query = function () {
+  var q = {};
+  var raw = window.location.search.replace(/^\?/, '');
+  if (!raw) return q;
+  raw.split('&').forEach(function (pair) {
+    var i = pair.indexOf('=');
+    if (i < 0) return;
+    q[decodeURIComponent(pair.slice(0, i))] = decodeURIComponent(pair.slice(i + 1).replace(/\+/g, ' '));
+  });
+  return q;
+};
+
+// Restaure WARENT.search a partir de l'URL. Appele des le chargement de
+// core.js : toutes les pages repartent donc des memes dates.
+WARENT.readSearchFromUrl = function () {
+  var q = WARENT.query();
+  if (!q.days || !q.from || !q.to) return null;
+  WARENT.search = {
+    city: q.city || 'Lorient',
+    days: parseInt(q.days, 10) || 1,
+    fromFr: q.from, toFr: q.to,
+    fromEn: q.fromEn || q.from, toEn: q.toEn || q.to,
+    sentence: 'à ' + (q.city || 'Lorient') + ', du ' + q.from + ' au ' + q.to
+  };
+  return WARENT.search;
+};
+
+WARENT.fleetUrl = function () {
+  var q = WARENT.searchQuery();
+  return 'vehicules.html' + (q ? '?' + q : '');
+};
+
 WARENT.bookingUrl = function (car, choice) {
   var p = ['car=' + encodeURIComponent(car.id),
            'dur=' + encodeURIComponent(choice.duration),
            'km=' + encodeURIComponent(choice.km)];
-  var s = WARENT.search;
-  if (s) {
-    p.push('days=' + s.days);
-    p.push('city=' + encodeURIComponent(s.city));
-    p.push('from=' + encodeURIComponent(s.fromFr));
-    p.push('to=' + encodeURIComponent(s.toFr));
-    p.push('fromEn=' + encodeURIComponent(s.fromEn));
-    p.push('toEn=' + encodeURIComponent(s.toEn));
-  }
+  var q = WARENT.searchQuery();
+  if (q) p.push(q);
   return 'reservation.html?' + p.join('&');
 };
 
 WARENT.readBookingUrl = function () {
-  var q = {};
-  var raw = window.location.search.replace(/^\?/, '');
-  if (raw) {
-    raw.split('&').forEach(function (pair) {
-      var i = pair.indexOf('=');
-      if (i < 0) return;
-      q[decodeURIComponent(pair.slice(0, i))] = decodeURIComponent(pair.slice(i + 1).replace(/\+/g, ' '));
-    });
-  }
-  if (q.days && q.from && q.to) {
-    WARENT.search = {
-      city: q.city || 'Lorient',
-      days: parseInt(q.days, 10) || 1,
-      fromFr: q.from, toFr: q.to,
-      fromEn: q.fromEn || q.from, toEn: q.toEn || q.to,
-      sentence: 'à ' + (q.city || 'Lorient') + ', du ' + q.from + ' au ' + q.to
-    };
-  }
+  var q = WARENT.query();
+  WARENT.readSearchFromUrl();
   var car = WARENT.carById(q.car) || WARENT.fleet[0];
   var choice = {
     duration: ['day', 'weekend', 'week', 'search'].indexOf(q.dur) > -1 ? q.dur : 'day',
@@ -176,3 +197,5 @@ WARENT.readBookingUrl = function () {
   };
   return { car: car, choice: choice };
 };
+
+WARENT.readSearchFromUrl();

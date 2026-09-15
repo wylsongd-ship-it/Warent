@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WaRent — Véhicules disponibles</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="reservation.css">
+</head>
+<body class="bk-body">
+
+  <header class="bk-header">
+    <div class="bk-header-inner">
+      <a class="bk-back" href="index.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-fr="Modifier ma recherche" data-en="Change my search">Modifier ma recherche</span>
+      </a>
+      <a class="bk-logo" href="index.html">WaRent</a>
+      <div class="bk-header-right">
+        <div class="lang-switch" role="group" aria-label="Choix de la langue / Language switcher">
+          <button type="button" class="lang-btn active" data-lang-btn="fr" aria-pressed="true">FR</button>
+          <button type="button" class="lang-btn" data-lang-btn="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="vh-main">
+    <div class="vh-inner">
+
+      <div class="vh-trip" id="vh-trip"></div>
+
+      <div class="fleet-heading">
+        <h1 class="fleet-title" data-fr="Véhicules disponibles" data-en="Available vehicles">Véhicules disponibles</h1>
+        <p class="fleet-subtitle" id="vh-subtitle"></p>
+      </div>
+
+      <div class="fleet-filters" id="fleet-filters">
+        <button type="button" class="fleet-pill active" data-cat="all" data-fr="Tous" data-en="All">Tous</button>
+        <button type="button" class="fleet-pill" data-cat="citadine" data-fr="Citadine" data-en="City car">Citadine</button>
+        <button type="button" class="fleet-pill" data-cat="berline" data-fr="Berline" data-en="Sedan">Berline</button>
+      </div>
+
+      <div class="carousel-viewport" id="fleet-viewport">
+        <button type="button" class="carousel-nav prev" id="fleet-prev" aria-label="Précédent">
+          <svg viewBox="0 0 24 24"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="carousel-track" id="fleet-track"></div>
+        <button type="button" class="carousel-nav next" id="fleet-next" aria-label="Suivant">
+          <svg viewBox="0 0 24 24"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <p class="vh-note" data-fr="Les tarifs affichés correspondent à vos dates. La disponibilité est confirmée par WaRent après l'envoi de votre demande." data-en="The prices shown match your dates. Availability is confirmed by WaRent once your request is sent.">Les tarifs affichés correspondent à vos dates. La disponibilité est confirmée par WaRent après l'envoi de votre demande.</p>
+
+    </div>
+  </main>
+
+  <script src="core.js"></script>
+  <script src="vehicules.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

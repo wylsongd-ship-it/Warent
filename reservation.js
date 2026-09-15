@@ -14,6 +14,10 @@
   var doneEl = document.getElementById('bk-done');
   var mainEl = document.getElementById('bk-main');
 
+  // Le retour ramene a la liste des vehicules en conservant les dates.
+  var backEl = document.getElementById('bk-back');
+  if (backEl) backEl.setAttribute('href', WARENT.fleetUrl());
+
   document.documentElement.style.setProperty('--accent', car.accent);
   document.documentElement.style.setProperty('--ink', car.ink);
 

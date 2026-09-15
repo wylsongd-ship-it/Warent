@@ -54,6 +54,19 @@
     return '<span class="spec-chip">' + ICONS[icon] + '<span data-fr="' + fr + '" data-en="' + en + '">' + fr + '</span></span>';
   }
 
+  // Quand des dates sont choisies, la carte annonce le prix pour ces dates :
+  // le visiteur ne doit pas voir un tarif journee puis un autre total dans la
+  // fiche detaillee.
+  function priceHtml(car) {
+    var s = WARENT.search;
+    if (s && s.days) {
+      var fr = ' / ' + s.days + (s.days > 1 ? ' jours' : ' jour');
+      var en = ' / ' + s.days + (s.days > 1 ? ' days' : ' day');
+      return WARENT.bestPrice(car, s.days) + '€<small data-fr="' + fr + '" data-en="' + en + '">' + fr + '</small>';
+    }
+    return car.price + '€<small data-fr="/jour" data-en="/day"> /jour</small>';
+  }
+
   function buildCard(car) {
     var badge = BADGES[car.badge];
     var trans = TRANSMISSION[car.transmission];
@@ -89,7 +102,7 @@
                   specChip(fuelIcon, fuel[0], fuel[1]) +
                 '</div>' +
                 '<div class="car-meta-row">' +
-                  '<span class="car-price">' + car.price + '€<small data-fr="/jour" data-en="/day"> /jour</small></span>' +
+                  '<span class="car-price">' + priceHtml(car) + '</span>' +
                   '<button type="button" class="car-cta" data-detail="' + car.id + '" data-fr="Détails" data-en="Details">Détails</button>' +
                 '</div>' +
               '</div>' +
@@ -614,8 +627,9 @@
     };
     refreshLinks();
 
-    var fleet = document.getElementById('fleet');
-    if (fleet) fleet.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Les vehicules ne s'affichent qu'une fois les dates choisies : on part
+    // donc sur la page flotte, qui recoit la selection par l'URL.
+    window.location.href = WARENT.fleetUrl();
   });
 })();
 
@@ -662,9 +676,9 @@
       btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 
-    // La fiche detaillee est generee en JS : elle n'est pas dans textEls,
-    // il faut la redessiner si elle est ouverte au moment du changement.
+    // Tout ce qui est genere en JS echappe a textEls : on redessine.
     if (WARENT.renderDetail) WARENT.renderDetail();
+    if (WARENT.renderTrip) WARENT.renderTrip();
 
     storeLang(lang);
   }
