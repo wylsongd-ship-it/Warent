@@ -814,6 +814,7 @@
   text-underline-offset: 3px;
 }
 .ac-link:hover { color: #ffffff; }
+.ac-link-tight { margin-top: 10px; }
 
 /* --- ce que l'espace contiendra --- */
 .ac-more {
@@ -869,6 +870,142 @@
   color: rgba(255, 255, 255, 0.42);
 }
 
+/* ============ Numero de reservation et « Mes reservations » ============ */
+/* Encart du numero : le meme sur la confirmation d'envoi (bk-ref) et sur la
+   fiche retrouvee (mr-ref). C'est ce que le client doit repartir avec, donc
+   il est donne en grand et espace, chiffre par chiffre. */
+.bk-ref,
+.mr-ref {
+  margin: 0 0 22px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.26);
+}
+.bk-ref-label,
+.mr-ref-label {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+.bk-ref-value,
+.mr-ref-value {
+  margin: 0;
+  font-size: clamp(22px, 3.4vw, 27px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent, #22c1c3);
+}
+.bk-ref-copy {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.86);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .16s ease, background .16s ease, color .16s ease;
+}
+.bk-ref-copy:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mr-card { max-width: 540px; }
+.mr-lookup[hidden],
+.mr-result[hidden] { display: none; }
+.mr-ref { text-align: left; }
+.mr-status {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink, #05201f);
+  background: var(--accent, #22c1c3);
+}
+.mr-ref-date {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.5);
+}
+.mr-note {
+  margin: 22px 0 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.5);
+}
+.mr-actions { justify-content: flex-start; margin-top: 20px; }
+.mr-actions .bk-done-home {
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Les autres demandes faites avec la meme adresse : un rang par reservation,
+   qui remplace la fiche affichee sans repasser par la recherche. */
+.mr-others {
+  margin-top: 26px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.mr-other {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 6px 14px;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 13px 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .16s ease, background .16s ease;
+}
+.mr-other:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.04);
+}
+.mr-other-ref {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent, #22c1c3);
+}
+.mr-other-car {
+  min-width: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mr-other-date {
+  font-size: 12px;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.45);
+}
+
 @media (max-width: 420px) {
   .ac-fields { grid-template-columns: 1fr; }
+  .mr-other { grid-template-columns: 1fr; }
+  .mr-other-car { white-space: normal; }
 }
