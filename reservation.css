@@ -661,7 +661,22 @@
   color: rgba(255, 255, 255, 0.62);
 }
 
-/* --- formulaire e-mail --- */
+/* --- panneaux connexion / inscription --- */
+.ac-panel[hidden] { display: none; }
+
+/* --- formulaires --- */
+.ac-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.ac-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ac-label-spaced { margin-top: 14px; }
+
 .ac-form {
   display: flex;
   flex-direction: column;
@@ -747,7 +762,7 @@
 .ac-done {
   display: flex;
   gap: 11px;
-  margin-top: 4px;
+  margin-top: clamp(16px, 2.4vh, 22px);
   padding: 15px 16px;
   border-radius: 14px;
   border: 1px solid rgba(34, 193, 195, 0.35);
@@ -785,6 +800,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
+.ac-social { padding: 13px 18px; }
+.ac-social svg { width: 21px; height: 21px; }
 
 .ac-link {
   display: block;
@@ -853,5 +870,5 @@
 }
 
 @media (max-width: 420px) {
-  .ac-alts { grid-template-columns: 1fr; }
+  .ac-fields { grid-template-columns: 1fr; }
 }

@@ -573,23 +573,22 @@
     errorEl.hidden = false;
   }
 
-  // Lien generique, pour l'en-tete et le bloc contact.
-  function generalWaLink() {
-    var msg = 'Bonjour, je souhaite louer un véhicule ';
-    msg += WARENT.search ? WARENT.search.sentence : 'à Lorient';
-    return 'https://wa.me/' + WARENT.phone + '?text=' + encodeURIComponent(msg + '.');
+  // Lien de contact general : un e-mail deja redige, qui repart avec les dates
+  // choisies dans le hero des qu'elles existent.
+  function generalMailLink() {
+    var where = WARENT.search ? WARENT.search.sentence : WARENT.t('à Lorient', 'in Lorient');
+    return 'mailto:' + WARENT.bookingEmail +
+      '?subject=' + encodeURIComponent(WARENT.t('WaRent — demande de location',
+                                                'WaRent — rental enquiry')) +
+      '&body=' + encodeURIComponent(WARENT.t(
+        'Bonjour,\n\nJe souhaite louer un véhicule ' + where + '.\n\n',
+        'Hello,\n\nI would like to rent a vehicle ' + where + '.\n\n'
+      ));
   }
 
-  // Tout lien portant [data-car] repart avec les dates choisies.
   function refreshLinks() {
-    Array.prototype.forEach.call(document.querySelectorAll('[data-car]'), function (a) {
-      a.href = WARENT.waLink(a.getAttribute('data-car'), a.getAttribute('data-price'));
-    });
-    var general = generalWaLink();
-    var head = document.getElementById('whatsapp-link');
-    if (head) head.href = general;
-    var contact = document.getElementById('contact-wa');
-    if (contact) contact.href = general;
+    var contact = document.getElementById('contact-mail');
+    if (contact) contact.href = generalMailLink();
   }
   WARENT.refreshLinks = refreshLinks;
   refreshLinks();
@@ -641,9 +640,6 @@
   };
   var btns = document.querySelectorAll('.lang-btn');
   var textEls = document.querySelectorAll('[data-fr][data-en]');
-  var waLink = document.getElementById('whatsapp-link');
-  var waLabels = { fr: 'Contacter sur WhatsApp', en: 'Ask on WhatsApp' };
-
   function getStoredLang() {
     try {
       return localStorage.getItem(STORAGE_KEY);
@@ -668,8 +664,6 @@
       el.textContent = lang === 'en' ? el.dataset.en : el.dataset.fr;
     });
 
-    if (waLink) waLink.setAttribute('aria-label', waLabels[lang]);
-
     btns.forEach(function (btn) {
       var isActive = btn.getAttribute('data-lang-btn') === lang;
       btn.classList.toggle('active', isActive);
@@ -679,6 +673,8 @@
     // Tout ce qui est genere en JS echappe a textEls : on redessine.
     if (WARENT.renderDetail) WARENT.renderDetail();
     if (WARENT.renderTrip) WARENT.renderTrip();
+    // Le lien de contact porte un e-mail deja redige : il se retraduit aussi.
+    if (WARENT.refreshLinks) WARENT.refreshLinks();
 
     storeLang(lang);
   }

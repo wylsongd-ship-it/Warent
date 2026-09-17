@@ -5,7 +5,6 @@
 // diverger.
 var WARENT = {
   bookingEmail: 'wylsongd@gmail.com',
-  phone: '971501234567',
   kmPerDay: 200,
   search: null
 };
