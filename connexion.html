@@ -31,39 +31,83 @@
 
       <span class="ac-badge" data-fr="Bientôt disponible" data-en="Coming soon">Bientôt disponible</span>
 
-      <h1 class="ac-title" data-fr="Réservez plus vite. Roulez malin." data-en="Book faster. Drive smarter.">Réservez plus vite. Roulez malin.</h1>
-      <p class="ac-intro" data-fr="Votre espace gardera vos réservations, vos dates et vos documents au même endroit — plus rien à redonner à chaque location. Il n'est pas encore ouvert : laissez votre e-mail, vous serez prévenu le jour où il l'est." data-en="Your account will keep your bookings, dates and documents in one place — nothing to hand over again at every rental. It isn't open yet: leave your email and we'll tell you the day it is.">Votre espace gardera vos réservations, vos dates et vos documents au même endroit — plus rien à redonner à chaque location. Il n'est pas encore ouvert : laissez votre e-mail, vous serez prévenu le jour où il l'est.</p>
+      <!-- ===================== Connexion ===================== -->
+      <section class="ac-panel" id="ac-panel-signin">
 
-      <form class="ac-form" id="ac-form" novalidate>
-        <label class="ac-label" for="ac-email" data-fr="Votre e-mail" data-en="Your email">Votre e-mail</label>
-        <input class="ac-input" id="ac-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nom@mail.com" aria-describedby="ac-error">
-        <p class="ac-error" id="ac-error" role="alert" hidden data-fr="Entrez une adresse e-mail valide (exemple : nom@mail.com)." data-en="Enter a valid email address (example: name@mail.com).">Entrez une adresse e-mail valide (exemple : nom@mail.com).</p>
-        <button type="submit" class="ac-btn ac-btn-primary" data-fr="Poursuivre avec l'e-mail" data-en="Continue with email">Poursuivre avec l'e-mail</button>
-      </form>
+        <h1 class="ac-title" data-fr="Réservez plus vite. Roulez malin." data-en="Book faster. Drive smarter.">Réservez plus vite. Roulez malin.</h1>
+        <p class="ac-intro" data-fr="Accédez à vos réservations plus rapidement et gérez vos locations en toute simplicité en vous connectant ou en créant un compte en quelques clics." data-en="Get to your bookings faster and manage your rentals in a few clicks by signing in or creating an account.">Accédez à vos réservations plus rapidement et gérez vos locations en toute simplicité en vous connectant ou en créant un compte en quelques clics.</p>
 
+        <form class="ac-form" id="ac-signin-form" novalidate>
+          <label class="ac-label" for="ac-signin-email" data-fr="Votre e-mail" data-en="Your email">Votre e-mail</label>
+          <input class="ac-input" id="ac-signin-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nom@mail.com" aria-describedby="ac-signin-error">
+          <p class="ac-error" id="ac-signin-error" role="alert" hidden data-fr="Entrez une adresse e-mail valide (exemple : nom@mail.com)." data-en="Enter a valid email address (example: name@mail.com).">Entrez une adresse e-mail valide (exemple : nom@mail.com).</p>
+          <button type="submit" class="ac-btn ac-btn-primary" data-fr="Poursuivre avec l'e-mail" data-en="Continue with email">Poursuivre avec l'e-mail</button>
+        </form>
+
+        <div class="ac-sep"><span data-fr="ou se connecter avec" data-en="or sign in with">ou se connecter avec</span></div>
+
+        <div class="ac-alts">
+          <button type="button" class="ac-btn ac-btn-ghost ac-social" data-provider="Google" data-label-fr="Se connecter avec Google" data-label-en="Sign in with Google">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.45a5.5 5.5 0 0 1-2.39 3.62v3h3.86c2.26-2.08 3.58-5.15 3.58-8.81z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.08 7.95-2.92l-3.87-3a7.2 7.2 0 0 1-10.72-3.78H1.4v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.36 14.3a7.1 7.1 0 0 1 0-4.6V6.6H1.4a12 12 0 0 0 0 10.8l3.96-3.1z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.34.62 4.59 1.79l3.43-3.43C17.95 1.2 15.24 0 12 0A12 12 0 0 0 1.4 6.6l3.96 3.1A7.2 7.2 0 0 1 12 4.77z"/></svg>
+          </button>
+          <button type="button" class="ac-btn ac-btn-ghost ac-social" data-provider="Apple" data-label-fr="Se connecter avec Apple" data-label-en="Sign in with Apple">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.78c.02-2.3 1.88-3.4 1.96-3.45-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.15-2.76.83-3.48.83-.72 0-1.83-.81-3-.79-1.55.02-2.97.9-3.77 2.28-1.6 2.79-.41 6.92 1.15 9.18.76 1.11 1.67 2.35 2.86 2.3 1.15-.04 1.58-.74 2.97-.74 1.38 0 1.78.74 3 .72 1.24-.02 2.02-1.12 2.78-2.24.87-1.28 1.23-2.53 1.25-2.6-.03-.01-2.4-.92-2.4-3.69zM14.1 5.9c.63-.77 1.06-1.83.94-2.9-.91.04-2.01.61-2.67 1.37-.58.68-1.1 1.77-.96 2.81 1.02.08 2.06-.52 2.69-1.28z"/></svg>
+          </button>
+        </div>
+
+        <div class="ac-sep"><span data-fr="Vous n'avez pas de compte ?" data-en="Don't have an account?">Vous n'avez pas de compte ?</span></div>
+
+        <button type="button" class="ac-btn ac-btn-grey" data-go="signup" data-fr="Créer un compte" data-en="Create an account">Créer un compte</button>
+
+        <a class="ac-link" id="ac-pro" href="#" data-fr="Vous louez pour une entreprise ? Inscrivez votre société ici" data-en="Renting for a company? Register your business here">Vous louez pour une entreprise ? Inscrivez votre société ici</a>
+
+      </section>
+
+      <!-- ===================== Inscription ===================== -->
+      <section class="ac-panel" id="ac-panel-signup" hidden>
+
+        <h1 class="ac-title" data-fr="Créez votre compte WaRent." data-en="Create your WaRent account.">Créez votre compte WaRent.</h1>
+        <p class="ac-intro" data-fr="Un seul compte pour suivre vos locations, retrouver vos récapitulatifs et déposer vos documents une fois pour toutes." data-en="One account to follow your rentals, find your summaries again and upload your documents once and for all.">Un seul compte pour suivre vos locations, retrouver vos récapitulatifs et déposer vos documents une fois pour toutes.</p>
+
+        <form class="ac-form" id="ac-signup-form" novalidate>
+          <div class="ac-fields">
+            <div class="ac-field">
+              <label class="ac-label" for="ac-firstname" data-fr="Prénom" data-en="First name">Prénom</label>
+              <input class="ac-input" id="ac-firstname" name="prenom" type="text" autocomplete="given-name">
+            </div>
+            <div class="ac-field">
+              <label class="ac-label" for="ac-lastname" data-fr="Nom" data-en="Last name">Nom</label>
+              <input class="ac-input" id="ac-lastname" name="nom" type="text" autocomplete="family-name">
+            </div>
+          </div>
+          <label class="ac-label ac-label-spaced" for="ac-signup-email" data-fr="Votre e-mail" data-en="Your email">Votre e-mail</label>
+          <input class="ac-input" id="ac-signup-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nom@mail.com" aria-describedby="ac-signup-error">
+          <p class="ac-error" id="ac-signup-error" role="alert" hidden data-fr="Entrez votre prénom, votre nom et une adresse e-mail valide." data-en="Enter your first name, last name and a valid email address.">Entrez votre prénom, votre nom et une adresse e-mail valide.</p>
+          <button type="submit" class="ac-btn ac-btn-primary" data-fr="Créer mon compte" data-en="Create my account">Créer mon compte</button>
+        </form>
+
+        <div class="ac-sep"><span data-fr="ou s'inscrire avec" data-en="or sign up with">ou s'inscrire avec</span></div>
+
+        <div class="ac-alts">
+          <button type="button" class="ac-btn ac-btn-ghost ac-social" data-provider="Google" data-label-fr="S'inscrire avec Google" data-label-en="Sign up with Google">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.45a5.5 5.5 0 0 1-2.39 3.62v3h3.86c2.26-2.08 3.58-5.15 3.58-8.81z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.08 7.95-2.92l-3.87-3a7.2 7.2 0 0 1-10.72-3.78H1.4v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.36 14.3a7.1 7.1 0 0 1 0-4.6V6.6H1.4a12 12 0 0 0 0 10.8l3.96-3.1z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.34.62 4.59 1.79l3.43-3.43C17.95 1.2 15.24 0 12 0A12 12 0 0 0 1.4 6.6l3.96 3.1A7.2 7.2 0 0 1 12 4.77z"/></svg>
+          </button>
+          <button type="button" class="ac-btn ac-btn-ghost ac-social" data-provider="Apple" data-label-fr="S'inscrire avec Apple" data-label-en="Sign up with Apple">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.78c.02-2.3 1.88-3.4 1.96-3.45-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.15-2.76.83-3.48.83-.72 0-1.83-.81-3-.79-1.55.02-2.97.9-3.77 2.28-1.6 2.79-.41 6.92 1.15 9.18.76 1.11 1.67 2.35 2.86 2.3 1.15-.04 1.58-.74 2.97-.74 1.38 0 1.78.74 3 .72 1.24-.02 2.02-1.12 2.78-2.24.87-1.28 1.23-2.53 1.25-2.6-.03-.01-2.4-.92-2.4-3.69zM14.1 5.9c.63-.77 1.06-1.83.94-2.9-.91.04-2.01.61-2.67 1.37-.58.68-1.1 1.77-.96 2.81 1.02.08 2.06-.52 2.69-1.28z"/></svg>
+          </button>
+        </div>
+
+        <div class="ac-sep"><span data-fr="Vous avez déjà un compte ?" data-en="Already have an account?">Vous avez déjà un compte ?</span></div>
+
+        <button type="button" class="ac-btn ac-btn-grey" data-go="signin" data-fr="Se connecter" data-en="Sign in">Se connecter</button>
+
+      </section>
+
+      <!-- Reponse commune aux deux formulaires : l'espace n'est pas encore ouvert. -->
       <div class="ac-done" id="ac-done" hidden>
         <svg class="ac-done-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <p class="ac-done-text" data-fr="Votre messagerie s'ouvre avec un message déjà rempli. Envoyez-le : c'est lui qui inscrit votre adresse sur la liste." data-en="Your mail app opens with the message already written. Send it — that's what puts your address on the list.">Votre messagerie s'ouvre avec un message déjà rempli. Envoyez-le : c'est lui qui inscrit votre adresse sur la liste.</p>
+        <p class="ac-done-text" id="ac-done-text"></p>
       </div>
-
-      <div class="ac-sep"><span data-fr="ou joindre WaRent" data-en="or reach WaRent">ou joindre WaRent</span></div>
-
-      <div class="ac-alts">
-        <a class="ac-btn ac-btn-ghost" id="ac-wa" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.8 1.6.6 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.3z"/></svg>
-          <span data-fr="WhatsApp" data-en="WhatsApp">WhatsApp</span>
-        </a>
-        <a class="ac-btn ac-btn-ghost" id="ac-mail" href="#">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M3 6.5h18v11H3z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3.4 7l8.6 6 8.6-6"/></svg>
-          <span data-fr="E-mail" data-en="Email">E-mail</span>
-        </a>
-      </div>
-
-      <div class="ac-sep"><span data-fr="Vous n'avez pas encore réservé ?" data-en="Haven't booked yet?">Vous n'avez pas encore réservé ?</span></div>
-
-      <a class="ac-btn ac-btn-grey" href="index.html" data-fr="Réserver un véhicule" data-en="Book a vehicle">Réserver un véhicule</a>
-
-      <a class="ac-link" id="ac-pro" href="#" data-fr="Vous louez pour une entreprise ? Parlons-en ici" data-en="Renting for a company? Let's talk here">Vous louez pour une entreprise ? Parlons-en ici</a>
 
       <details class="ac-more">
         <summary data-fr="Ce que l'espace contiendra" data-en="What the account will hold">Ce que l'espace contiendra</summary>
@@ -75,7 +119,7 @@
         </ul>
       </details>
 
-      <p class="ac-legal" data-fr="Aucun compte n'est créé pour le moment : WaRent ne vous demande ni mot de passe, ni coordonnées bancaires sur le site. Votre adresse sert uniquement à vous prévenir de l'ouverture." data-en="No account is created for now: WaRent asks you for neither a password nor card details on this site. Your address is used only to tell you when the account area opens.">Aucun compte n'est créé pour le moment : WaRent ne vous demande ni mot de passe, ni coordonnées bancaires sur le site. Votre adresse sert uniquement à vous prévenir de l'ouverture.</p>
+      <p class="ac-legal" data-fr="L'espace client n'est pas encore ouvert : aucun compte n'est créé et WaRent ne vous demande ni mot de passe, ni coordonnées bancaires sur le site. Votre adresse sert uniquement à vous prévenir de l'ouverture." data-en="The customer area isn't open yet: no account is created and WaRent asks you for neither a password nor card details on this site. Your address is used only to tell you when it opens.">L'espace client n'est pas encore ouvert : aucun compte n'est créé et WaRent ne vous demande ni mot de passe, ni coordonnées bancaires sur le site. Votre adresse sert uniquement à vous prévenir de l'ouverture.</p>
 
     </div>
   </main>
