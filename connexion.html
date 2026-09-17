@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WaRent — Espace client</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="reservation.css">
+</head>
+<body class="bk-body">
+
+  <header class="bk-header">
+    <div class="bk-header-inner">
+      <a class="bk-back" href="index.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-fr="Retour au site" data-en="Back to the site">Retour au site</span>
+      </a>
+      <a class="bk-logo" href="index.html">WaRent</a>
+      <div class="bk-header-right">
+        <div class="lang-switch" role="group" aria-label="Choix de la langue / Language switcher">
+          <button type="button" class="lang-btn active" data-lang-btn="fr" aria-pressed="true">FR</button>
+          <button type="button" class="lang-btn" data-lang-btn="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="ac-main">
+    <div class="ac-card">
+
+      <span class="ac-badge" data-fr="Bientôt disponible" data-en="Coming soon">Bientôt disponible</span>
+
+      <h1 class="ac-title" data-fr="Réservez plus vite. Roulez malin." data-en="Book faster. Drive smarter.">Réservez plus vite. Roulez malin.</h1>
+      <p class="ac-intro" data-fr="Votre espace gardera vos réservations, vos dates et vos documents au même endroit — plus rien à redonner à chaque location. Il n'est pas encore ouvert : laissez votre e-mail, vous serez prévenu le jour où il l'est." data-en="Your account will keep your bookings, dates and documents in one place — nothing to hand over again at every rental. It isn't open yet: leave your email and we'll tell you the day it is.">Votre espace gardera vos réservations, vos dates et vos documents au même endroit — plus rien à redonner à chaque location. Il n'est pas encore ouvert : laissez votre e-mail, vous serez prévenu le jour où il l'est.</p>
+
+      <form class="ac-form" id="ac-form" novalidate>
+        <label class="ac-label" for="ac-email" data-fr="Votre e-mail" data-en="Your email">Votre e-mail</label>
+        <input class="ac-input" id="ac-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nom@mail.com" aria-describedby="ac-error">
+        <p class="ac-error" id="ac-error" role="alert" hidden data-fr="Entrez une adresse e-mail valide (exemple : nom@mail.com)." data-en="Enter a valid email address (example: name@mail.com).">Entrez une adresse e-mail valide (exemple : nom@mail.com).</p>
+        <button type="submit" class="ac-btn ac-btn-primary" data-fr="Poursuivre avec l'e-mail" data-en="Continue with email">Poursuivre avec l'e-mail</button>
+      </form>
+
+      <div class="ac-done" id="ac-done" hidden>
+        <svg class="ac-done-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p class="ac-done-text" data-fr="Votre messagerie s'ouvre avec un message déjà rempli. Envoyez-le : c'est lui qui inscrit votre adresse sur la liste." data-en="Your mail app opens with the message already written. Send it — that's what puts your address on the list.">Votre messagerie s'ouvre avec un message déjà rempli. Envoyez-le : c'est lui qui inscrit votre adresse sur la liste.</p>
+      </div>
+
+      <div class="ac-sep"><span data-fr="ou joindre WaRent" data-en="or reach WaRent">ou joindre WaRent</span></div>
+
+      <div class="ac-alts">
+        <a class="ac-btn ac-btn-ghost" id="ac-wa" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.8 1.6.6 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.3z"/></svg>
+          <span data-fr="WhatsApp" data-en="WhatsApp">WhatsApp</span>
+        </a>
+        <a class="ac-btn ac-btn-ghost" id="ac-mail" href="#">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M3 6.5h18v11H3z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3.4 7l8.6 6 8.6-6"/></svg>
+          <span data-fr="E-mail" data-en="Email">E-mail</span>
+        </a>
+      </div>
+
+      <div class="ac-sep"><span data-fr="Vous n'avez pas encore réservé ?" data-en="Haven't booked yet?">Vous n'avez pas encore réservé ?</span></div>
+
+      <a class="ac-btn ac-btn-grey" href="index.html" data-fr="Réserver un véhicule" data-en="Book a vehicle">Réserver un véhicule</a>
+
+      <a class="ac-link" id="ac-pro" href="#" data-fr="Vous louez pour une entreprise ? Parlons-en ici" data-en="Renting for a company? Let's talk here">Vous louez pour une entreprise ? Parlons-en ici</a>
+
+      <details class="ac-more">
+        <summary data-fr="Ce que l'espace contiendra" data-en="What the account will hold">Ce que l'espace contiendra</summary>
+        <ul class="ac-list">
+          <li data-fr="Mes réservations : en cours, à venir et passées" data-en="My bookings: current, upcoming and past">Mes réservations : en cours, à venir et passées</li>
+          <li data-fr="Le détail de chaque location et son récapitulatif" data-en="The details of each rental and its summary">Le détail de chaque location et son récapitulatif</li>
+          <li data-fr="Les documents à fournir, déposés une fois pour toutes" data-en="The documents to provide, uploaded once and for all">Les documents à fournir, déposés une fois pour toutes</li>
+          <li data-fr="La modification ou l'annulation d'une réservation" data-en="Changing or cancelling a booking">La modification ou l'annulation d'une réservation</li>
+        </ul>
+      </details>
+
+      <p class="ac-legal" data-fr="Aucun compte n'est créé pour le moment : WaRent ne vous demande ni mot de passe, ni coordonnées bancaires sur le site. Votre adresse sert uniquement à vous prévenir de l'ouverture." data-en="No account is created for now: WaRent asks you for neither a password nor card details on this site. Your address is used only to tell you when the account area opens.">Aucun compte n'est créé pour le moment : WaRent ne vous demande ni mot de passe, ni coordonnées bancaires sur le site. Votre adresse sert uniquement à vous prévenir de l'ouverture.</p>
+
+    </div>
+  </main>
+
+  <script src="core.js"></script>
+  <script src="connexion.js"></script>
+
+</body>
+</html>

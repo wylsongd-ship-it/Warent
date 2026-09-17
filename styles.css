@@ -143,6 +143,35 @@ a:hover { color: #666666; }
   fill: currentColor;
 }
 
+/* Onglet Connexion : discret a cote du bouton WhatsApp, il ouvre l'espace
+   client. Sur petit ecran il ne garde que son icone, comme WhatsApp. */
+.account-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.92);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background .2s ease, border-color .2s ease;
+}
+.account-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+.account-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 .lang-switch {
   display: flex;
   align-items: center;
@@ -314,7 +343,12 @@ body.lang-en .sub-text.i18n-en { display: block; }
     padding: 10px;
     border-radius: 12px;
   }
-  .wa-text {
+  .account-btn {
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .wa-text,
+  .account-text {
     position: absolute;
     width: 1px;
     height: 1px;
