@@ -169,7 +169,26 @@
     return dial + ' ' + raw;
   }
 
-  function mailHref() {
+  // Numero de reservation : tire a l'envoi, il part dans l'objet de l'e-mail,
+  // s'affiche sur la confirmation et sert de cle a « Mes reservations ».
+  function saveBooking(ref) {
+    WARENT.saveBooking({
+      ref: ref,
+      createdAt: new Date().toISOString(),
+      email: value('bk-email'),
+      first: value('bk-first'),
+      last: value('bk-last'),
+      phone: fullPhone(),
+      company: value('bk-company'),
+      message: value('bk-message'),
+      carId: car.id,
+      duration: choice.duration,
+      km: choice.km,
+      search: WARENT.search
+    });
+  }
+
+  function mailHref(ref) {
     var NL = String.fromCharCode(13, 10);
     var s = sums();
     var search = WARENT.search;
@@ -179,6 +198,8 @@
       t('Bonjour,', 'Hello,'),
       '',
       t('Je souhaite réserver le véhicule suivant.', 'I would like to book the following vehicle.'),
+      '',
+      t('Numéro de réservation : ', 'Booking number: ') + ref,
       '',
       '--- ' + t('VÉHICULE', 'VEHICLE') + ' ---',
       t('Véhicule : ', 'Vehicle: ') + car.brand + ' ' + car.model + ' (' + t(car.catFr, car.catEn) + ')',
@@ -209,42 +230,90 @@
 
     return 'mailto:' + WARENT.bookingEmail +
       '?subject=' + encodeURIComponent(
-        t('Demande de réservation — ', 'Booking request — ') + car.brand + ' ' + car.model +
+        t('Demande de réservation ', 'Booking request ') + ref + ' — ' + car.brand + ' ' + car.model +
         ' — ' + value('bk-first') + ' ' + value('bk-last')) +
       '&body=' + encodeURIComponent(lines.join(NL));
   }
 
   // ---------- confirmation ----------
-  function renderDone(href) {
+  // Le numero est ce que le client doit repartir avec : il est donne en
+  // grand, copiable d'un geste, et l'ecran renvoie vers « Mes reservations »
+  // ou il servira de cle.
+  function renderDone(href, ref) {
     var article = /^[aeiouyéèêAEIOUY]/.test(car.brand) ? "l'" : 'la ';
     doneEl.innerHTML =
       '<div class="bk-done-card">' +
         '<span class="bk-done-mark" aria-hidden="true"></span>' +
         '<h1 class="bk-done-title">' + t('Demande envoyée', 'Request sent') + '</h1>' +
+        '<div class="bk-ref">' +
+          '<p class="bk-ref-label">' + t('Votre numéro de réservation', 'Your booking number') + '</p>' +
+          '<p class="bk-ref-value" id="bk-ref-value">' + ref + '</p>' +
+          '<button type="button" class="bk-ref-copy" id="bk-ref-copy">' + t('Copier', 'Copy') + '</button>' +
+        '</div>' +
         '<p class="bk-done-text">' +
           t('Votre messagerie s\'est ouverte avec le récapitulatif. Vérifiez qu\'il est bien parti : WaRent vous confirme la disponibilité de ' + article + car.brand + ' ' + car.model + ' sous 24 h.',
             'Your mail app has opened with the summary. Check that it went out: WaRent will confirm availability of the ' + car.brand + ' ' + car.model + ' within 24 hours.') +
         '</p>' +
         '<p class="bk-done-sub">' +
-          t('Rien n\'a été débité. Le règlement et le dépôt de garantie se font à la remise des clés.',
-            'Nothing has been charged. Payment and the deposit are handled at handover.') +
+          t('Gardez ce numéro : avec l\'adresse ' + value('bk-email') + ', il retrouve votre réservation dans « Mes réservations ». Rien n\'a été débité — le règlement et le dépôt de garantie se font à la remise des clés.',
+            'Keep this number: together with ' + value('bk-email') + ', it brings your booking up under "My bookings". Nothing has been charged — payment and the deposit are handled at handover.') +
         '</p>' +
         '<div class="bk-done-actions">' +
-          '<a class="bk-done-again" href="' + href + '">' + t('Rouvrir l\'e-mail', 'Reopen the email') + '</a>' +
-          '<a class="bk-done-home" href="index.html">' + t('Retour au site', 'Back to the site') + '</a>' +
+          '<a class="bk-done-again" href="mes-reservations.html?ref=' + encodeURIComponent(ref) +
+            '&email=' + encodeURIComponent(value('bk-email')) + '">' +
+            t('Voir ma réservation', 'View my booking') + '</a>' +
+          '<a class="bk-done-home" href="' + href + '">' + t('Rouvrir l\'e-mail', 'Reopen the email') + '</a>' +
         '</div>' +
       '</div>';
     mainEl.hidden = true;
     doneEl.hidden = false;
     window.scrollTo(0, 0);
+
+    var copy = document.getElementById('bk-ref-copy');
+    if (copy) {
+      copy.addEventListener('click', function () {
+        var label = copy.textContent;
+        function feedback(text) {
+          copy.textContent = text;
+          setTimeout(function () { copy.textContent = label; }, 1800);
+        }
+        // Le presse-papiers n'existe pas partout (page servie en http, vieux
+        // navigateur, permission refusee) : on selectionne alors le numero et
+        // on le dit, le client finit le copier lui-meme.
+        function fallback() {
+          selectRef();
+          feedback(t('Sélectionné — copiez-le', 'Selected — copy it'));
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(ref).then(
+            function () { feedback(t('Copié', 'Copied')); },
+            fallback
+          );
+        } else {
+          fallback();
+        }
+      });
+    }
+  }
+
+  function selectRef() {
+    var el = document.getElementById('bk-ref-value');
+    if (!el || !window.getSelection || !document.createRange) return;
+    var range = document.createRange();
+    range.selectNodeContents(el);
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
   }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!validate()) return;
-    var href = mailHref();
+    var ref = WARENT.newBookingRef();
+    saveBooking(ref);
+    var href = mailHref(ref);
     window.location.href = href;
-    setTimeout(function () { renderDone(href); }, 400);
+    setTimeout(function () { renderDone(href, ref); }, 400);
   });
 
   // ---------- langue ----------

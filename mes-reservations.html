@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WaRent — Mes réservations</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="reservation.css">
+</head>
+<body class="bk-body">
+
+  <header class="bk-header">
+    <div class="bk-header-inner">
+      <a class="bk-back" href="index.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-fr="Retour au site" data-en="Back to the site">Retour au site</span>
+      </a>
+      <a class="bk-logo" href="index.html">WaRent</a>
+      <div class="bk-header-right">
+        <div class="lang-switch" role="group" aria-label="Choix de la langue / Language switcher">
+          <button type="button" class="lang-btn active" data-lang-btn="fr" aria-pressed="true">FR</button>
+          <button type="button" class="lang-btn" data-lang-btn="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="ac-main">
+    <div class="ac-card mr-card">
+
+      <!-- ---------- Recherche par numero ---------- -->
+      <section class="mr-lookup" id="mr-lookup">
+
+        <h1 class="ac-title" data-fr="Mes réservations" data-en="My bookings">Mes réservations</h1>
+        <p class="ac-intro" data-fr="Accédez à votre location grâce à votre numéro de réservation WaRent. Numéro à 10 chiffres commençant par un 9 (exemple : 9345267859)." data-en="Get to your rental with your WaRent booking number. A 10-digit number starting with a 9 (example: 9345267859).">Accédez à votre location grâce à votre numéro de réservation WaRent. Numéro à 10 chiffres commençant par un 9 (exemple : 9345267859).</p>
+
+        <form class="ac-form" id="mr-form" novalidate>
+          <label class="ac-label" for="mr-ref" data-fr="Numéro de réservation" data-en="Booking number">Numéro de réservation</label>
+          <input class="ac-input" id="mr-ref" name="reference" type="text" inputmode="numeric" autocomplete="off" maxlength="16" placeholder="Numéro de réservation">
+
+          <label class="ac-label ac-label-spaced" for="mr-email" data-fr="Adresse e-mail du compte" data-en="Account email address">Adresse e-mail du compte</label>
+          <input class="ac-input" id="mr-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nom@mail.com">
+
+          <p class="ac-error" id="mr-error" role="alert" hidden></p>
+          <button type="submit" class="ac-btn ac-btn-primary" data-fr="Valider" data-en="Confirm">Valider</button>
+        </form>
+
+        <p class="ac-legal" data-fr="Vos demandes sont enregistrées dans ce navigateur : depuis un autre appareil, écrivez-nous avec votre numéro et nous vous renvoyons le récapitulatif." data-en="Your requests are stored in this browser: from another device, email us your number and we'll send the summary back.">Vos demandes sont enregistrées dans ce navigateur : depuis un autre appareil, écrivez-nous avec votre numéro et nous vous renvoyons le récapitulatif.</p>
+
+      </section>
+
+      <!-- ---------- Fiche trouvee (remplie par mes-reservations.js) ---------- -->
+      <section class="mr-result" id="mr-result" hidden></section>
+
+    </div>
+  </main>
+
+  <script src="core.js"></script>
+  <script src="mes-reservations.js"></script>
+
+</body>
+</html>

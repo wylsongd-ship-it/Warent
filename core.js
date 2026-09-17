@@ -197,4 +197,101 @@ WARENT.readBookingUrl = function () {
   return { car: car, choice: choice };
 };
 
+// ---------- Reservations ----------
+// Il n'y a pas encore de serveur : une demande envoyee vit dans le navigateur
+// qui l'a faite. Son numero et sa fiche sont ranges en local, et « Mes
+// reservations » les retrouve avec le numero + l'adresse e-mail donnee sur la
+// demande. Le jour ou un serveur existe, ces fonctions seront les seules a
+// changer : le reste du site ne connait que leur signature.
+WARENT.BOOKINGS_KEY = 'warent-bookings';
+WARENT.BOOKINGS_MAX = 50;
+
+// Numero a 10 chiffres commencant par un 9, les neuf autres tires au sort :
+// un milliard de combinaisons. On ecarte quand meme ceux deja delivres dans
+// ce navigateur, pour qu'un numero ne designe jamais deux demandes. Le jour
+// ou un serveur delivrera les numeros, c'est cette fonction qu'il remplacera.
+WARENT.newBookingRef = function () {
+  var taken = {};
+  WARENT.allBookings().forEach(function (b) { taken[WARENT.cleanRef(b.ref)] = true; });
+  var ref;
+  do {
+    ref = '9';
+    for (var i = 0; i < 9; i++) ref += Math.floor(Math.random() * 10);
+  } while (taken[ref]);
+  return ref;
+};
+
+// Un numero recopie depuis un e-mail arrive souvent avec des espaces ou des
+// tirets, et une adresse avec une majuscule : on compare toujours des formes
+// nettoyees, jamais la saisie brute.
+WARENT.cleanRef = function (value) {
+  return String(value || '').replace(/[^0-9]/g, '');
+};
+
+WARENT.cleanEmail = function (value) {
+  return String(value || '').trim().toLowerCase();
+};
+
+WARENT.isBookingRef = function (value) {
+  return /^9\d{9}$/.test(WARENT.cleanRef(value));
+};
+
+WARENT.allBookings = function () {
+  try {
+    var list = JSON.parse(localStorage.getItem(WARENT.BOOKINGS_KEY) || '[]');
+    return Object.prototype.toString.call(list) === '[object Array]' ? list : [];
+  } catch (e) {
+    return [];
+  }
+};
+
+WARENT.saveBooking = function (record) {
+  var list = WARENT.allBookings();
+  list.unshift(record);
+  try {
+    localStorage.setItem(WARENT.BOOKINGS_KEY, JSON.stringify(list.slice(0, WARENT.BOOKINGS_MAX)));
+  } catch (e) { }
+  return record;
+};
+
+WARENT.findBooking = function (ref, email) {
+  var wantedRef = WARENT.cleanRef(ref);
+  var wantedMail = WARENT.cleanEmail(email);
+  if (!wantedRef || !wantedMail) return null;
+  return WARENT.allBookings().filter(function (b) {
+    return WARENT.cleanRef(b.ref) === wantedRef && WARENT.cleanEmail(b.email) === wantedMail;
+  })[0] || null;
+};
+
+WARENT.bookingsForEmail = function (email) {
+  var wanted = WARENT.cleanEmail(email);
+  if (!wanted) return [];
+  return WARENT.allBookings().filter(function (b) {
+    return WARENT.cleanEmail(b.email) === wanted;
+  });
+};
+
+// Une fiche ne garde que des donnees brutes : le vehicule, la formule et les
+// dates. Les libelles et les montants sont recalcules ici, par les memes
+// fonctions que les autres pages — un tarif corrige ne laisse donc jamais une
+// vieille fiche afficher un ancien total. Le calcul de la duree « Vos dates »
+// lit WARENT.search : on l'emprunte le temps du calcul, puis on le rend.
+WARENT.bookingDetails = function (record) {
+  var car = record && WARENT.carById(record.carId);
+  if (!car) return null;
+  var choice = { duration: record.duration, km: record.km };
+  var previous = WARENT.search;
+  WARENT.search = record.search || null;
+  var totals = WARENT.totals(car, choice);
+  WARENT.search = previous;
+  return { car: car, choice: choice, totals: totals, search: record.search || null };
+};
+
+WARENT.bookingDate = function (record) {
+  var d = new Date(record && record.createdAt);
+  if (isNaN(d.getTime())) return '';
+  return d.toLocaleDateString(WARENT.lang() === 'en' ? 'en-GB' : 'fr-FR',
+                              { day: '2-digit', month: 'long', year: 'numeric' });
+};
+
 WARENT.readSearchFromUrl();
