@@ -640,6 +640,7 @@
   };
   var btns = document.querySelectorAll('.lang-btn');
   var textEls = document.querySelectorAll('[data-fr][data-en]');
+  var labelEls = document.querySelectorAll('[data-label-fr][data-label-en]');
   function getStoredLang() {
     try {
       return localStorage.getItem(STORAGE_KEY);
@@ -664,6 +665,12 @@
       el.textContent = lang === 'en' ? el.dataset.en : el.dataset.fr;
     });
 
+    // Le bouton du menu ne porte que trois barres : son nom vit dans
+    // aria-label, qui se traduit donc a part.
+    labelEls.forEach(function (el) {
+      el.setAttribute('aria-label', lang === 'en' ? el.dataset.labelEn : el.dataset.labelFr);
+    });
+
     btns.forEach(function (btn) {
       var isActive = btn.getAttribute('data-lang-btn') === lang;
       btn.classList.toggle('active', isActive);
@@ -686,4 +693,43 @@
   });
 
   setLanguage(getStoredLang() || 'fr');
+})();
+
+// Menu telephone : sous 900px la navigation centrale est masquee, les trois
+// barres la rouvrent. Le panneau se referme des qu'il a servi — lien choisi,
+// Echap, clic a cote — et quand l'ecran redevient assez large pour la barre,
+// sinon il resterait ouvert dans le vide apres une rotation.
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var panel = document.getElementById('mobile-nav');
+  if (!toggle || !panel) return;
+
+  function setOpen(open) {
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  toggle.addEventListener('click', function () {
+    setOpen(panel.hidden);
+  });
+
+  Array.prototype.forEach.call(panel.querySelectorAll('a'), function (link) {
+    link.addEventListener('click', function () { setOpen(false); });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!panel.hidden && !panel.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if ((e.key === 'Escape' || e.key === 'Esc') && !panel.hidden) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+
+  var wide = window.matchMedia('(min-width: 900px)');
+  function onWide(e) { if (e.matches) setOpen(false); }
+  if (wide.addEventListener) wide.addEventListener('change', onWide);
+  else if (wide.addListener) wide.addListener(onWide);
 })();

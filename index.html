@@ -20,7 +20,12 @@
 
   <div class="page">
     <header class="site-header">
-      <a href="#" class="logo">WaRent</a>
+      <div class="header-left">
+        <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu principal" data-label-fr="Menu principal" data-label-en="Main menu">
+          <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+        <a href="#" class="logo">WaRent</a>
+      </div>
       <nav class="site-nav">
         <a href="#how-it-works" data-fr="Comment ça marche" data-en="How It Works">Comment ça marche</a>
         <a href="mes-reservations.html" data-fr="Mes réservations" data-en="My bookings">Mes réservations</a>
@@ -36,6 +41,12 @@
           <button type="button" class="lang-btn" data-lang-btn="en" aria-pressed="false">EN</button>
         </div>
       </div>
+
+      <nav class="mobile-nav" id="mobile-nav" hidden>
+        <a href="#how-it-works" data-fr="Comment ça marche" data-en="How It Works">Comment ça marche</a>
+        <a href="mes-reservations.html" data-fr="Mes réservations" data-en="My bookings">Mes réservations</a>
+        <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+      </nav>
     </header>
 
 
