@@ -913,27 +913,174 @@ body.lang-en .sub-text.i18n-en { display: block; }
 .step-title { color: rgb(var(--fg-rgb)); font-size: 16.5px; font-weight: 600; margin: 0 0 7px; }
 .step-text { color: rgba(var(--fg-rgb), 0.6); font-size: 13.5px; line-height: 1.55; margin: 0; }
 
-/* ---------- Occasions ---------- */
-.tiles {
+/* ---------- Offres mises en avant ---------- */
+/* Deux panneaux larges, sur le modele des encarts d'agence : un cadre incline
+   qui porte le chiffre (le prix ou la remise), un titre, une ligne, un bouton.
+   Celui du vehicule est un lien entier — toute la surface est cliquable ;
+   celui de l'offre n'en est pas un, et le dit avec « bientot disponible »
+   plutot qu'avec un bouton qui ne menerait nulle part. */
+.promos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: clamp(14px, 1.8vw, 20px);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: clamp(16px, 2vw, 24px);
 }
-.tile {
-  border-radius: 18px;
-  padding: clamp(20px, 2.2vw, 26px);
-  background: rgba(var(--fg-rgb), 0.04);
-  border: 1px solid rgba(var(--fg-rgb), 0.08);
-  transition: border-color .2s ease, background .2s ease;
+.promo {
+  --fg-rgb: var(--on-media-rgb);   /* fond sombre dans les deux themes */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: clamp(340px, 34vw, 420px);
+  padding: clamp(24px, 2.6vw, 34px);
+  border-radius: 22px;
+  overflow: hidden;
+  isolation: isolate;
+  color: rgb(var(--fg-rgb));
+  text-decoration: none;
+  background: linear-gradient(165deg, #1b1f25 0%, #0a0b0d 72%);
+  border: 1px solid rgba(var(--fg-rgb), 0.09);
+  box-shadow: var(--shadow-card);
 }
-.tile:hover { border-color: rgba(34,193,195,0.35); background: rgba(var(--fg-rgb), 0.06); }
-.tile > svg {
-  width: 24px; height: 24px;
-  color: var(--accent-text);
-  margin-bottom: 14px;
+.promo-offer {
+  background:
+    radial-gradient(120% 90% at 80% 0%, rgba(34, 193, 195, 0.28), transparent 62%),
+    linear-gradient(165deg, #16201f 0%, #08090a 74%);
 }
-.tile-title { color: rgb(var(--fg-rgb)); font-size: 16px; font-weight: 600; margin: 0 0 7px; }
-.tile-text { color: rgba(var(--fg-rgb), 0.58); font-size: 13.5px; line-height: 1.55; margin: 0; }
+
+/* La photo occupe le haut du panneau et se fond dans le texte : pas de
+   decoupe franche, donc pas besoin d'un detourage parfait. */
+.promo-media {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 64%;
+}
+/* Deux voiles : un vers la gauche, pour que le cadre se detache meme sur une
+   carrosserie claire, un vers le bas, qui fond la photo dans le panneau. */
+.promo-media::before,
+.promo-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.promo-media::before {
+  background: linear-gradient(100deg, #0a0b0d 4%, rgba(10, 11, 13, 0.72) 34%, transparent 64%);
+}
+.promo-media::after {
+  background: linear-gradient(to bottom, transparent 40%, #0a0b0d 96%);
+}
+/* La photo est poussee a droite : le cadre du prix garde ainsi une zone
+   sombre a lui, quelle que soit la couleur de la carrosserie. */
+.promo-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 82% 58%;
+}
+.promo-ground {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  width: 70%;
+  height: 26px;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 72%);
+}
+
+.promo-body {
+  position: relative;
+  z-index: 1;
+}
+
+/* Le cadre incline : c'est lui qui porte le chiffre, il doit se lire avant
+   le titre. Le texte, lui, reste droit. */
+.promo-frame {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  margin-bottom: 16px;
+  padding: 10px 18px 12px;
+  border: 2px solid rgba(var(--fg-rgb), 0.9);
+  transform: skewX(-9deg);
+}
+.promo-frame > * { transform: skewX(9deg); }
+.promo-frame-top,
+.promo-frame-unit {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(var(--fg-rgb), 0.82);
+}
+.promo-frame-value {
+  font-size: clamp(34px, 4.4vw, 48px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+.promo-car .promo-frame { border-color: var(--accent); }
+.promo-car .promo-frame-value { color: var(--accent); }
+
+.promo-title {
+  margin: 0 0 10px;
+  font-size: clamp(21px, 2.4vw, 28px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.promo-text {
+  margin: 0 0 20px;
+  max-width: 42ch;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(var(--fg-rgb), 0.66);
+}
+
+/* Bouton du panneau vehicule : dessine, mais jamais focusable a part — c'est
+   le panneau entier qui est le lien. */
+.promo-btn,
+.promo-soon {
+  display: inline-block;
+  padding: 11px 24px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.promo-btn {
+  color: var(--ink);
+  background: var(--accent);
+  transition: background .2s ease;
+}
+.promo-soon {
+  color: rgba(var(--fg-rgb), 0.62);
+  border: 1px solid rgba(var(--fg-rgb), 0.22);
+}
+
+.promo-car {
+  transition: border-color .25s ease, transform .25s ease;
+}
+.promo-car:hover {
+  border-color: rgba(34, 193, 195, 0.5);
+  transform: translateY(-3px);
+}
+.promo-car:hover .promo-btn { background: var(--accent-hover); }
+.promo-car:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .promo-car, .promo-car:hover { transform: none; transition: none; }
+}
+
+@media (max-width: 560px) {
+  .promo { min-height: 320px; padding: 22px; }
+  .promo-media { height: 52%; }
+}
 
 /* ---------- Conditions ---------- */
 .conds {
