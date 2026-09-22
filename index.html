@@ -243,10 +243,9 @@
       </div>
     </div>
   </section>
-  <!-- Les quatre regles, lues comme un parcours : une pastille numerotee par
-       etape, posee sur une ligne qui se remplit au fil du defilement. La ligne
-       et les apparitions sont pilotees par app.js ; sans JS, ou si l'appareil
-       demande moins d'animations, tout s'affiche deja en place. -->
+  <!-- Les quatre regles, en liste simple. La seule mise en scene est
+       l'apparition au defilement et le trait d'accent qui se tire au survol :
+       le reste doit se lire d'un coup d'oeil. -->
   <section id="conditions" class="section conds-section">
     <div class="section-inner">
       <div class="section-head conds-head">
@@ -254,75 +253,36 @@
         <p class="section-sub" data-fr="Quelques règles simples, pensées pour protéger le véhicule autant que vous." data-en="A few simple rules, there to protect the car and you alike.">Quelques règles simples, pensées pour protéger le véhicule autant que vous.</p>
       </div>
 
-      <div class="conds-wrap">
-        <span class="conds-line" aria-hidden="true"><span class="conds-line-fill"></span></span>
-
-        <ol class="conds">
-          <li class="cond" style="--i: 0">
-            <span class="cond-dot" aria-hidden="true">01</span>
-            <div class="cond-card">
-              <span class="cond-ico">
-                <svg class="ico ico-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8.6"/>
-                  <line class="ico-hand-h" x1="12" y1="12" x2="12" y2="7.4" stroke-linecap="round"/>
-                  <line class="ico-hand-m" x1="12" y1="12" x2="15" y2="13.8" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <p class="cond-step" data-fr="Avant la réservation" data-en="Before booking">Avant la réservation</p>
-              <h3 class="cond-title" data-fr="Âge minimum" data-en="Minimum age">Âge minimum</h3>
-              <p class="cond-text" data-fr="21 ans pour la Clio, 23 ans pour l'Audi A3." data-en="21 for the Clio, 23 for the Audi A3.">21 ans pour la Clio, 23 ans pour l'Audi A3.</p>
-            </div>
-          </li>
-
-          <li class="cond" style="--i: 1">
-            <span class="cond-dot" aria-hidden="true">02</span>
-            <div class="cond-card">
-              <span class="cond-ico">
-                <svg class="ico ico-id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                  <rect x="3" y="5.5" width="18" height="13" rx="2.2"/>
-                  <circle cx="9" cy="11" r="2"/>
-                  <path d="M14 10h4M14 13.5h4M5.6 16c.6-1.6 1.9-2.4 3.4-2.4s2.8.8 3.4 2.4" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <p class="cond-step" data-fr="À la remise" data-en="At handover">À la remise</p>
-              <h3 class="cond-title" data-fr="Permis et pièce d'identité" data-en="Licence and ID">Permis et pièce d'identité</h3>
-              <p class="cond-text" data-fr="Les originaux sont vérifiés en personne au moment de la remise." data-en="Originals are checked in person at handover.">Les originaux sont vérifiés en personne au moment de la remise.</p>
-            </div>
-          </li>
-
-          <li class="cond" style="--i: 2">
-            <span class="cond-dot" aria-hidden="true">03</span>
-            <div class="cond-card">
-              <span class="cond-ico">
-                <svg class="ico ico-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                  <rect x="4.8" y="10.4" width="14.4" height="9.4" rx="2.2"/>
-                  <path class="ico-shackle" d="M8.4 10.4V8a3.6 3.6 0 017.2 0v2.4" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <p class="cond-step" data-fr="À la remise des clés" data-en="When you collect the keys">À la remise des clés</p>
-              <h3 class="cond-title" data-fr="Dépôt de garantie" data-en="Security deposit">Dépôt de garantie</h3>
-              <p class="cond-text" data-fr="Demandé à la remise des clés, restitué au retour du véhicule." data-en="Taken at handover and released when the car comes back.">Demandé à la remise des clés, restitué au retour du véhicule.</p>
-            </div>
-          </li>
-
-          <li class="cond" style="--i: 3">
-            <span class="cond-dot" aria-hidden="true">04</span>
-            <div class="cond-card">
-              <span class="cond-ico">
-                <svg class="ico ico-cam" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                  <rect x="3" y="6.4" width="18" height="13.2" rx="2.2"/>
-                  <path d="M8.4 6.4l1.2-2h4.8l1.2 2" stroke-linejoin="round"/>
-                  <circle class="ico-lens" cx="12" cy="13" r="3.2"/>
-                  <circle class="ico-flash" cx="12" cy="13" r="4.4" fill="#fff" stroke="none"/>
-                </svg>
-              </span>
-              <p class="cond-step" data-fr="Au départ et au retour" data-en="At departure and on return">Au départ et au retour</p>
-              <h3 class="cond-title" data-fr="État des lieux" data-en="Condition report">État des lieux</h3>
-              <p class="cond-text" data-fr="Photos du véhicule et relevé du kilométrage au départ comme au retour." data-en="Photos of the car and mileage noted at departure and on return.">Photos du véhicule et relevé du kilométrage au départ comme au retour.</p>
-            </div>
-          </li>
-        </ol>
-      </div>
+      <ul class="conds">
+        <li class="cond" style="--i: 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3 1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div>
+            <h3 class="cond-title" data-fr="Âge minimum" data-en="Minimum age">Âge minimum</h3>
+            <p class="cond-text" data-fr="21 ans pour la Clio, 23 ans pour l'Audi A3." data-en="21 for the Clio, 23 for the Audi A3.">21 ans pour la Clio, 23 ans pour l'Audi A3.</p>
+          </div>
+        </li>
+        <li class="cond" style="--i: 1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 13.5h4M5.6 16c.6-1.6 1.9-2.4 3.4-2.4s2.8.8 3.4 2.4" stroke-linecap="round"/></svg>
+          <div>
+            <h3 class="cond-title" data-fr="Permis et pièce d'identité" data-en="Licence and ID">Permis et pièce d'identité</h3>
+            <p class="cond-text" data-fr="Les originaux sont vérifiés en personne au moment de la remise." data-en="Originals are checked in person at handover.">Les originaux sont vérifiés en personne au moment de la remise.</p>
+          </div>
+        </li>
+        <li class="cond" style="--i: 2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4.8" y="10.4" width="14.4" height="9.4" rx="2.2"/><path d="M8.4 10.4V8a3.6 3.6 0 017.2 0v2.4" stroke-linecap="round"/></svg>
+          <div>
+            <h3 class="cond-title" data-fr="Dépôt de garantie" data-en="Security deposit">Dépôt de garantie</h3>
+            <p class="cond-text" data-fr="Demandé à la remise des clés, restitué au retour du véhicule." data-en="Taken at handover and released when the car comes back.">Demandé à la remise des clés, restitué au retour du véhicule.</p>
+          </div>
+        </li>
+        <li class="cond" style="--i: 3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="6.4" width="18" height="13.2" rx="2.2"/><circle cx="12" cy="13" r="3.2"/><path d="M8.4 6.4l1.2-2h4.8l1.2 2" stroke-linejoin="round"/></svg>
+          <div>
+            <h3 class="cond-title" data-fr="État des lieux" data-en="Condition report">État des lieux</h3>
+            <p class="cond-text" data-fr="Photos du véhicule et relevé du kilométrage au départ comme au retour." data-en="Photos of the car and mileage noted at departure and on return.">Photos du véhicule et relevé du kilométrage au départ comme au retour.</p>
+          </div>
+        </li>
+      </ul>
 
     </div>
   </section>
