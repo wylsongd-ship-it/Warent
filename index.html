@@ -203,33 +203,43 @@
     </div>
   </section>
 
-  <section id="occasions" class="section section-alt">
+  <!-- Deux offres mises en avant, facon panneau : une accroche, un prix ou une
+       remise dans son cadre, et un seul chemin a suivre. La Clio mene a sa
+       demande de location ; l'offre de bienvenue n'a pas encore de destination. -->
+  <section id="offres" class="section section-alt">
     <div class="section-inner">
-      <div class="section-head">
-        <h2 class="section-title" data-fr="Pour quelle occasion ?" data-en="What's the occasion?">Pour quelle occasion ?</h2>
-        <p class="section-sub" data-fr="Que ce soit pour le plaisir, pour marquer le coup ou pour travailler, le véhicule s'adapte." data-en="Whether it's for fun, for a special day or for work, the car adapts.">Que ce soit pour le plaisir, pour marquer le coup ou pour travailler, le véhicule s'adapte.</p>
-      </div>
-      <div class="tiles">
-        <article class="tile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6" stroke-linecap="round"/></svg>
-          <h3 class="tile-title" data-fr="Particuliers" data-en="Private customers">Particuliers</h3>
-          <p class="tile-text" data-fr="Envie de rouler dans une voiture qui change de l'ordinaire, le temps d'un week-end ou de quelques jours." data-en="Drive something out of the ordinary, for a weekend or a few days.">Envie de rouler dans une voiture qui change de l'ordinaire, le temps d'un week-end ou de quelques jours.</p>
+      <div class="promos">
+
+        <article class="promo promo-offer">
+          <div class="promo-body">
+            <div class="promo-frame">
+              <span class="promo-frame-top" data-fr="Première location" data-en="First rental">Première location</span>
+              <span class="promo-frame-value">-10%</span>
+              <span class="promo-frame-unit" data-fr="sur le total" data-en="off the total">sur le total</span>
+            </div>
+            <h2 class="promo-title" data-fr="Bénéficiez d'une réduction de 10% pour votre première location." data-en="Get 10% off your first rental.">Bénéficiez d'une réduction de 10% pour votre première location.</h2>
+            <p class="promo-text" data-fr="Offre de bienvenue WaRent, appliquée sur votre première réservation confirmée." data-en="WaRent welcome offer, applied to your first confirmed booking.">Offre de bienvenue WaRent, appliquée sur votre première réservation confirmée.</p>
+            <span class="promo-soon" data-fr="Bientôt disponible" data-en="Coming soon">Bientôt disponible</span>
+          </div>
         </article>
-        <article class="tile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20s-7.3-4.4-7.3-9.4A4.1 4.1 0 0112 8.3a4.1 4.1 0 017.3 2.3c0 5-7.3 9.4-7.3 9.4z" stroke-linejoin="round"/></svg>
-          <h3 class="tile-title" data-fr="Mariages et événements" data-en="Weddings and events">Mariages et événements</h3>
-          <p class="tile-text" data-fr="Une voiture soignée et présentable pour un mariage, un anniversaire ou une occasion qui compte." data-en="A spotless, presentable car for a wedding, a birthday or any day that matters.">Une voiture soignée et présentable pour un mariage, un anniversaire ou une occasion qui compte.</p>
-        </article>
-        <article class="tile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.2" y="7.4" width="17.6" height="12.4" rx="2.2"/><path d="M9 7.4V5.6a1.8 1.8 0 011.8-1.8h2.4A1.8 1.8 0 0115 5.6v1.8" stroke-linecap="round"/></svg>
-          <h3 class="tile-title" data-fr="Entreprises" data-en="Businesses">Entreprises</h3>
-          <p class="tile-text" data-fr="Déplacements professionnels, séminaires et événements d'entreprise, avec facturation adaptée." data-en="Business trips, seminars and company events, with proper invoicing.">Déplacements professionnels, séminaires et événements d'entreprise, avec facturation adaptée.</p>
-        </article>
-        <article class="tile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="13.5" height="10" rx="2.2"/><path d="M16.5 11.2l4.5-2.6v6.8l-4.5-2.6z" stroke-linejoin="round"/></svg>
-          <h3 class="tile-title" data-fr="Shootings et créateurs" data-en="Shoots and creators">Shootings et créateurs</h3>
-          <p class="tile-text" data-fr="Véhicules disponibles pour vos shootings photo et vidéo, avec des conditions adaptées au tournage." data-en="Cars available for photo and video shoots, on terms that suit a production.">Véhicules disponibles pour vos shootings photo et vidéo, avec des conditions adaptées au tournage.</p>
-        </article>
+
+        <a class="promo promo-car" id="promo-car" href="reservation.html?car=c0&amp;dur=day&amp;km=included">
+          <div class="promo-media" aria-hidden="true">
+            <span class="promo-ground"></span>
+            <img class="promo-photo" id="promo-car-photo" src="clio.webp" alt="" onerror="this.remove();">
+          </div>
+          <div class="promo-body">
+            <div class="promo-frame">
+              <span class="promo-frame-top" data-fr="À partir de" data-en="From">À partir de</span>
+              <span class="promo-frame-value" id="promo-car-price">89€</span>
+              <span class="promo-frame-unit" data-fr="par jour" data-en="per day">par jour</span>
+            </div>
+            <h2 class="promo-title" id="promo-car-name">Clio 5 Esprit Alpine</h2>
+            <p class="promo-text" data-fr="Citadine hybride, boîte automatique, cinq places. Retrait à Lorient ou livraison dans le Morbihan." data-en="Hybrid city car, automatic gearbox, five seats. Pick-up in Lorient or delivery across Morbihan.">Citadine hybride, boîte automatique, cinq places. Retrait à Lorient ou livraison dans le Morbihan.</p>
+            <span class="promo-btn" data-fr="Réserver ce véhicule" data-en="Book this car">Réserver ce véhicule</span>
+          </div>
+        </a>
+
       </div>
     </div>
   </section>
@@ -333,7 +343,7 @@
       </nav>
       <nav class="footer-nav">
         <a href="#conditions" data-fr="Conditions de location" data-en="Rental conditions">Conditions de location</a>
-        <a href="#occasions" data-fr="Occasions" data-en="Occasions">Occasions</a>
+        <a href="#offres" data-fr="Offres" data-en="Offers">Offres</a>
         <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
         <a href="connexion.html" data-fr="Connexion" data-en="Sign in">Connexion</a>
         <a href="mes-reservations.html" data-fr="Mes réservations" data-en="My bookings">Mes réservations</a>

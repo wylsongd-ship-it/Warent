@@ -632,6 +632,28 @@
   });
 })();
 
+// Panneau d'offre du vehicule mis en avant : son nom, sa photo et son prix
+// viennent de core.js, jamais du HTML — le panneau ne peut donc pas annoncer un
+// tarif que la fiche ne pratique plus. Le lien mene a la demande de location en
+// formule journee, avec les dates deja choisies si elles sont dans l'URL.
+(function () {
+  var link = document.getElementById('promo-car');
+  if (!link) return;
+  var car = WARENT.carById('c0') || WARENT.fleet[0];
+  if (!car) return;
+
+  link.href = WARENT.bookingUrl(car, { duration: 'day', km: 'included' });
+
+  var name = document.getElementById('promo-car-name');
+  if (name) name.textContent = car.brand + ' ' + car.model;
+
+  var price = document.getElementById('promo-car-price');
+  if (price) price.textContent = car.price + '\u20ac';
+
+  var photo = document.getElementById('promo-car-photo');
+  if (photo && car.img) photo.src = car.img;
+})();
+
 (function () {
   var STORAGE_KEY = 'warent-lang';
   var titles = {
