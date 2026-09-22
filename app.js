@@ -654,6 +654,113 @@
   if (photo && car.img) photo.src = car.img;
 })();
 
+// Le parcours « Ce qu'il faut prevoir » : trois choses a piloter, toutes en
+// transform et opacity. La ligne se remplit en fonction du defilement (--path),
+// les cartes apparaissent une fois (.is-in) et le halo suit la souris (--x/--y).
+// L'etat cache n'est ecrit qu'a partir d'ici, via .js-reveal : un navigateur
+// sans JS garde la section lisible, ligne pleine et cartes en place. Un appareil
+// qui demande moins d'animation recoit directement l'etat final.
+(function () {
+  var section = document.querySelector('.conds-section');
+  if (!section) return;
+
+  var wrap = section.querySelector('.conds-wrap');
+  var line = section.querySelector('.conds-line');
+  var dots = section.querySelectorAll('.cond-dot');
+  var cards = section.querySelectorAll('.cond-card');
+  if (!wrap || !line) return;
+
+  // Le halo est pose en pixels depuis le coin de la carte : c'est ce que lit
+  // le degrade radial du CSS.
+  cards.forEach(function (card) {
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--x', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--y', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (calm) {
+    wrap.style.setProperty('--path', '1');
+    dots.forEach(function (dot) { dot.classList.add('is-lit'); });
+    return;
+  }
+
+  section.classList.add('js-reveal');
+
+  function reveal() {
+    section.classList.add('is-in');
+  }
+
+  if (window.IntersectionObserver) {
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        reveal();
+        seen.disconnect();
+      });
+    }, { threshold: 0.3 });
+    seen.observe(section);
+  } else {
+    reveal();
+  }
+
+  // Position de chaque pastille le long de la ligne, entre 0 et 1 : elle
+  // s'allume quand le remplissage l'a depassee. Quand la ligne est masquee
+  // (deux colonnes), on repartit les pastilles a intervalle egal.
+  var ratios = [];
+
+  function measure() {
+    var track = line.getBoundingClientRect();
+    var vertical = track.height > track.width;
+    var span = vertical ? track.height : track.width;
+    ratios = [];
+    dots.forEach(function (dot, i) {
+      if (!span) {
+        ratios.push((i + 0.6) / dots.length);
+        return;
+      }
+      var r = dot.getBoundingClientRect();
+      ratios.push(vertical
+        ? (r.top + r.height / 2 - track.top) / span
+        : (r.left + r.width / 2 - track.left) / span);
+    });
+  }
+
+  var waiting = false;
+
+  function update() {
+    waiting = false;
+    var r = wrap.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    // La ligne part quand la liste atteint 82 % de l'ecran et finit de se
+    // remplir quand elle l'a traversee : court sur desktop, long sur telephone
+    // ou les cartes s'empilent, sans reglage separe.
+    var p = (vh * 0.82 - r.top) / (r.height + vh * 0.22);
+    if (p < 0) p = 0;
+    if (p > 1) p = 1;
+    wrap.style.setProperty('--path', p.toFixed(3));
+    dots.forEach(function (dot, i) {
+      dot.classList.toggle('is-lit', p + 0.02 >= ratios[i]);
+    });
+  }
+
+  function onScroll() {
+    if (waiting) return;
+    waiting = true;
+    requestAnimationFrame(update);
+  }
+
+  measure();
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () {
+    measure();
+    onScroll();
+  });
+})();
+
 (function () {
   var STORAGE_KEY = 'warent-lang';
   var titles = {
